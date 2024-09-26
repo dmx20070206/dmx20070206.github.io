@@ -29,7 +29,7 @@
 <meta property="og:image" content="http://example.com/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
 <meta property="og:image" content="http://example.com/miniob_img/004.png">
 <meta property="article:published_time" content="2024-09-26T03:52:06.000Z">
-<meta property="article:modified_time" content="2024-09-26T08:37:42.948Z">
+<meta property="article:modified_time" content="2024-09-26T08:45:28.207Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://example.com/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
@@ -225,7 +225,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          960 words
+          1k words
         
       </span>
     
@@ -304,7 +304,10 @@
 <p><code>DropTableStmt</code>类声明了 create 函数，同时删除表格需要表格的名称，故还需要表示表格名称的属性<code>table_name_</code>。<br>函数的实现如下：</p>
 <figure class="highlight zephir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs zephir">RC DropTableStmt::create(Db *db, <span class="hljs-keyword">const</span> DropTableSqlNode &amp;drop_table, Stmt *&amp;stmt)<br>&#123;<br>    <span class="hljs-keyword">if</span> (!db-&gt;find_table(drop_table.relation_name.c_str())) &#123;<br>        <span class="hljs-keyword">return</span> RC::SCHEMA_TABLE_NOT_EXIST;<br>    &#125;<br><br>    stmt = <span class="hljs-keyword">new</span> DropTableStmt(drop_table.relation_name);<br>    sql_debug(<span class="hljs-string">&quot;drop table statement: table name %s&quot;</span>,    drop_table.relation_name.c_str());<br>    <span class="hljs-keyword">return</span> RC::SUCCESS;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>函数主要创建了一个<code>DropTableStmt</code>对象，并传入了删除表格的名称。<strong>至此，成功创建了一个删除表格对应的<code>Stmt</code>对象</strong>。</p>
-<h4 id="Optimizer-模块"><a href="#Optimizer-模块" class="headerlink" title="Optimizer 模块"></a>Optimizer 模块</h4>
+<h4 id="Optimizer-模块"><a href="#Optimizer-模块" class="headerlink" title="Optimizer 模块"></a>Optimizer 模块</h4><p>Optimizer 模块主要对 SQL 语句进行优化，具体实现之后再说。<br>对于 Optimizer 模块:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs ruby">rc = optimize_stage_.handle_request(sql_event);<br><span class="hljs-keyword">if</span> (rc != <span class="hljs-variable constant_">RC</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:UNIMPLEMENTED</span> &amp;&amp; rc != <span class="hljs-variable constant_">RC</span><span class="hljs-symbol">:</span><span class="hljs-symbol">:SUCCESS</span>) &#123;<br>    <span class="hljs-variable constant_">LOG_TRACE</span>(<span class="hljs-string">&quot;failed to do optimize. rc=%s&quot;</span>, strrc(rc));<br>    <span class="hljs-keyword">return</span> rc;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="Executor-模块"><a href="#Executor-模块" class="headerlink" title="Executor 模块"></a>Executor 模块</h4>
                 
               </div>
             
