@@ -22,17 +22,17 @@
     <meta name="description" content="miniOb 源码阅读笔记官方文档：https:&#x2F;&#x2F;www.oceanbase.com&#x2F;docs&#x2F;-developer-quickstart-10000000000627360 完善基本命令 drop table Parser 模块当一条 SQL 请求到达 Server 端后，首先经过的是 Parser 模块。Parser 模块主要作用是根据定义的语法规则判断一条 SQL 语句的格式是否符合对应的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="miniOb 源码阅读笔记">
-<meta property="og:url" content="http://example.com/2024/09/26/oceanbase/index.html">
+<meta property="og:url" content="https://dmx20070206.github.io/2024/09/26/oceanbase/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="miniOb 源码阅读笔记官方文档：https:&#x2F;&#x2F;www.oceanbase.com&#x2F;docs&#x2F;-developer-quickstart-10000000000627360 完善基本命令 drop table Parser 模块当一条 SQL 请求到达 Server 端后，首先经过的是 Parser 模块。Parser 模块主要作用是根据定义的语法规则判断一条 SQL 语句的格式是否符合对应的">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/public/img/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
-<meta property="og:image" content="http://example.com/public/img/miniob_img/004.png">
+<meta property="og:image" content="https://dmx20070206.github.io/public/img/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
+<meta property="og:image" content="https://dmx20070206.github.io/public/img/miniob_img/004.png">
 <meta property="article:published_time" content="2024-09-26T03:52:06.000Z">
 <meta property="article:modified_time" content="2024-09-27T07:04:46.821Z">
 <meta property="article:author" content="DMX">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/public/img/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
+<meta name="twitter:image" content="https://dmx20070206.github.io/public/img/miniob_img/SQL%E5%B1%82%E6%95%B4%E4%BD%93%E6%A1%86%E6%9E%B6.png">
   
   
   
@@ -74,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"dmx20070206.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -349,7 +349,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>miniOb 源码阅读笔记</div>
-      <div>http://example.com/2024/09/26/oceanbase/</div>
+      <div>https://dmx20070206.github.io/2024/09/26/oceanbase/</div>
     </div>
     <div class="license-meta">
       
