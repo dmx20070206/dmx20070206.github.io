@@ -19,19 +19,17 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="本文章对标清华大学紫皮书《编译原理》  第二章 文法和语言 文法，是语言的规则  符号与符号串字母表，是元素的非空有穷集合，一般用 $\displaystyle\sum$ 表示符号串，是字母表中符号的任何有穷序列，空符号串表示为 $\varepsilon$ 符号串的前缀和后缀称为符号串的头和尾，不包含符号串本身的头和尾也称作固有头和固有尾 字母表的闭包：$\displaystyle\sum^{*">
+    <meta name="description" content="本文章对标清华大学紫皮书《编译原理》  第二章 文法和语言  文法，是语言的规则  符号与符号串 字母表，是元素的非空有穷集合，一般用 \(\displaystyle\sum\) 表示 符号串，是字母表中符号的任何有穷序列，空符号串表示为 \(\varepsilon\) 符号串的前缀和后缀称为符号串的头和尾，不包含符号串本身的头和尾也称作固有头和固有尾 字母表的闭包： \">
 <meta property="og:type" content="article">
 <meta property="og:title" content="编译原理课内知识笔记">
 <meta property="og:url" content="https://dmx20070206.github.io/2024/10/01/CompilationPrinciple/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="本文章对标清华大学紫皮书《编译原理》  第二章 文法和语言 文法，是语言的规则  符号与符号串字母表，是元素的非空有穷集合，一般用 $\displaystyle\sum$ 表示符号串，是字母表中符号的任何有穷序列，空符号串表示为 $\varepsilon$ 符号串的前缀和后缀称为符号串的头和尾，不包含符号串本身的头和尾也称作固有头和固有尾 字母表的闭包：$\displaystyle\sum^{*">
+<meta property="og:description" content="本文章对标清华大学紫皮书《编译原理》  第二章 文法和语言  文法，是语言的规则  符号与符号串 字母表，是元素的非空有穷集合，一般用 \(\displaystyle\sum\) 表示 符号串，是字母表中符号的任何有穷序列，空符号串表示为 \(\varepsilon\) 符号串的前缀和后缀称为符号串的头和尾，不包含符号串本身的头和尾也称作固有头和固有尾 字母表的闭包： \">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dmx20070206.github.io/img/CompilationPrinciple/001.png">
 <meta property="article:published_time" content="2024-10-01T08:50:34.000Z">
-<meta property="article:modified_time" content="2024-10-02T08:20:40.014Z">
+<meta property="article:modified_time" content="2024-10-02T08:33:15.520Z">
 <meta property="article:author" content="DMX">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/CompilationPrinciple/001.png">
   
   
   
@@ -86,7 +84,9 @@
 
 
   
-<meta name="generator" content="Hexo 7.3.0"></head>
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head>
 
 
 <body>
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          832 words
+          750 words
         
       </span>
     
@@ -280,22 +280,86 @@
                 <blockquote>
 <p>本文章对标清华大学紫皮书《编译原理》</p>
 </blockquote>
-<h2 id="第二章-文法和语言"><a href="#第二章-文法和语言" class="headerlink" title="第二章 文法和语言"></a>第二章 文法和语言</h2><blockquote>
+<h2 id="第二章-文法和语言">第二章 文法和语言</h2>
+<blockquote>
 <p>文法，是语言的规则</p>
 </blockquote>
-<h3 id="符号与符号串"><a href="#符号与符号串" class="headerlink" title="符号与符号串"></a>符号与符号串</h3><p><strong>字母表</strong>，是元素的非空有穷集合，一般用 $\displaystyle\sum$ 表示<br><strong>符号串</strong>，是字母表中符号的任何有穷序列，空符号串表示为 $\varepsilon$</p>
+<h3 id="符号与符号串">符号与符号串</h3>
+<p><strong>字母表</strong>，是元素的非空有穷集合，一般用 <span
+class="math inline">\(\displaystyle\sum\)</span> 表示
+<strong>符号串</strong>，是字母表中符号的任何有穷序列，空符号串表示为
+<span class="math inline">\(\varepsilon\)</span></p>
 <p>符号串的前缀和后缀称为符号串的头和尾，不包含符号串本身的头和尾也称作固有头和固有尾</p>
-<p>字母表的<strong>闭包</strong>：<br>$\displaystyle\sum^{*} &#x3D; \displaystyle\sum^{0} \cup \displaystyle\sum^{1} \cup \dots \cup \displaystyle\sum^{n} \dots$<br>字母表的<strong>正闭包</strong>：<br>$\displaystyle\sum^{+} &#x3D; \displaystyle\sum^{1} \cup \displaystyle\sum^{2} \cup \dots \cup \displaystyle\sum^{n} \dots$</p>
-<h3 id="文法和语言的形式定义"><a href="#文法和语言的形式定义" class="headerlink" title="文法和语言的形式定义"></a>文法和语言的形式定义</h3><p>文法 $G$ 定位为四元组 $G&#x3D;(V_{N},V_{T},P,S)$<br>$V_{N}$ : 非终结符集合<br>$V_{T}$ : 终结符集合<br>$P$ : 规则<br>$S$ : 开始符&#x2F;起始符</p>
-<p>对于标识符来说(字母打头的字母数字序列)：<br>标识符文法 $G$ :<br>(1) $V_{N}$ &#x3D; {标识符, 字母, 数字}<br>(2) $V_{T}$ &#x3D; {a,b,c,…,x,y,z,…,0,1,…,9}<br>(3) $P$ &#x3D; {<br>    &lt;标识符&gt; -&gt; &lt;字母&gt;<br>    &lt;标识符&gt; -&gt; &lt;标识符&gt;&lt;字母&gt;<br>    &lt;标识符&gt; -&gt; &lt;标识符&gt;&lt;数字&gt;<br>    &lt;字母&gt; -&gt; a<br>    &lt;字母&gt; -&gt; b<br>    …<br>    &lt;字母&gt; -&gt; z<br>    &lt;数字&gt; -&gt; 0<br>    &lt;数字&gt; -&gt; 1<br>    …<br>    &lt;数字&gt; -&gt; 9<br>}<br>(4) $S$ &#x3D; &lt;标识符&gt;</p>
-<p>$V_{T} \cup V_{N} &#x3D; V$ 也即字母表<br>$V_{T} \cap V_{N} &#x3D; \emptyset$ 也即两者不相交</p>
-<p>若符号串 $v$ 能通过一条规则变成符号串 $w$，则称 $w$ 是 $v$ 的直接推导，记作 $v \Rightarrow w$<br>如果有这样一条推导链 $v \Rightarrow w_{0} \Rightarrow w_{1} \Rightarrow w_{2} \Rightarrow \dots \Rightarrow w_{n} &#x3D; w$，则称 $v \Rightarrow ^{+} w$</p>
-<p>对于一个文法 $G$，从识别串推到而来的符号串称为<strong>句型</strong>，只包含终结符的句型称为<strong>句子</strong>，全部句子的集合称为文法 $G$ 描述的语言。如果两个文法描述的语言是一致的，则称这两个文法是等价的</p>
-<h3 id="文法的类型"><a href="#文法的类型" class="headerlink" title="文法的类型"></a>文法的类型</h3><p><strong>0型文法</strong><br>每个产生式 $\alpha \rightarrow \beta$ 中，$\alpha$ 至少包含一个非终结符<br><strong>1型文法&#x2F;上下文有关文法</strong><br>每个产生式 $\alpha \rightarrow \beta$ 中，$|\beta| \geq |\alpha|$<br><strong>2型文法&#x2F;上下文无关文法</strong><br>每个产生式 $\alpha \rightarrow \beta$ 中，$\alpha$ 是一个非终结符<br><strong>3型文法&#x2F;正规文法</strong><br>每个产生式 $\alpha \rightarrow \beta$ 中，都是 $\alpha \rightarrow a or \alpha \rightarrow a\beta$ 的形式</p>
+<p>字母表的<strong>闭包</strong>： <span
+class="math inline">\(\displaystyle\sum^{*} = \displaystyle\sum^{0} \cup
+\displaystyle\sum^{1} \cup \dots \cup \displaystyle\sum^{n}
+\dots\)</span> 字母表的<strong>正闭包</strong>： <span
+class="math inline">\(\displaystyle\sum^{+} = \displaystyle\sum^{1} \cup
+\displaystyle\sum^{2} \cup \dots \cup \displaystyle\sum^{n}
+\dots\)</span></p>
+<h3 id="文法和语言的形式定义">文法和语言的形式定义</h3>
+<p>文法 <span class="math inline">\(G\)</span> 定位为四元组 <span
+class="math inline">\(G=(V_{N},V_{T},P,S)\)</span> <span
+class="math inline">\(V_{N}\)</span> : 非终结符集合 <span
+class="math inline">\(V_{T}\)</span> : 终结符集合 <span
+class="math inline">\(P\)</span> : 规则 <span
+class="math inline">\(S\)</span> : 开始符/起始符</p>
+<p>对于标识符来说(字母打头的字母数字序列)： 标识符文法 <span
+class="math inline">\(G\)</span> : (1) <span
+class="math inline">\(V_{N}\)</span> = {标识符, 字母, 数字} (2) <span
+class="math inline">\(V_{T}\)</span> = {a,b,c,...,x,y,z,...,0,1,...,9}
+(3) <span class="math inline">\(P\)</span> = { <标识符> -&gt; <字母>
+<标识符> -&gt; <标识符><字母> <标识符> -&gt; <标识符><数字> <字母> -&gt;
+a <字母> -&gt; b ... <字母> -&gt; z <数字> -&gt; 0 <数字> -&gt; 1 ...
+<数字> -&gt; 9 } (4) <span class="math inline">\(S\)</span> =
+<标识符></p>
+<p><span class="math inline">\(V_{T} \cup V_{N} = V\)</span> 也即字母表
+<span class="math inline">\(V_{T} \cap V_{N} = \emptyset\)</span>
+也即两者不相交</p>
+<p>若符号串 <span class="math inline">\(v\)</span>
+能通过一条规则变成符号串 <span class="math inline">\(w\)</span>，则称
+<span class="math inline">\(w\)</span> 是 <span
+class="math inline">\(v\)</span> 的直接推导，记作 <span
+class="math inline">\(v \Rightarrow w\)</span> 如果有这样一条推导链
+<span class="math inline">\(v \Rightarrow w_{0} \Rightarrow w_{1}
+\Rightarrow w_{2} \Rightarrow \dots \Rightarrow w_{n} = w\)</span>，则称
+<span class="math inline">\(v \Rightarrow ^{+} w\)</span></p>
+<p>对于一个文法 <span
+class="math inline">\(G\)</span>，从识别串推到而来的符号串称为<strong>句型</strong>，只包含终结符的句型称为<strong>句子</strong>，全部句子的集合称为文法
+<span class="math inline">\(G\)</span>
+描述的语言。如果两个文法描述的语言是一致的，则称这两个文法是等价的</p>
+<h3 id="文法的类型">文法的类型</h3>
+<p><strong>0型文法</strong> 每个产生式 <span
+class="math inline">\(\alpha \rightarrow \beta\)</span> 中，<span
+class="math inline">\(\alpha\)</span> 至少包含一个非终结符
+<strong>1型文法/上下文有关文法</strong> 每个产生式 <span
+class="math inline">\(\alpha \rightarrow \beta\)</span> 中，<span
+class="math inline">\(|\beta| \geq |\alpha|\)</span>
+<strong>2型文法/上下文无关文法</strong> 每个产生式 <span
+class="math inline">\(\alpha \rightarrow \beta\)</span> 中，<span
+class="math inline">\(\alpha\)</span> 是一个非终结符
+<strong>3型文法/正规文法</strong> 每个产生式 <span
+class="math inline">\(\alpha \rightarrow \beta\)</span> 中，都是 <span
+class="math inline">\(\alpha \rightarrow a or \alpha \rightarrow
+a\beta\)</span> 的形式</p>
 <p>四种文法是<strong>逐级增加限制</strong>的关系，也是逐级包含的关系</p>
-<h3 id="上下文无关语法及其语法树"><a href="#上下文无关语法及其语法树" class="headerlink" title="上下文无关语法及其语法树"></a>上下文无关语法及其语法树</h3><p>对于文法 $G&#x3D;({S,A},{a,b},P,S)$<br>$$<br>P &#x3D; {<br>    S \rightarrow aAS<br>    A \rightarrow SbA<br>    A \rightarrow SS<br>    S \rightarrow a<br>    A \rightarrow ba<br>}<br>$$ 的其中一颗语法树如下图：<br><img src="/../img/CompilationPrinciple/001.png" srcset="/img/loading.gif" lazyload alt="alt text" title="语法树图"><br>该语法树对应的句子为 $aabbaa$</p>
+<h3 id="上下文无关语法及其语法树">上下文无关语法及其语法树</h3>
+<p>对于文法 <span class="math inline">\(G=({S,A},{a,b},P,S)\)</span>
+<span class="math display">\[
+P = {
+    S \rightarrow aAS
+    A \rightarrow SbA
+    A \rightarrow SS
+    S \rightarrow a
+    A \rightarrow ba
+}
+\]</span> 的其中一颗语法树如下图： <img
+src="../img/CompilationPrinciple/001.png" srcset="/img/loading.gif" lazyload title="语法树图"
+alt="alt text" /> 该语法树对应的句子为 <span
+class="math inline">\(aabbaa\)</span></p>
 <p>如果从标识符推导到句子的过程中，都是对句型的最左(最右)非终结符进行替换，则称这种推导为最左(最右)推导，最右推导也称为规范推导</p>
-<p>若某个文法存在某个句子对应两棵不同的语法树，则称这个<strong>文法是二义的</strong><br>实际应用中，我们需要寻找一组充分条件，尽可能通过额外的限制来消除文法的二义性</p>
+<p>若某个文法存在某个句子对应两棵不同的语法树，则称这个<strong>文法是二义的</strong>
+实际应用中，我们需要寻找一组充分条件，尽可能通过额外的限制来消除文法的二义性</p>
 
                 
               </div>
