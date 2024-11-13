@@ -5,10 +5,10 @@
   
   <entry>
     <title>miniob 初赛参赛总结</title>
-    <link href="/project/2024/11/11/miniob/"/>
-    <url>/project/2024/11/11/miniob/</url>
+    <link href="/2024/11/11/miniob/"/>
+    <url>/2024/11/11/miniob/</url>
     
-    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>参加这个比赛其实主要目的是赚钱（感谢赵师姐的校友基金，最后含泪收下 7000￥ ），所以以下很多内容可能并不专业。</p><p>最终的结果是全国第 40 名，进决赛一共有 50 个队伍，不过由于加权压力（目前估计加权相较于大二上要掉 6 分左右），决赛不一定会付出太多心血去打了。</p><p>感谢我的队友 Sazikk 和我一起熬夜肝代码，并且忍耐我的屎山代码长达 21 天之久。</p><blockquote><p>Sazikk 个人博客：<a href="https://sazikk.github.io/">https://sazikk.github.io</a>  目前已有数十万的观看量</p></blockquote><h2 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h2><p>参加这个比赛需要什么能力：</p><ol><li>较强的 C++ 开发能力</li><li>一定的 SQL 语言理解能力</li><li>对 miniob 内核有较好的理解</li></ol><h2 id="miniob-框架解析"><a href="#miniob-框架解析" class="headerlink" title="miniob 框架解析"></a>miniob 框架解析</h2><h2 id="我负责的题目"><a href="#我负责的题目" class="headerlink" title="我负责的题目"></a>我负责的题目</h2>]]></content>
+    <content type="html"><![CDATA[<h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><p>参加这个比赛其实主要目的是赚钱（感谢赵师姐的校友基金，最后含泪收下 7000￥ ），所以以下很多内容可能并不专业。</p><p>最终的结果是全国第 40 名，进决赛一共有 50 个队伍，不过由于加权压力（目前估计加权相较于大二上要掉 6 分左右），决赛不一定会付出太多心血去打了。</p><p>感谢我的队友 Sazikk 和我一起熬夜肝代码，并且忍耐我的屎山代码长达 21 天之久。</p><blockquote><p>Sazikk 个人博客：<a href="https://sazikk.github.io/">https://sazikk.github.io</a>  目前已有数十万的观看量</p></blockquote><h2 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a>个人心得</h2><p>参加这个比赛需要什么能力：</p><ol><li>较强的 C++ 开发能力</li><li>一定的 SQL 语言理解能力</li><li>对 miniob 内核有较好的理解</li></ol><h2 id="miniob-框架解析"><a href="#miniob-框架解析" class="headerlink" title="miniob 框架解析"></a>miniob 框架解析</h2><h2 id="我负责的题目"><a href="#我负责的题目" class="headerlink" title="我负责的题目"></a>我负责的题目</h2><h3 id=""><a href="#" class="headerlink" title=""></a></h3>]]></content>
     
     
     
