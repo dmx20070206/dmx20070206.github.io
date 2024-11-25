@@ -19,15 +19,15 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Chapter2let 定义变量，默认不可变，可变变量需要用 mut 关键字。 1let mut num &#x3D; 10;  强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。 12let num: i32 &#x3D; 10;let num: u32 &#x3D; 10;  宏println!用于输出，&#123;&#125;用于填入此参数，在大括号中填数字可以分组。 1println!(&amp;q">
+    <meta name="description" content="Chapter2let 定义变量，默认不可变，可变变量需要用 mut 关键字。 1let mut num &#x3D; 10;  强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。Rust 在编译的时候就必须知道变量的类型。 12let num: i32 &#x3D; 10;let num: u32 &#x3D; 10;  宏println!用于输出，&#123;&#125;用于填入此参数，在大括号">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust">
 <meta property="og:url" content="https://dmx20070206.github.io/2024/11/24/Rust/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Chapter2let 定义变量，默认不可变，可变变量需要用 mut 关键字。 1let mut num &#x3D; 10;  强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。 12let num: i32 &#x3D; 10;let num: u32 &#x3D; 10;  宏println!用于输出，&#123;&#125;用于填入此参数，在大括号中填数字可以分组。 1println!(&amp;q">
+<meta property="og:description" content="Chapter2let 定义变量，默认不可变，可变变量需要用 mut 关键字。 1let mut num &#x3D; 10;  强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。Rust 在编译的时候就必须知道变量的类型。 12let num: i32 &#x3D; 10;let num: u32 &#x3D; 10;  宏println!用于输出，&#123;&#125;用于填入此参数，在大括号">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-11-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-11-24T09:10:03.845Z">
+<meta property="article:modified_time" content="2024-11-25T08:43:41.246Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Learning">
 <meta name="twitter:card" content="summary_large_image">
@@ -224,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          606 words
+          1.6k words
         
       </span>
     
@@ -235,7 +235,7 @@
         
         
         
-          6 mins
+          14 mins
         
       </span>
     
@@ -289,7 +289,7 @@
                 <h2 id="Chapter2"><a href="#Chapter2" class="headerlink" title="Chapter2"></a>Chapter2</h2><p>let 定义变量，默认不可变，可变变量需要用 mut 关键字。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">num</span> = <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
 
-<p>强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。</p>
+<p>强类型推导，会根据等号右边结果或者后文自动推导变量类型。使用冒号可以定义类型。Rust 在编译的时候就必须知道变量的类型。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">num</span>: <span class="hljs-type">i32</span> = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">num</span>: <span class="hljs-type">u32</span> = <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
 
 <p>宏<code>println!</code>用于输出，<code>&#123;&#125;</code>用于填入此参数，在大括号中填数字可以分组。</p>
@@ -368,6 +368,61 @@
 
 <p>Rust 中的函数，用<code>fn</code>关键字，参数必须声明类型，返回值用<code>-&gt;</code>符号定义，函数默认返回最后一个表达式，可以隐藏<code>return</code>：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-comment">// return the last expression</span><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">function</span>(x: <span class="hljs-type">u32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">u32</span> &#123;<br>    x + <span class="hljs-number">1</span><br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">function</span>(x: <span class="hljs-type">u32</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">u32</span> &#123;<br>    <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Rust 中的 if-else：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">condition</span> = <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">num</span> = <span class="hljs-keyword">if</span> condition &#123; <span class="hljs-number">10</span> &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-number">20</span> &#125;;<br></code></pre></td></tr></table></figure>
+
+<h2 id="Chapter-4"><a href="#Chapter-4" class="headerlink" title="Chapter 4"></a>Chapter 4</h2><p><strong>所有权</strong>是 Rust 中很重要的概念，所有程序在运行时都必须管理它们使用计算机内存的方式。</p>
+<ol>
+<li>有些语言自带 GC，程序运行时会一直搜索已经不用的内存</li>
+<li>有些语言需要程序员显式的申请和释放内存</li>
+<li>Rust 通过一个所有权系统来管理内存，其中包含一组编译器在编译时检测的规则</li>
+</ol>
+<p>Rust 中，可以向 Stack 和 Heap 申请内存。Stack 只能存放<strong>定长</strong>的数据，Heap 可以存放<strong>变长</strong>的数据。很明显，计算机访问 Stack 上的数据快于 Heap，因为从 Stack 获取数据一定是栈顶，并且 Stack 中各个数据离得近。</p>
+<p>String 类型是典型的变长数据类型，它只能存放于 Heap 上。通过<code>from</code>方法可以通过字符串常量创建一个 String 类型，它存放于 Heap 上，所以它是可变的。</p>
+<p><strong>Drop</strong>, <strong>Move</strong>, <strong>Copy</strong>, <strong>Clone</strong></p>
+<p><strong>Drop</strong> 清理规则：</p>
+<ol>
+<li>当一个数据<strong>离开作用域</strong>时，立即释放它占用的内存</li>
+<li>对于失效(Moved)的变量，不会释放它占用的内存</li>
+<li>对于 Stack 上的简单数据，不需要 Drop</li>
+<li>对于 Heap 上的数据，需要 Drop</li>
+</ol>
+<p><strong>Move</strong> 移动规则：</p>
+<ol>
+<li>对于 Stack 数据，等同于 Copy</li>
+<li>对于 Heap 数据，前者将被<strong>失效</strong><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">num1</span> = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">num2</span> = num1;    <span class="hljs-comment">// copy</span><br><br><span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;dmx&quot;</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = s1;        <span class="hljs-comment">// s1 moved</span><br><br><span class="hljs-comment">// borrow of moved value: `s1`</span><br><span class="hljs-comment">// println!(&quot;&#123;&#125;&quot;, s1);</span><br><br><span class="hljs-comment">// exit, s2 will be destoryed</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>Copy</strong> 拷贝规则：</p>
+<ol>
+<li>如果变量一部分创建了 Drop，那么该变量不能拥有 Copy</li>
+<li>Copy 类型的变量一般存放于 Stack 上，不需要额外的 Drop 操作<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">num1</span> = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">let</span> <span class="hljs-variable">num2</span> = num1;    <span class="hljs-comment">// copy type</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>Clone</strong> 克隆规则：</p>
+<ol>
+<li>使用 clone 方法，可以实现深拷贝？</li>
+<li>在 Heap 上开辟新的一块内存<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;dmx&quot;</span>);<br><span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = s1.<span class="hljs-title function_ invoke__">clone</span>();    <span class="hljs-comment">// s1 still valid</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p>函数的参数传递中所有权的转移</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-comment">// s 被声明有效</span><br><br>    <span class="hljs-title function_ invoke__">takes_ownership</span>(s);<br>    <span class="hljs-comment">// s 的值被当作参数传入函数</span><br>    <span class="hljs-comment">// 所以可以当作 s 已经被移动，从这里开始已经无效</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">x</span> = <span class="hljs-number">5</span>;<br>    <span class="hljs-comment">// x 被声明有效</span><br><br>    <span class="hljs-title function_ invoke__">makes_copy</span>(x);<br>    <span class="hljs-comment">// x 的值被当作参数传入函数</span><br>    <span class="hljs-comment">// 但 x 是基本类型，依然有效</span><br>    <span class="hljs-comment">// 在这里依然可以使用 x 却不能使用 s</span><br><br>&#125; <span class="hljs-comment">// 函数结束, x 无效, 然后是 s. 但 s 已被移动, 所以不用被释放</span><br><br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">takes_ownership</span>(some_string: <span class="hljs-type">String</span>) &#123; <br>    <span class="hljs-comment">// 一个 String 参数 some_string 传入，有效</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, some_string);<br>&#125; <span class="hljs-comment">// 函数结束, 参数 some_string 在这里释放</span><br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">makes_copy</span>(some_integer: <span class="hljs-type">i32</span>) &#123; <br>    <span class="hljs-comment">// 一个 i32 参数 some_integer 传入，有效</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, some_integer);<br>&#125; <span class="hljs-comment">// 函数结束, 参数 some_integer 是基本类型, 无需释放</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = <span class="hljs-title function_ invoke__">gives_ownership</span>();<br>    <span class="hljs-comment">// gives_ownership 移动它的返回值到 s1</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-comment">// s2 被声明有效</span><br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s3</span> = <span class="hljs-title function_ invoke__">takes_and_gives_back</span>(s2);<br>    <span class="hljs-comment">// s2 被当作参数移动, s3 获得返回值所有权</span><br>&#125; <span class="hljs-comment">// s3 无效被释放, s2 被移动, s1 无效被释放.</span><br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">gives_ownership</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">String</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">some_string</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br>    <span class="hljs-comment">// some_string 被声明有效</span><br><br>    <span class="hljs-keyword">return</span> some_string;<br>    <span class="hljs-comment">// some_string 被当作返回值移动出函数</span><br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">takes_and_gives_back</span>(a_string: <span class="hljs-type">String</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">String</span> &#123; <br>    <span class="hljs-comment">// a_string 被声明有效</span><br><br>    a_string  <span class="hljs-comment">// a_string 被当作返回值移出函数</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Rust 中的<strong>引用</strong>和<strong>租借</strong></p>
+<p>引用是一种“借”所有权的过程，例如下面的代码：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s1</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">len</span> = <span class="hljs-title function_ invoke__">calculate_length</span>(&amp;s1);<br><br>    <span class="hljs-comment">// s1 is borrowed</span><br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;The length of &#x27;&#123;&#125;&#x27; is &#123;&#125;.&quot;</span>, s1, len);<br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">calculate_length</span>(s: &amp;<span class="hljs-type">String</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> &#123;<br>    s.<span class="hljs-title function_ invoke__">len</span>()<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>借用后不可以修改原数据，除非用<code>mut</code>关键字修饰，如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">s1</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;dmx&quot;</span>);<br><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s2</span> = &amp;<span class="hljs-keyword">mut</span> s1;<br><br>    s2.<span class="hljs-title function_ invoke__">push_str</span>(<span class="hljs-string">&quot;20070206&quot;</span>);<br>    <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;&#123;&#125;&quot;</span>, s2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>一个变量的某时刻的全部有效引用必须满足如下规则：</p>
+<ol>
+<li>有至多一个可变引用</li>
+<li>有若干个不可变引用</li>
+<li>引用必须一致有效</li>
+</ol>
+<p>同时，在 Rust 中不允许悬空引用，如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Rust"><span class="hljs-keyword">fn</span> <span class="hljs-title function_">main</span>() &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">reference_to_nothing</span> = <span class="hljs-title function_ invoke__">dangle</span>();<br>    <span class="hljs-comment">// null</span><br>&#125;<br><br><span class="hljs-keyword">fn</span> <span class="hljs-title function_">dangle</span>() <span class="hljs-punctuation">-&gt;</span> &amp;<span class="hljs-type">String</span> &#123;<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">s</span> = <span class="hljs-type">String</span>::<span class="hljs-title function_ invoke__">from</span>(<span class="hljs-string">&quot;hello&quot;</span>);<br><br>    &amp;s<br>&#125;<br><span class="hljs-comment">// s will be destoryed</span><br></code></pre></td></tr></table></figure>
                 
               </div>
             
