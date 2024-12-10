@@ -33,8 +33,10 @@
 <meta property="og:image" content="https://dmx20070206.github.io/img/002.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/003.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/004.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/005.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/006.png">
 <meta property="article:published_time" content="2024-12-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-09T08:08:08.500Z">
+<meta property="article:modified_time" content="2024-12-10T13:04:07.091Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
@@ -232,7 +234,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          777 words
+          983 words
         
       </span>
     
@@ -243,7 +245,7 @@
         
         
         
-          7 mins
+          9 mins
         
       </span>
     
@@ -365,7 +367,20 @@
 <p><span class="sub_title">超码，候选码，主码的关系</span></p>
 <img src="/img/004.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<h2 id="关系中的数据约束"><a href="#关系中的数据约束" class="headerlink" title="关系中的数据约束"></a>关系中的数据约束</h2>
+<h2 id="关系中的数据约束"><a href="#关系中的数据约束" class="headerlink" title="关系中的数据约束"></a>关系中的数据约束</h2><h3 id="实体完整性约束——主码约束"><a href="#实体完整性约束——主码约束" class="headerlink" title="实体完整性约束——主码约束"></a>实体完整性约束——主码约束</h3><p>一个关系的主码不能取空值、重复值。</p>
+<p>一个复合主码中的每一个属性均不能取空值。</p>
+<p>只有关系才有实体完整性约束，对于查询结果（例如 SQL 语句的输出），不需要满足该约束。</p>
+
+<h3 id="参照完整性约束——外码约束"><a href="#参照完整性约束——外码约束" class="headerlink" title="参照完整性约束——外码约束"></a>参照完整性约束——外码约束</h3><p>一个关系的外码可以取空值。</p>
+<p>一个关系的外码如果是有效值，则必须包含于其对应另一个关系的主码的实际取值集合。</p>
+
+<img src="/img/005.png" srcset="/img/loading.gif" lazyload alt="" style="display: inline-block; height: 300px;">
+<img src="/img/006.png" srcset="/img/loading.gif" lazyload alt="" style="display: inline-block; height: 200px;">
+
+<h3 id="用户完整性约束"><a href="#用户完整性约束" class="headerlink" title="用户完整性约束"></a>用户完整性约束</h3><p>用户针对具体的应用环境定义的完整性约束条件。</p>
+<p>例如要求年龄在 0 ~ 100 之间，工资在 3000 ~ 6000 之间等。</p>
+
+<h3 id="其他约束"><a href="#其他约束" class="headerlink" title="其他约束"></a>其他约束</h3><p>自增长约束、默认值约束、检查约束等。</p>
                 
               </div>
             
