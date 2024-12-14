@@ -3,3 +3,10 @@
     font-weight: bold;
     font-size: 100px;
 }
+
+.fuck {
+    color: skyblue;
+    font-size: 100px;
+    font-weight: bold;
+    display: inline-block;
+}
