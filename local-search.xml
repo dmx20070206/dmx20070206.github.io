@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>数据库八股文——关系数据库习题</title>
+    <link href="/2024/12/16/DataBase3/"/>
+    <url>/2024/12/16/DataBase3/</url>
+    
+    <content type="html"><![CDATA[<h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css"><div id="image-container"></div><script>    const container = document.getElementById('image-container');    for (let i = 1; i <= 50; i++) {        const img = document.createElement('img');         img.src = `/img/2_${i}.png`;           img.alt = `Image ${i}`;        img.classList.add('dmx_img');        img.style.border = '2px solid skyblue';        container.appendChild(img);    }</script>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Test</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>数据库八股文——关系代数</title>
     <link href="/2024/12/15/DataBase2/"/>
     <url>/2024/12/15/DataBase2/</url>
