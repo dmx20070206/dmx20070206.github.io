@@ -19,15 +19,15 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="选择题         const container &#x3D; document.getElementById(&#39;image-container&#39;);      for (let i &#x3D; 1; i">
+    <meta name="description" content="赛博错题本，来源于书籍《新编 数据库原理习题与解析》  选择题         const container &#x3D; document.getElementById(&#39;image-container1&#39;);      let wrong &#x3D; [9, 14, 37, 44, 48, 49, 50];     let total &#x3D; 50;     for (let i &#x3D; 1; i  item &#x3D;&#x3D;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库八股文——关系数据库习题">
 <meta property="og:url" content="https://dmx20070206.github.io/2024/12/16/DataBase3/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="选择题         const container &#x3D; document.getElementById(&#39;image-container&#39;);      for (let i &#x3D; 1; i">
+<meta property="og:description" content="赛博错题本，来源于书籍《新编 数据库原理习题与解析》  选择题         const container &#x3D; document.getElementById(&#39;image-container1&#39;);      let wrong &#x3D; [9, 14, 37, 44, 48, 49, 50];     let total &#x3D; 50;     for (let i &#x3D; 1; i  item &#x3D;&#x3D;">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-12-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-16T14:01:36.966Z">
+<meta property="article:modified_time" content="2024-12-17T16:19:04.347Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          12 words
+          66 words
         
       </span>
     
@@ -298,22 +298,40 @@
             
               <div class="markdown-body">
                 
-                <h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
+                <blockquote>
+<p>赛博错题本，来源于书籍《新编 数据库原理习题与解析》</p>
+</blockquote>
+<h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
 
-<div id="image-container"></div>
+<div id="image-container1"></div>
 
 <script>
-    const container = document.getElementById('image-container');
+    const container = document.getElementById('image-container1');
 
-    for (let i = 1; i <= 50; i++) {
+    let wrong = [9, 14, 37, 44, 48, 49, 50];
+    let total = 50;
+    for (let i = 1; i <= total; i++) {
         const img = document.createElement('img'); 
         img.src = `/img/2_${i}.png`;   
         img.alt = `Image ${i}`;
         img.classList.add('dmx_img');
-        img.style.border = '2px solid skyblue';
 
+        if (wrong.findIndex(item => item === i) !== -1) {
+            img.style.border = '2px solid red';
+        }
+        else {
+            img.style.border = '2px solid green';
+        }
         container.appendChild(img);
     }
+</script>
+
+<h2 id="问答题"><a href="#问答题" class="headerlink" title="问答题"></a>问答题</h2><div id="image-container2"></div>
+
+<script>
+    const container = document.getElementById('image-container1');
+
+    
 </script>
                 
               </div>
@@ -382,6 +400,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/12/18/DataBase0/" title="数据库八股文——数据库概述">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库八股文——数据库概述</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">

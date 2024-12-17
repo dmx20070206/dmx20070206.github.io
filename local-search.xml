@@ -4,11 +4,30 @@
   
   
   <entry>
+    <title>数据库八股文——数据库概述</title>
+    <link href="/2024/12/18/DataBase0/"/>
+    <url>/2024/12/18/DataBase0/</url>
+    
+    <content type="html"><![CDATA[]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Test</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>数据库八股文——关系数据库习题</title>
     <link href="/2024/12/16/DataBase3/"/>
     <url>/2024/12/16/DataBase3/</url>
     
-    <content type="html"><![CDATA[<h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css"><div id="image-container"></div><script>    const container = document.getElementById('image-container');    for (let i = 1; i <= 50; i++) {        const img = document.createElement('img');         img.src = `/img/2_${i}.png`;           img.alt = `Image ${i}`;        img.classList.add('dmx_img');        img.style.border = '2px solid skyblue';        container.appendChild(img);    }</script>]]></content>
+    <content type="html"><![CDATA[<blockquote><p>赛博错题本，来源于书籍《新编 数据库原理习题与解析》</p></blockquote><h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css"><div id="image-container1"></div><script>    const container = document.getElementById('image-container1');    let wrong = [9, 14, 37, 44, 48, 49, 50];    let total = 50;    for (let i = 1; i <= total; i++) {        const img = document.createElement('img');         img.src = `/img/2_${i}.png`;           img.alt = `Image ${i}`;        img.classList.add('dmx_img');        if (wrong.findIndex(item => item === i) !== -1) {            img.style.border = '2px solid red';        }        else {            img.style.border = '2px solid green';        }        container.appendChild(img);    }</script><h2 id="问答题"><a href="#问答题" class="headerlink" title="问答题"></a>问答题</h2><div id="image-container2"></div><script>    const container = document.getElementById('image-container1');    </script>]]></content>
     
     
     
