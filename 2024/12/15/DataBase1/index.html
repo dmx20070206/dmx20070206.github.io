@@ -19,55 +19,34 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="简单专门关系代数  关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。 选择运算  选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。 投影运算  投影运算为一元运算，其中 (A1, A2, …, An) 为输入的属性列表，R 为输入的关系，结果是 R 中所有">
+    <meta name="description" content="关系、关系模式、关系实例的定义一个 关系 对应一张 表格 引入关系的目标是更数学化，规范化的描述一张表格 例如对于下面的表格：    ① 关系的属性和属性值 关系中的每一列中的数据都属于某个域中（域是属性的取值范围），并有一个独特的名字称为属性名，关系中具体的值是属性值。ID 是属性名，该列的域为无符号整数域，10101为属性值。 域是一个集合，集合的个数成为域的基数。  ② 关系的元组 关系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库八股文——关系代数">
-<meta property="og:url" content="https://dmx20070206.github.io/2024/12/15/DataBase2/index.html">
+<meta property="og:title" content="数据库八股文——关系模型的基本概念">
+<meta property="og:url" content="https://dmx20070206.github.io/2024/12/15/DataBase1/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="简单专门关系代数  关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。 选择运算  选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。 投影运算  投影运算为一元运算，其中 (A1, A2, …, An) 为输入的属性列表，R 为输入的关系，结果是 R 中所有">
+<meta property="og:description" content="关系、关系模式、关系实例的定义一个 关系 对应一张 表格 引入关系的目标是更数学化，规范化的描述一张表格 例如对于下面的表格：    ① 关系的属性和属性值 关系中的每一列中的数据都属于某个域中（域是属性的取值范围），并有一个独特的名字称为属性名，关系中具体的值是属性值。ID 是属性名，该列的域为无符号整数域，10101为属性值。 域是一个集合，集合的个数成为域的基数。  ② 关系的元组 关系">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dmx20070206.github.io/img/007.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/009.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/013.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/014.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/015.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/017.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/018.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/019.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/020.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/021.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/022.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/023.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/024.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/025.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/026.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/027.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/029.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/030.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/010.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/015.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/011.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/012.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/031.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/032.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/033.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/034.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/035.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/036.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/037.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/038.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/001.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/002.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/002.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/002.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/002.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/003.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/004.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/005.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/006.png">
 <meta property="article:published_time" content="2024-12-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-16T12:58:29.645Z">
+<meta property="article:modified_time" content="2024-12-20T07:40:13.980Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/007.png">
+<meta name="twitter:image" content="https://dmx20070206.github.io/img/001.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>数据库八股文——关系代数 - Hexo</title>
+  <title>数据库八股文——关系模型的基本概念 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -244,7 +223,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="数据库八股文——关系代数"></span>
+            <span id="subtitle" data-typed-text="数据库八股文——关系模型的基本概念"></span>
           
         </div>
 
@@ -267,7 +246,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          983 words
         
       </span>
     
@@ -278,7 +257,7 @@
         
         
         
-          12 mins
+          9 mins
         
       </span>
     
@@ -324,117 +303,96 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">数据库八股文——关系代数</h1>
+            <h1 id="seo-header">数据库八股文——关系模型的基本概念</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="简单专门关系代数"><a href="#简单专门关系代数" class="headerlink" title="简单专门关系代数"></a>简单专门关系代数</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
+                <link rel="stylesheet" href="/css/DataBase_RelationModel.css">
 
-<p>关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。</p>
-<h3 id="选择运算"><a href="#选择运算" class="headerlink" title="选择运算"></a>选择运算</h3><img src="/img/007.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<h2 id="关系、关系模式、关系实例的定义"><a href="#关系、关系模式、关系实例的定义" class="headerlink" title="关系、关系模式、关系实例的定义"></a>关系、关系模式、关系实例的定义</h2><p>一个 <span class="important">关系</span> 对应一张 <span class="important">表格</span></p>
+<p>引入关系的目标是更数学化，规范化的描述一张表格</p>
+<p>例如对于下面的表格：</p>
 
-<p>选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。</p>
-<h3 id="投影运算"><a href="#投影运算" class="headerlink" title="投影运算"></a>投影运算</h3><img src="/img/009.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<img src="/img/001.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<p>投影运算为一元运算，其中 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 为输入的属性列表，R 为输入的关系，结果是 R 中所有元组的 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub> 列构成的新关系。</p>
-<h2 id="复杂专门关系代数"><a href="#复杂专门关系代数" class="headerlink" title="复杂专门关系代数"></a>复杂专门关系代数</h2><h3 id="重命名运算"><a href="#重命名运算" class="headerlink" title="重命名运算"></a>重命名运算</h3><img src="/img/013.png" srcset="/img/loading.gif" lazyload alt="" style="height: 44px; border: 3px solid skyblue;">
+<p><span class="sub_title">① 关系的属性和属性值</span></p>
+<p>关系中的每一列中的数据都属于某个域中（域是属性的取值范围），并有一个独特的名字称为属性名，关系中具体的值是属性值。ID 是属性名，该列的域为无符号整数域，10101为属性值。</p>
+<p>域是一个集合，集合的个数成为域的基数。</p>
 
-<p>重命名运算为一元运算，其中 R 为输入的关系，S 为要修改的关系名，(A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 为依次要修改的属性名。<br>也可以不传入 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 参数，表示只需要修改关系名。</p>
-<p>有点巧妙，放这里了<br>查找最高工资的关系代数表达式：</p>
-<img src="/img/014.png" srcset="/img/loading.gif" lazyload alt="" style="height: 100px;">
+<p><span class="sub_title">② 关系的元组</span></p>
+<p>关系的每一行称为属于关系的一个元组，关系包含的元组集合是所有域笛卡尔积的子集。元组的每一个值叫做一个分量。(12121, Wu, Finance, 90000) 为一个元组</p>
 
-<p>通过位置标记也可以获取第 i 个属性，使用关键字 $。</p>
-<img src="/img/015.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px;">
+<p><span class="sub_title">③ 关系的度&#x2F;目</span></p>
+<p>关系的属性个数称为关系的度/目。上述关系是一个四度关系。</p>
 
-<h3 id="连接运算"><a href="#连接运算" class="headerlink" title="连接运算"></a>连接运算</h3><img src="/img/017.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<p><span class="important">关系模式</span></p>
+<p>关系可用 <span class="important">R(A<sub>1</sub>:D<sub>1</sub>, A<sub>2</sub>:D<sub>2</sub>, ..., A<sub>n</sub>:D<sub>n</sub>)</span> 来表示，这种描述又被称为关系模式。</p>
+<p>其中 R 是关系的名字，A 是属性，D 是属性所对应的域，n 是关系的度或目， 关系中元组的数目称为关系的基数。</p>
 
-<h4 id="第一种连接"><a href="#第一种连接" class="headerlink" title="第一种连接"></a>第一种连接</h4><img src="/img/018.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
+<p>上述表格的描述为：table_name(ID: unsigned int, name: string, dept_name: string, salary: int)</p>
 
-<p>先求笛卡尔积，再进行选择运算，其中选择运算的谓词语句和连接的谓词语句相同。</p>
-<h4 id="第二种连接"><a href="#第二种连接" class="headerlink" title="第二种连接"></a>第二种连接</h4><img src="/img/019.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
+<p><span class="important">关系实例</span></p>
+<p>关系模式是在关系模式下的一组元组，或者称一个确定的表格。</p>
 
-<p>先求笛卡尔积，再进行选择运算，其中选择运算的谓词语句和连接的谓词语句相同。</p>
-<h4 id="自然连接"><a href="#自然连接" class="headerlink" title="自然连接"></a>自然连接</h4><img src="/img/020.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<p>上述表格就是在关系模式 table_name(ID: unsigned int, name: string, dept_name: string, salary: int) 下的一个关系实例</p>
 
-<p>先求笛卡尔积，再找到 R 和 S 的<span style="color: red;">公共属性</span>，例如为 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>)，通过谓词语句 R.A<sub>1</sub> &#x3D; S.A<sub>1</sub> … R.A<sub>n</sub> &#x3D; S.A<sub>n</sub> 筛选出符合要求的元组。</p>
-<p>对于两个关系 R, S，我们称 R 的悬浮元组为不满足 R.A<sub>1</sub> &#x3D; S.A<sub>1</sub> … R.A<sub>n</sub> &#x3D; S.A<sub>n</sub> 的元组，S 同理。</p>
-<p><span style="color: red;">外连接</span> 可以将悬浮元组保留表中，在其他属性上填写 NULL。<br><span style="color: red;">左外连接</span> 可以将左关系 R 悬浮元组保留表中，在其他属性上填写 NULL。<br><span style="color: red;">右外连接</span> 可以将右关系 S 悬浮元组保留表中，在其他属性上填写 NULL。</p>
-<p>自然连接结果属性出现的顺序为：相同属性 &gt; 只属于第一个关系的属性 &gt; 只属于第二个关系的属性。</p>
-<p>代数运算表示，但是我不想看：</p>
-<img src="/img/021.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
+<h2 id="关系的特性"><a href="#关系的特性" class="headerlink" title="关系的特性"></a>关系的特性</h2><ul>
+    <li> <span class="sub_title">列的同质性：</span> 每一列的属性值属于同一个域</li>
+    <li> <span class="sub_title">行/列的互换等价性：</span>关系中区分行和列通过元组值与属性名，和顺序无关</li>
+    <li> <span class="sub_title">元组的不重复性：</span>不能存在两个完全一致的元组</li>
+    <li> <span class="sub_title">属性不可再分性（关系第一范式）：</span>属性不能再分成子属性，一个元组的各个分量的值只能为一个</li>
+</ul>
 
-<h3 id="赋值运算"><a href="#赋值运算" class="headerlink" title="赋值运算"></a>赋值运算</h3><img src="/img/022.png" srcset="/img/loading.gif" lazyload alt="" style="height: 35px; border: 3px solid skyblue;">
+<h2 id="关系的重要概念——码"><a href="#关系的重要概念——码" class="headerlink" title="关系的重要概念——码"></a>关系的重要概念——码</h2><h3 id="超码-Super-Key"><a href="#超码-Super-Key" class="headerlink" title="超码 Super Key"></a>超码 Super Key</h3><p><span class="sub_title">能够唯一标识一条记录的属性或属性集</span></p>
+<p>标识性 + 非空性</p>
 
-<p>E 为关系代数表达式，T 为临时关系变量，通过赋值运算可以分解复杂的关系代数表达式，使查询变得简单。</p>
-<img src="/img/023.png" srcset="/img/loading.gif" lazyload alt="" style="height: 60px;">
+<img src="/img/002.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<h3 id="除运算"><a href="#除运算" class="headerlink" title="除运算"></a>除运算</h3><img src="/img/024.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<p>超码：(学号, 课程名)，(学号，课程名，成绩)，(学号，课程名，性别，姓名)</p>
 
-<p>假设有两个关系 R(X, Y), S(Z) 其中，Y 和 Z 有相容性。</p>
-<p>则 R(X, Y) ÷ S(Z) 为：<br>1 结果的属性集为 X，且是 R 中 X 的一个子集<br>2 保留下来的元组和 S(Z) 求笛卡尔积，得到的结果必须包含于 R(X, Y)<br>3 S 中的属性必须包含于 R 中</p>
-<h3 id="去重运算"><a href="#去重运算" class="headerlink" title="去重运算"></a>去重运算</h3><img src="/img/025.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<h3 id="候选码-Candicate-Key"><a href="#候选码-Candicate-Key" class="headerlink" title="候选码 Candicate Key"></a>候选码 Candicate Key</h3><p><span class="sub_title">能够唯一标识一条记录的最小属性集（不含多余属性）</span></p>
+<p>标识性 + 非空性 + 最小性</p>
 
-<p>去重运算可以去除关系中的重复元组，并返回去重之后的关系。</p>
-<h3 id="广义投影运算"><a href="#广义投影运算" class="headerlink" title="广义投影运算"></a>广义投影运算</h3><img src="/img/026.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<img src="/img/002.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<p>允许在投影列表中使用算术运算和字符串函数等来对投影运算进行扩展，写过 miniob 都说好。</p>
-<h3 id="聚集运算"><a href="#聚集运算" class="headerlink" title="聚集运算"></a>聚集运算</h3><img src="/img/027.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<p>候选码：(学号, 课程名)，(课程名, 姓名)</p>
 
-<p>其中 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>k</sub> 为 R 中的属性列，F 为作用在属性 A 上的聚集函数，例如 count, sum, avg, min, max 等。</p>
-<p>通过书法体 G 还可以完成 SQL 语句中的 GROUP BY 功能。</p>
-<p>通过 distinct 关键字也可以完成去重功能，例如聚集函数 count-distionct。</p>
-<img src="/img/029.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
-   
-<p>其中 G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 为属性集合，要求根据属性集合分组后，同一组的属性集合取值一样，不同组的属性集合取值不一样。也即，各组属性可以通过 G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 来唯一区分。</p>
-<p>G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 为可选参数，如果不填写该参数，将所有元组视作一个组别。</p>
-<h3 id="排序运算"><a href="#排序运算" class="headerlink" title="排序运算"></a>排序运算</h3><img src="/img/030.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<h3 id="主码-Primary-Key"><a href="#主码-Primary-Key" class="headerlink" title="主码 Primary Key"></a>主码 Primary Key</h3><p><span class="sub_title">人为选择的候选码中的一个</span></p>
+<p>标识性 + 非空性 + 最小性 + 唯一性</p>
 
-<p>其中 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>k</sub> 为 R 中的属性列，按照顺序依次对元组进行排序。</p>
-<h2 id="传统集合运算"><a href="#传统集合运算" class="headerlink" title="传统集合运算"></a>传统集合运算</h2><h3 id="关系的相容性"><a href="#关系的相容性" class="headerlink" title="关系的相容性"></a>关系的相容性</h3><p>关系 R 和 关系 S 相容的充分必要条件是：</p>
-<ol>
-<li>R 和 S 中的属性个数相同</li>
-<li>R 和 S 中属性存在一一对应关系</li>
-<li>R 和 S 中的对应属性的域相同</li>
-</ol>
-<h3 id="并运算"><a href="#并运算" class="headerlink" title="并运算"></a>并运算</h3><img src="/img/010.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
+<img src="/img/002.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<p>并运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的并集。</p>
-<h3 id="交运算"><a href="#交运算" class="headerlink" title="交运算"></a>交运算</h3><img src="/img/015.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<p>主码：(学号, 课程名)</p>
 
-<p>交运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的交集。</p>
-<h3 id="差运算"><a href="#差运算" class="headerlink" title="差运算"></a>差运算</h3><img src="/img/011.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<h3 id="主属性-非主属性"><a href="#主属性-非主属性" class="headerlink" title="主属性&#x2F;非主属性"></a>主属性&#x2F;非主属性</h3><p><span class="sub_title">出现在候选码中的属性&#x2F;不出现在候选码中的属性</span></p>
+<img src="/img/002.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<p>差运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的差集。</p>
-<h3 id="笛卡儿积运算"><a href="#笛卡儿积运算" class="headerlink" title="笛卡儿积运算"></a>笛卡儿积运算</h3><img src="/img/012.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
+<p>主属性：{学号，课程名，姓名}</p>
+<p>非主属性：{成绩，性别}</p>
 
-<p>笛卡儿积运算为二元运算，其中 R, S 为输入的两个关系，结果是 R 和 S 的笛卡尔积。<br>若关系 R 是 m 度关系，有 x 个元组；关系 S 是 n 度关系，有 y 个元组；则笛卡尔积为 m + n 度关系，元组个数为 x × y。</p>
-<p>换句话说，一个关系一定是：其所有属性的域的笛卡儿积的一个子集。</p>
-<h2 id="关系演算语言"><a href="#关系演算语言" class="headerlink" title="关系演算语言"></a>关系演算语言</h2><h3 id="元组关系演算语言"><a href="#元组关系演算语言" class="headerlink" title="元组关系演算语言"></a>元组关系演算语言</h3><img src="/img/031.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
+<h3 id="外码-Foreign-Key"><a href="#外码-Foreign-Key" class="headerlink" title="外码 Foreign Key"></a>外码 Foreign Key</h3><p><span class="sub_title">关系 R 中的一个属性组，它不是 R 的候选码，但它与另一个关系 S 的候选码相对应，则成这个属性组 R 的外码</span></p>
+<img src="/img/003.png" srcset="/img/loading.gif" lazyload alt="" style="height: 350px; margin-bottom: 15px;">
 
-<p>P 是原子公式，有以下三种形式：</p>
-<img src="/img/032.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
+<p>两个关系通常是靠外码连接起来的</p>
 
-<p>其中 t 为元组变量，R 为关系。</p>
-<img src="/img/033.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
+<p><span class="sub_title">超码，候选码，主码的关系</span></p>
+<img src="/img/004.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
 
-<p>其中 t, s 为元组变量，x, y 为关系中在元组 t, s 下的属性。</p>
-<img src="/img/034.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
+<h2 id="关系中的数据约束"><a href="#关系中的数据约束" class="headerlink" title="关系中的数据约束"></a>关系中的数据约束</h2><h3 id="实体完整性约束——主码约束"><a href="#实体完整性约束——主码约束" class="headerlink" title="实体完整性约束——主码约束"></a>实体完整性约束——主码约束</h3><p>一个关系的主码不能取空值、重复值。</p>
+<p>一个复合主码中的每一个属性均不能取空值。</p>
+<p>只有关系才有实体完整性约束，对于查询结果（例如 SQL 语句的输出），不需要满足该约束。</p>
 
-<p>其中 c 是属于 x 域中的常量。</p>
-<h3 id="域关系演算语言"><a href="#域关系演算语言" class="headerlink" title="域关系演算语言"></a>域关系演算语言</h3><img src="/img/035.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
+<h3 id="参照完整性约束——外码约束"><a href="#参照完整性约束——外码约束" class="headerlink" title="参照完整性约束——外码约束"></a>参照完整性约束——外码约束</h3><p>一个关系的外码可以取空值。</p>
+<p>一个关系的外码如果是有效值，则必须包含于其对应另一个关系的主码的实际取值集合。</p>
 
-<p>其中 x<sub>1</sub>, x<sub>2</sub>, …, x<sub>k</sub> 是域变量或者域常量。</p>
-<blockquote>
-<p>元组关系演算语言和域关系演算语言不是很好理解，下面附上一道例题</p>
-</blockquote>
-<img src="/img/036.png" srcset="/img/loading.gif" lazyload alt="" style="height: 400px;">
+<img src="/img/005.png" srcset="/img/loading.gif" lazyload alt="" style="display: inline-block; height: 300px;">
+<img src="/img/006.png" srcset="/img/loading.gif" lazyload alt="" style="display: inline-block; height: 200px;">
 
-<img src="/img/037.png" srcset="/img/loading.gif" lazyload alt="" style="height: 250px;">
+<h3 id="用户完整性约束"><a href="#用户完整性约束" class="headerlink" title="用户完整性约束"></a>用户完整性约束</h3><p>用户针对具体的应用环境定义的完整性约束条件。</p>
+<p>例如要求年龄在 0 ~ 100 之间，工资在 3000 ~ 6000 之间等。</p>
 
-<p>感觉不太好用言语形容为什么做出来的答案是这样（尤其是域关系演算），多做题吧。</p>
-<p>同时，关系代数表达式也有自己的优先级：</p>
-<img src="/img/038.png" srcset="/img/loading.gif" lazyload alt="" style="width: 100%;">
+<h3 id="其他约束"><a href="#其他约束" class="headerlink" title="其他约束"></a>其他约束</h3><p>自增长约束、默认值约束、检查约束等。</p>
                 
               </div>
             
@@ -458,8 +416,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>数据库八股文——关系代数</div>
-      <div>https://dmx20070206.github.io/2024/12/15/DataBase2/</div>
+      <div>数据库八股文——关系模型的基本概念</div>
+      <div>https://dmx20070206.github.io/2024/12/15/DataBase1/</div>
     </div>
     <div class="license-meta">
       
@@ -503,9 +461,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/16/DataBase3/" title="数据库八股文——关系数据库习题">
+                      <a href="/2024/12/16/DataBase2/" title="数据库八股文——关系代数">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据库八股文——关系数据库习题</span>
+                        <span class="hidden-mobile">数据库八股文——关系代数</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -513,8 +471,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/09/DataBase1/" title="数据库八股文——关系模型的基本概念">
-                        <span class="hidden-mobile">数据库八股文——关系模型的基本概念</span>
+                      <a href="/2024/12/14/DataBase0/" title="数据库八股文——数据库概述">
+                        <span class="hidden-mobile">数据库八股文——数据库概述</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

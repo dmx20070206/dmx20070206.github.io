@@ -19,16 +19,16 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念🌄数据 Data 数据是指可以">
+    <meta name="description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念数据 Data数据是指可以记录和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库八股文——数据库概述">
-<meta property="og:url" content="https://dmx20070206.github.io/2024/12/18/DataBase0/index.html">
+<meta property="og:url" content="https://dmx20070206.github.io/2024/12/14/DataBase0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念🌄数据 Data 数据是指可以">
+<meta property="og:description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念数据 Data数据是指可以记录和">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dmx20070206.github.io/img/039.png">
-<meta property="article:published_time" content="2024-12-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-20T01:31:55.855Z">
+<meta property="article:published_time" content="2024-12-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-20T07:41:56.906Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
@@ -226,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-18 00:00" pubdate>
-          December 18, 2024 am
+        <time datetime="2024-12-14 00:00" pubdate>
+          December 14, 2024 am
         </time>
       </span>
     
@@ -309,15 +309,12 @@
 <li>Internal Management and Scheduling: 内部管理和调度</li>
 <li>Management Tools Interfaces: 管理工具接口</li>
 </ol>
-<h2 id="数据库的基本概念"><a href="#数据库的基本概念" class="headerlink" title="数据库的基本概念"></a>数据库的基本概念</h2><p><span class="sub_title">🌄数据 Data</span></p>
-<p>数据是指可以记录和存储在计算机介质上的关于对象和事件的事实。数据可以保存在文件系统和数据库中。</p>
+<h2 id="数据库的基本概念"><a href="#数据库的基本概念" class="headerlink" title="数据库的基本概念"></a>数据库的基本概念</h2><h3 id="数据-Data"><a href="#数据-Data" class="headerlink" title="数据 Data"></a>数据 Data</h3><p>数据是指可以记录和存储在计算机介质上的关于对象和事件的事实。数据可以保存在文件系统和数据库中。</p>
 <p>数据分为<span style="color: red;">结构化数据</span>和<span style="color: red;">非结构化数据</span>。</p>
 <p>数据是指可以记录和存储在计算机介质上的关于对象和事件的事实。而信息是人们按照知识的方式处理后得到的数据。数据本身没有任何意义，只有通过某些操作将数据转化为信息才能被人们理解和利用。</p>
-<p><span class="sub_title">🌄元数据 Metadata</span></p>
-<p>元数据是“数据的数据”，用于描述数据的特征或性质以及该数据的内容。例如数据的名称、长度、可能的取值；数据的来源、存储位置、使用方式。</p>
+<h3 id="元数据-Metadata"><a href="#元数据-Metadata" class="headerlink" title="元数据 Metadata"></a>元数据 Metadata</h3><p>元数据是“数据的数据”，用于描述数据的特征或性质以及该数据的内容。例如数据的名称、长度、可能的取值；数据的来源、存储位置、使用方式。</p>
 <p>元数据本身与数据独立，只用于描述数据的性质。</p>
-<p><span class="sub_title">🌄文件系统存储数据的缺陷</span></p>
-<section class="first_box">
+<h3 id="文件系统存储数据的缺陷"><a href="#文件系统存储数据的缺陷" class="headerlink" title="文件系统存储数据的缺陷"></a>文件系统存储数据的缺陷</h3><section class="first_box">
     <!-- title -->
     <article class="title">Data Issues in Database Systems</article>
     <!-- english -->
@@ -356,10 +353,8 @@
 </section>
 
 
-<p><span class="sub_title">🌄数据库 DataBase</span></p>
-<p>数据库是长期存储在计算机内的、有组织的、可共享的大量数据集合。</p>
-<p><span class="sub_title">🌄数据库系统 DBS</span></p>
-<section class="first_box">
+<h3 id="数据库-DataBase"><a href="#数据库-DataBase" class="headerlink" title="数据库 DataBase"></a>数据库 DataBase</h3><p>数据库是长期存储在计算机内的、有组织的、可共享的大量数据集合。</p>
+<h3 id="数据库系统-DBS"><a href="#数据库系统-DBS" class="headerlink" title="数据库系统 DBS"></a>数据库系统 DBS</h3><section class="first_box">
     <!-- title -->
     <article class="title">The Functions of a DBS</article>
     <!-- english -->
@@ -388,8 +383,7 @@
 </section>
 
 
-<p><span class="sub_title">🌄数据库管理员 DBA</span></p>
-<section class="first_box">
+<h3 id="数据库管理员-DBA"><a href="#数据库管理员-DBA" class="headerlink" title="数据库管理员 DBA"></a>数据库管理员 DBA</h3><section class="first_box">
     <!-- title -->
     <article class="title">The Functions of a DBA (数据库管理员的职能)</article>
     <!-- main points in English and Chinese -->
@@ -435,8 +429,7 @@
 
 
 
-<p><span class="sub_title">🌄数据模型 DataModel</span></p>
-<p>数据模型的发展历程</p>
+<h3 id="数据模型-DataModel"><a href="#数据模型-DataModel" class="headerlink" title="数据模型 DataModel"></a>数据模型 DataModel</h3><p>数据模型的发展历程</p>
 <ol>
 <li>层次模型</li>
 <li>网状模型</li>
@@ -460,14 +453,9 @@
 <li>表示型&#x2F;实现型模型：中间层模型</li>
 <li>物理数据模型：低层模型</li>
 </ol>
-<p><span class="sub_title">🌄概念数据模型——高层模型</span></p>
-<p><span style="color: red;">实体联系模型</span>和<span style="color: red;">对象数据模型</span></p>
-<div class="sub_title">🌄实体-联系模型 entity-relation model</div>
-
-<p>实体是一个集合名词，表示真是世界中的对象集合或概念。<br>属性表示进一步描述实体的某个感兴趣的特性。<br>联系表示在两个或多个实体间的关联。</p>
-<div class="sub_title">🌄对象-数据模型 object-data model</div>
-
-<p>类间的关系：</p>
+<h3 id="概念数据模型——高层模型"><a href="#概念数据模型——高层模型" class="headerlink" title="概念数据模型——高层模型"></a>概念数据模型——高层模型</h3><p><span style="color: red;">实体联系模型</span>和<span style="color: red;">对象数据模型</span></p>
+<h3 id="实体-联系模型-entity-relation-model"><a href="#实体-联系模型-entity-relation-model" class="headerlink" title="实体-联系模型 entity-relation model"></a>实体-联系模型 entity-relation model</h3><p>实体是一个集合名词，表示真是世界中的对象集合或概念。<br>属性表示进一步描述实体的某个感兴趣的特性。<br>联系表示在两个或多个实体间的关联。</p>
+<h3 id="对象-数据模型-object-data-model"><a href="#对象-数据模型-object-data-model" class="headerlink" title="对象-数据模型 object-data model"></a>对象-数据模型 object-data model</h3><p>类间的关系：</p>
 <ol>
 <li>泛化 (is-a)<ol>
 <li>继承</li>
@@ -489,20 +477,14 @@
 </ol>
 </li>
 </ol>
-<p><span class="sub_title">🌄表示型&#x2F;实现型模型——中间层模型</span></p>
-<p>表示型数据模型使用记录结构来表示数据，因此也称为基于记录的数据模型。目前主要的数据库模型是关系数据模型。</p>
-<p><span class="sub_title">🌄物理数据模型——低层模型</span></p>
-<p>提供的概念只对计算机专家有意义，而不是最终用户。描述了数据如何在计算机存储介质（硬盘）上存储的细节。</p>
-<p><span class="sub_title">🌄数据库规范化 Normalization Theory</span></p>
-<p>数据库规范化是将数据库组织成符合一定规则和标准的过程。其核心目标是消除数据冗余、增强数据一致性、提高查询性能。规范化通常分为几个阶段或“范式”，每个范式都有特定的规则和标准。</p>
+<h3 id="表示型-实现型模型——中间层模型"><a href="#表示型-实现型模型——中间层模型" class="headerlink" title="表示型&#x2F;实现型模型——中间层模型"></a>表示型&#x2F;实现型模型——中间层模型</h3><p>表示型数据模型使用记录结构来表示数据，因此也称为基于记录的数据模型。目前主要的数据库模型是关系数据模型。</p>
+<h3 id="物理数据模型——低层模型"><a href="#物理数据模型——低层模型" class="headerlink" title="物理数据模型——低层模型"></a>物理数据模型——低层模型</h3><p>提供的概念只对计算机专家有意义，而不是最终用户。描述了数据如何在计算机存储介质（硬盘）上存储的细节。</p>
+<h3 id="数据库规范化-Normalization-Theory"><a href="#数据库规范化-Normalization-Theory" class="headerlink" title="数据库规范化 Normalization Theory"></a>数据库规范化 Normalization Theory</h3><p>数据库规范化是将数据库组织成符合一定规则和标准的过程。其核心目标是消除数据冗余、增强数据一致性、提高查询性能。规范化通常分为几个阶段或“范式”，每个范式都有特定的规则和标准。</p>
 <p>1.第一范式（1NF）要求消除重复的列，从而确保每个列都包含原子值。<br>2.第二范式（2NF）在第一范式的基础上，消除非主属性对部分关键字的依赖。<br>3.第三范式（3NF）要求消除非主属性对主关键字的传递依赖。进一步的规范化阶段如BCNF（Boyce Codd范式）。<br>4.第四范式（4NF），则解决了更复杂的依赖和多值依赖问题。</p>
-<h2 id="数据库三层模式体系结构-Three-Schema"><a href="#数据库三层模式体系结构-Three-Schema" class="headerlink" title="数据库三层模式体系结构 Three-Schema"></a>数据库三层模式体系结构 Three-Schema</h2><p><span class="sub_title">🌄内模式 internal schema</span></p>
-<p>内层对应内模式，用于描述数据库的物理存储结构。内模式使用物理数据模型，描述数据库的从存取路径和数据存储的全部细节。</p>
-<p><span class="sub_title">🌄概念模式 conceptual schema</span></p>
-<p>简称模式，中间层为概念层，对应概念模式。<br>用于为所有用户描述整个数据库的结构，注重描述实体、数据类型、联系、用户操作和约束，并隐藏了物理存储结构的细节。</p>
+<h2 id="数据库三层模式体系结构-Three-Schema"><a href="#数据库三层模式体系结构-Three-Schema" class="headerlink" title="数据库三层模式体系结构 Three-Schema"></a>数据库三层模式体系结构 Three-Schema</h2><h3 id="内模式-internal-schema"><a href="#内模式-internal-schema" class="headerlink" title="内模式 internal schema"></a>内模式 internal schema</h3><p>内层对应内模式，用于描述数据库的物理存储结构。内模式使用物理数据模型，描述数据库的从存取路径和数据存储的全部细节。</p>
+<h3 id="概念模式-conceptual-schema"><a href="#概念模式-conceptual-schema" class="headerlink" title="概念模式 conceptual schema"></a>概念模式 conceptual schema</h3><p>简称模式，中间层为概念层，对应概念模式。<br>用于为所有用户描述整个数据库的结构，注重描述实体、数据类型、联系、用户操作和约束，并隐藏了物理存储结构的细节。</p>
 <p>使用表示型数据模型 E-R 模型来描述概念模式。<br>使用实现型数据模型 OO 模型来进行概念模式设计。</p>
-<p><span class="sub_title">🌄外模式 external schema</span></p>
-<p>外层或者视图层，对应若干位模式或用户视图。</p>
+<h3 id="外模式-external-schema"><a href="#外模式-external-schema" class="headerlink" title="外模式 external schema"></a>外模式 external schema</h3><p>外层或者视图层，对应若干位模式或用户视图。</p>
 <p>每个外模式描述了特定用户组感兴趣的一部分数据库，并且对该组用户隐藏数据库的其他部分。</p>
 <blockquote>
 <p>例子：把数据库看作仓库，数据看作货物。内模式描述货物的摆放规则；概念模式描述仓库中货物的分类等信息；外模式实际服务仓库的相关人员。</p>
@@ -514,8 +496,7 @@
 <li>如果是一个数据库检索请求，那么从存储在数据库中提取出的数据必须经过格式转化，来匹配用户外部视图所要求的格式。</li>
 <li>在各层之间完成请求和结果转换的处理过程被称为映射。</li>
 </ol>
-<p><span class="sub_title">🌄数据独立性</span></p>
-<p>较低层的修改不会对较高层产生影响</p>
+<h3 id="数据独立性"><a href="#数据独立性" class="headerlink" title="数据独立性"></a>数据独立性</h3><p>较低层的修改不会对较高层产生影响</p>
 <ol>
 <li>逻辑数据独立性: 外模式不会受概念模式变化的影响</li>
 <li>物理数据独立性: 概念模式不会受内模式变化的影响</li>
@@ -809,7 +790,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>数据库八股文——数据库概述</div>
-      <div>https://dmx20070206.github.io/2024/12/18/DataBase0/</div>
+      <div>https://dmx20070206.github.io/2024/12/14/DataBase0/</div>
     </div>
     <div class="license-meta">
       
@@ -821,7 +802,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 18, 2024</div>
+          <div>December 14, 2024</div>
         </div>
       
       
@@ -853,9 +834,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/19/DataBase4/" title="数据库八股文——E-R模型">
+                      <a href="/2024/12/15/DataBase1/" title="数据库八股文——关系模型的基本概念">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据库八股文——E-R模型</span>
+                        <span class="hidden-mobile">数据库八股文——关系模型的基本概念</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -863,8 +844,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/16/DataBase3/" title="数据库八股文——关系数据库习题">
-                        <span class="hidden-mobile">数据库八股文——关系数据库习题</span>
+                      <a href="/2024/11/24/Rust/" title="Rust">
+                        <span class="hidden-mobile">Rust</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

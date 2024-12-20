@@ -19,26 +19,24 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="E-R 模型  数据模型概述数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，数据语义即数据操作，以及一致性(完整性)约束的概念和工具的集合。                 概念数据模型         逻辑数据模型         物理数据模型                   实体(Entity)         实体(Entity)         表(table)">
+    <meta name="description" content="赛博错题本，来源于书籍《新编 数据库原理习题与解析》  选择题         const container &#x3D; document.getElementById(&#39;image-container1&#39;);      let wrong &#x3D; [9, 14, 37, 44, 48, 49, 50];     let total &#x3D; 50;     for (let i &#x3D; 1; i  item &#x3D;&#x3D;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库八股文——E-R模型">
-<meta property="og:url" content="https://dmx20070206.github.io/2024/12/19/DataBase4/index.html">
+<meta property="og:title" content="数据库八股文——关系数据库习题">
+<meta property="og:url" content="https://dmx20070206.github.io/2024/12/17/DataBase3/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="E-R 模型  数据模型概述数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，数据语义即数据操作，以及一致性(完整性)约束的概念和工具的集合。                 概念数据模型         逻辑数据模型         物理数据模型                   实体(Entity)         实体(Entity)         表(table)">
+<meta property="og:description" content="赛博错题本，来源于书籍《新编 数据库原理习题与解析》  选择题         const container &#x3D; document.getElementById(&#39;image-container1&#39;);      let wrong &#x3D; [9, 14, 37, 44, 48, 49, 50];     let total &#x3D; 50;     for (let i &#x3D; 1; i  item &#x3D;&#x3D;">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dmx20070206.github.io/img/040.png">
-<meta property="article:published_time" content="2024-12-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-20T07:11:35.475Z">
+<meta property="article:published_time" content="2024-12-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-20T07:40:22.724Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/040.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>数据库八股文——E-R模型 - Hexo</title>
+  <title>数据库八股文——关系数据库习题 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -215,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="数据库八股文——E-R模型"></span>
+            <span id="subtitle" data-typed-text="数据库八股文——关系数据库习题"></span>
           
         </div>
 
@@ -226,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-19 00:00" pubdate>
-          December 19, 2024 am
+        <time datetime="2024-12-17 00:00" pubdate>
+          December 17, 2024 am
         </time>
       </span>
     
@@ -238,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k words
+          66 words
         
       </span>
     
@@ -249,7 +247,7 @@
         
         
         
-          10 mins
+          1 mins
         
       </span>
     
@@ -295,83 +293,46 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">数据库八股文——E-R模型</h1>
+            <h1 id="seo-header">数据库八股文——关系数据库习题</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="E-R-模型"><a href="#E-R-模型" class="headerlink" title="E-R 模型"></a>E-R 模型</h1><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
+                <blockquote>
+<p>赛博错题本，来源于书籍《新编 数据库原理习题与解析》</p>
+</blockquote>
+<h2 id="选择题"><a href="#选择题" class="headerlink" title="选择题"></a>选择题</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
 
-<h2 id="数据模型概述"><a href="#数据模型概述" class="headerlink" title="数据模型概述"></a>数据模型概述</h2><p>数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，<span class="just_red">数据语义</span>即<span class="just_red">数据操作</span>，以及一致性(完整性)约束的概念和工具的集合。</p>
-<img src="/img/040.png" srcset="/img/loading.gif" lazyload alt="" style="height: 260px; margin-bottom: 20px;">
+<div id="image-container1"></div>
 
-<table>
-    <tr>
-        <th>概念数据模型</th>
-        <th>逻辑数据模型</th>
-        <th>物理数据模型</th>
-    </tr>
-    <tr>
-        <td>实体(Entity)</td>
-        <td>实体(Entity)</td>
-        <td>表(table)</td>
-    </tr>
-    <tr>
-        <td>--</td>
-        <td>属性(Attribute)</td>
-        <td>列(Column)</td>
-    </tr>
-    <tr>
-        <td>--</td>
-        <td>标识符(Primary/Foreign Identifier)</td>
-        <td>键(Primary/Foreign Key)</td>
-    </tr>
-    <tr>
-        <td>关系</td>
-        <td>关系(Relation)</td>
-        <td>参照完整性约束(Reference)</td>
-    </tr>
-</table>
+<script>
+    const container = document.getElementById('image-container1');
 
-<h2 id="E-R-模型的基本元素"><a href="#E-R-模型的基本元素" class="headerlink" title="E-R 模型的基本元素"></a>E-R 模型的基本元素</h2><h3 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体(Entity)"></a>实体(Entity)</h3><p>一个实体(Entity)可以表示对于组织机构的业务非常重要的事物及其相关的信息集合，实体一般用集合名词或名词词组来表示，因此，实体也被称为实体集(Entity Set)。</p>
-<h3 id="实体实例-Entity-Instance"><a href="#实体实例-Entity-Instance" class="headerlink" title="实体实例(Entity Instance)"></a>实体实例(Entity Instance)</h3><p>实体实例是实体的一个具体出现，或者说是实体的一个具体的记录值。</p>
-<div class="just_red">实体对应类，实体示例对应对象。</div>
+    let wrong = [9, 14, 37, 44, 48, 49, 50];
+    let total = 50;
+    for (let i = 1; i <= total; i++) {
+        const img = document.createElement('img'); 
+        img.src = `/img/2_${i}.png`;   
+        img.alt = `Image ${i}`;
+        img.classList.add('dmx_img');
 
-<h3 id="属性-Attribute"><a href="#属性-Attribute" class="headerlink" title="属性(Attribute)"></a>属性(Attribute)</h3><p>一个实体的所有实体实例，都具有相同的性质特征。使用属性来描述实体的性质特征，就像类内的属性一样。实体具有哪些属性，是根据用户对信息的需求来决定的。</p>
-<h4 id="实体的标识符"><a href="#实体的标识符" class="headerlink" title="实体的标识符"></a>实体的标识符</h4><p>在描述实体的属性中，存在一组属性(可以是单个属性，也可以是多个属性)，使用这组属性的特征，可以唯一地标识客观世界中的特定实体实例。如果这组属性不可约(减少任何一个属性)，就不能再唯一地标识这个特定实体实例，那么我们说，这组属性是候选的实体的<span class="just_red">标识符(Identifier)</span>。</p>
-<p>一个实体可能有多个候选的实体标识符。选择其中一组作为该实体的<span class="just_red">主实体标识符(Primary Identifier)</span>，其余的候选的实体标识符称为<span class="just_red">辅助的实体标识符(Auxiliary Identifier)</span>。</p>
-<div class="sub_title">在多个候选的实体标识符中选择一个作为主标识符的标准(Bruce1992)</div>
-<ul>
-    <li>选择在实体实例的生命周期内不会被改变其值的属性作为标识符</li>
-    <li>选择实体实例中有有效值且不为空(或未知)的属性作为标识符。如果标识符是个复合属性，则
-    要确保组成标识符的所有属性的属性值都有效</li>
-    <li>避免使用可以表示分类、位置信息等所谓的智能标识符(或键) </li>
-    <li>尽量使用单一属性代理标识符替代复合属性标识符</li>
-</ul>
+        if (wrong.findIndex(item => item === i) !== -1) {
+            img.style.border = '2px solid red';
+        }
+        else {
+            img.style.border = '2px solid green';
+        }
+        container.appendChild(img);
+    }
+</script>
 
-<h4 id="属性的分类"><a href="#属性的分类" class="headerlink" title="属性的分类"></a>属性的分类</h4><p>E-R 模型中的属性可以不是原子值，原子值指简单属性 + 单值属性。</p>
-<h5 id="简单属性-复合属性-Simple-Attribute-Composite-Attribute"><a href="#简单属性-复合属性-Simple-Attribute-Composite-Attribute" class="headerlink" title="简单属性&#x2F;复合属性 Simple Attribute &#x2F; Composite Attribute"></a>简单属性&#x2F;复合属性 Simple Attribute &#x2F; Composite Attribute</h5><p>简单属性：不能划分为更小部分的属性<br>复合属性：由若干个有意义的详细属性组合成的属性</p>
-<p>例如：年龄&#x2F;简历(学历，姓名，年龄…)</p>
-<h5 id="单值属性-多值属性-single-valued-multi-valued"><a href="#单值属性-多值属性-single-valued-multi-valued" class="headerlink" title="单值属性&#x2F;多值属性 single-valued &#x2F; multi-valued"></a>单值属性&#x2F;多值属性 single-valued &#x2F; multi-valued</h5><p>单值属性：属性对一个特定实体都只有单独的一个值<br>多值属性：属性对某个特定实体而言，可能对应于一组值，用{}表示</p>
-<p>例如：</p>
-<h5 id="必要属性-可选属性-Mandatory-Attribute-Optional-Attribute"><a href="#必要属性-可选属性-Mandatory-Attribute-Optional-Attribute" class="headerlink" title="必要属性&#x2F;可选属性 Mandatory Attribute &#x2F; Optional Attribute"></a>必要属性&#x2F;可选属性 Mandatory Attribute &#x2F; Optional Attribute</h5><p>必要属性：每个实体实例必须存在的属性<br>可选属性：每个实体实例可以为空值的属性</p>
-<h5 id="存储属性-派生属性-Stored-Attribute-Derive-Attribute"><a href="#存储属性-派生属性-Stored-Attribute-Derive-Attribute" class="headerlink" title="存储属性&#x2F;派生属性 Stored Attribute &#x2F; Derive Attribute"></a>存储属性&#x2F;派生属性 Stored Attribute &#x2F; Derive Attribute</h5><p>派生属性：值从别的相关属性或实体派生出来<br>存储属性：不属于派生属性</p>
-<h5 id="复杂属性-Complex-Attribute"><a href="#复杂属性-Complex-Attribute" class="headerlink" title="复杂属性 Complex Attribute"></a>复杂属性 Complex Attribute</h5><p>复杂属性：复合属性和多值属性通过嵌套方式组合构成</p>
-<h3 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h3><p>联系是客观世界中，事物内部或者事物之间的规则。数据规则表示的是数据间如何关联，行为规则表示当属性为某个特殊值时，应当进行何种操作。E-R模型可以建模数据规则，但不能建模行为规则。</p>
-<h4 id="结构完整性规则-基数约束规则"><a href="#结构完整性规则-基数约束规则" class="headerlink" title="结构完整性规则(基数约束规则)"></a>结构完整性规则(基数约束规则)</h4><h5 id="最大基数约束规则"><a href="#最大基数约束规则" class="headerlink" title="最大基数约束规则"></a>最大基数约束规则</h5><p>一个联系的最大基数是指：实体 B 中的实体实例可以和实体 A 中的实体实例发生关联的最大个数</p>
-<ul>
-    <li>一对一</li>
-    <li>一对多/多对一</li>
-    <li>多对多</li>
-</ul>
+<h2 id="问答题"><a href="#问答题" class="headerlink" title="问答题"></a>问答题</h2><div id="image-container2"></div>
 
-<h5 id="最小基数约束规则"><a href="#最小基数约束规则" class="headerlink" title="最小基数约束规则"></a>最小基数约束规则</h5><p>一个联系的最小基数是指：实体 B 中的实体实例可以和实体 A 中的实体实例发生关联的最小个数。</p>
-<ul>
-    <li>部分参与</li>
-    <li>完全参与</li>
-</ul>
+<script>
+    const container = document.getElementById('image-container1');
 
-<h4 id="参照完整性约束规则"><a href="#参照完整性约束规则" class="headerlink" title="参照完整性约束规则"></a>参照完整性约束规则</h4>
+    
+</script>
                 
               </div>
             
@@ -395,8 +356,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>数据库八股文——E-R模型</div>
-      <div>https://dmx20070206.github.io/2024/12/19/DataBase4/</div>
+      <div>数据库八股文——关系数据库习题</div>
+      <div>https://dmx20070206.github.io/2024/12/17/DataBase3/</div>
     </div>
     <div class="license-meta">
       
@@ -408,7 +369,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 19, 2024</div>
+          <div>December 17, 2024</div>
         </div>
       
       
@@ -440,12 +401,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/12/18/DataBase4/" title="数据库八股文——E-R模型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库八股文——E-R模型</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/18/DataBase0/" title="数据库八股文——数据库概述">
-                        <span class="hidden-mobile">数据库八股文——数据库概述</span>
+                      <a href="/2024/12/16/DataBase2/" title="数据库八股文——关系代数">
+                        <span class="hidden-mobile">数据库八股文——关系代数</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
