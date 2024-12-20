@@ -1455,6 +1455,11 @@ figure.highlight td.code > pre {
   font-weight: bold;
   margin-bottom: 0.75em;
   margin-top: 2em;
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pingPong 2s ease-in-out infinite;
 }
 .markdown-body > h1::before,
 .markdown-body h2::before,
@@ -1479,6 +1484,41 @@ figure.highlight td.code > pre {
 }
 .markdown-body a {
   color: var(--post-link-color);
+}
+.markdown-body > h1 {
+  font-size: 36px;
+  background: linear-gradient(to right, #4e6b8e, #0d4f8b);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+}
+.markdown-body > h2 {
+  font-size: 32px;
+  background: linear-gradient(to right, #00b5e2, #0369a1);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+}
+.markdown-body > h3 {
+  font-size: 28px;
+  background: linear-gradient(to right, #6a99d7, #3b5c8c);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+.markdown-body > h4 {
+  font-size: 24px;
+  background: linear-gradient(to right, #1e90ff, #1c3a61);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+.markdown-body > h5 {
+  font-size: 20px;
+  background: linear-gradient(to right, #0af, #3c82b9);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
 }
 .markdown-body strong {
   font-weight: bold;
@@ -1529,6 +1569,38 @@ figure.highlight td.code > pre {
 }
 .markdown-body details summary {
   outline: none;
+}
+@-moz-keyframes pingPong {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+@-webkit-keyframes pingPong {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+@-o-keyframes pingPong {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+@keyframes pingPong {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 hr,
 .markdown-body hr {
