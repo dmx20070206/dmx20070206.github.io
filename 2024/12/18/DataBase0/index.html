@@ -19,18 +19,20 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念数据 Data 数据是指可以记录">
+    <meta name="description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念🌄数据 Data 数据是指可以">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库八股文——数据库概述">
 <meta property="og:url" content="https://dmx20070206.github.io/2024/12/18/DataBase0/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念数据 Data 数据是指可以记录">
+<meta property="og:description" content="数据库概论数据库的功能 Storage Management: 存储数据 Query: 构建一条高效的查询路径 Execution Component: 根据查询所需的执行计划实际执行 Internal Management and Scheduling: 内部管理和调度 Management Tools Interfaces: 管理工具接口  数据库的基本概念🌄数据 Data 数据是指可以">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dmx20070206.github.io/img/039.png">
 <meta property="article:published_time" content="2024-12-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-18T16:18:08.682Z">
+<meta property="article:modified_time" content="2024-12-20T01:31:55.855Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Test">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dmx20070206.github.io/img/039.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -236,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.2k words
+          3.4k words
         
       </span>
     
@@ -247,7 +249,7 @@
         
         
         
-          19 mins
+          29 mins
         
       </span>
     
@@ -300,88 +302,140 @@
                 
                 <link rel="stylesheet" href="/css/DataBase_RelationModel.css">
 
-<h2 id="数据库概论"><a href="#数据库概论" class="headerlink" title="数据库概论"></a>数据库概论</h2><h3 id="数据库的功能"><a href="#数据库的功能" class="headerlink" title="数据库的功能"></a>数据库的功能</h3><ol>
+<h1 id="数据库概论"><a href="#数据库概论" class="headerlink" title="数据库概论"></a>数据库概论</h1><h2 id="数据库的功能"><a href="#数据库的功能" class="headerlink" title="数据库的功能"></a>数据库的功能</h2><ol>
 <li>Storage Management: 存储数据</li>
 <li>Query: 构建一条高效的查询路径</li>
 <li>Execution Component: 根据查询所需的执行计划实际执行</li>
 <li>Internal Management and Scheduling: 内部管理和调度</li>
 <li>Management Tools Interfaces: 管理工具接口</li>
 </ol>
-<h3 id="数据库的基本概念"><a href="#数据库的基本概念" class="headerlink" title="数据库的基本概念"></a>数据库的基本概念</h3><p><span class="sub_title">数据 Data</span></p>
+<h2 id="数据库的基本概念"><a href="#数据库的基本概念" class="headerlink" title="数据库的基本概念"></a>数据库的基本概念</h2><p><span class="sub_title">🌄数据 Data</span></p>
 <p>数据是指可以记录和存储在计算机介质上的关于对象和事件的事实。数据可以保存在文件系统和数据库中。</p>
 <p>数据分为<span style="color: red;">结构化数据</span>和<span style="color: red;">非结构化数据</span>。</p>
 <p>数据是指可以记录和存储在计算机介质上的关于对象和事件的事实。而信息是人们按照知识的方式处理后得到的数据。数据本身没有任何意义，只有通过某些操作将数据转化为信息才能被人们理解和利用。</p>
-<p><span class="sub_title">元数据 Metadata</span></p>
+<p><span class="sub_title">🌄元数据 Metadata</span></p>
 <p>元数据是“数据的数据”，用于描述数据的特征或性质以及该数据的内容。例如数据的名称、长度、可能的取值；数据的来源、存储位置、使用方式。</p>
 <p>元数据本身与数据独立，只用于描述数据的性质。</p>
-<p><span class="sub_title">文件系统存储数据的缺陷</span></p>
-<p>破烂洋文版本：</p>
-<ol>
-<li>Data redundancy and inconsistency: Multiple file formats, duplication of information in different files</li>
-<li>Difficulty in accessing data: Need to write a new program to carry out each new task</li>
-<li>Data isolation — multiple files and formats</li>
-<li>Integrity problems: Integrity constraints (e.g., account balance &gt; 0) become “buried” in program code rather than being stated explicitly and hard to add new constraints or change existing ones</li>
-<li>Atomicity of updates: Failures may leave database in an inconsistent state with partial updates carried out. Example: Transfer of funds from one account to another should either complete or not happen at all</li>
-<li>Concurrent access by multiple users: Concurrent access needed for performance. Uncontrolled concurrent accesses can lead to inconsistencies. Example: Two people reading a balance (say 100) and updating it by withdrawing money (say 50 each) at the same time</li>
-<li>Security problems: Hard to provide user access to some, but not all, data</li>
-</ol>
-<p>翻译版本：</p>
-<ol>
-<li>数据冗余和不一致性：存在多种文件格式，信息在不同文件中重复存储。</li>
-<li>访问数据困难：每当需要执行新任务时，都需要编写新的程序。</li>
-<li>数据孤立——多种文件和格式</li>
-<li>完整性问题：完整性约束（例如，账户余额 &gt; 0）被“埋在”程序代码中，而不是明确地声明，导致难以添加新约束或更改现有约束。</li>
-<li>更新的原子性：系统故障可能导致数据库处于不一致状态，部分更新被执行。例子：从一个账户转账到另一个账户时，要么整个转账完成，要么根本不发生。</li>
-<li>多用户并发访问：为了提高性能，需要支持并发访问。未经控制的并发访问可能导致不一致性。例子：两个人同时读取余额（假设为100）并进行提款（各自提款50），从而导致不一致。</li>
-<li>安全问题：很难仅为用户提供部分数据的访问权限，而不是所有数据。</li>
-</ol>
-<p><span class="sub_title">数据库 DataBase</span></p>
+<p><span class="sub_title">🌄文件系统存储数据的缺陷</span></p>
+<section class="first_box">
+    <!-- title -->
+    <article class="title">Data Issues in Database Systems</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>Data redundancy and inconsistency: Multiple file formats, duplication of information in different files.
+            </li>
+            <li>Difficulty in accessing data: Need to write a new program to carry out each new task.</li>
+            <li>Data isolation — multiple files and formats.</li>
+            <li>Integrity problems: Integrity constraints (e.g., account balance > 0) become “buried” in program code
+                rather than being stated explicitly and hard to add new constraints or change existing ones.</li>
+            <li>Atomicity of updates: Failures may leave database in an inconsistent state with partial updates carried
+                out. Example: Transfer of funds from one account to another should either complete or not happen at all.
+            </li>
+            <li>Concurrent access by multiple users: Concurrent access needed for performance. Uncontrolled concurrent
+                accesses can lead to inconsistencies. Example: Two people reading a balance (say 100) and updating it by
+                withdrawing money (say 50 each) at the same time.</li>
+            <li>Security problems: Hard to provide user access to some, but not all, data.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">数据库系统中的数据问题</div>
+        <ul class="list">
+            <li>数据冗余和不一致：多种文件格式，信息在不同文件中重复。</li>
+            <li>数据访问困难：需要为每个新任务编写新的程序。</li>
+            <li>数据隔离 — 多种文件和格式。</li>
+            <li>完整性问题：完整性约束（例如，账户余额 > 0）被“埋”在程序代码中，而不是明确陈述，且很难添加新的约束或更改现有约束。</li>
+            <li>更新的原子性：故障可能会导致数据库处于不一致状态，并且部分更新已执行。例如：从一个账户转账到另一个账户应该要么完成，要么完全不发生。</li>
+            <li>多个用户并发访问：性能需要并发访问，未经控制的并发访问可能导致不一致。例如：两个人同时读取余额（例如100）并分别通过取款（例如每人50）来更新余额。</li>
+            <li>安全问题：很难为用户提供部分数据的访问权限，而不是全部数据。</li>
+        </ul>
+    </article>
+</section>
+
+
+<p><span class="sub_title">🌄数据库 DataBase</span></p>
 <p>数据库是长期存储在计算机内的、有组织的、可共享的大量数据集合。</p>
-<p><span class="sub_title">数据库系统 DBS</span></p>
-<p>The functions of a DBS</p>
-<ol>
-<li>Schema definition.</li>
-<li>Storage structure and access-method definition.</li>
-<li>Schema and physical-organization modification</li>
-<li>Granting of authorization for data access.</li>
-<li>Routine maintenance.</li>
-</ol>
-<p>数据库系统（DBS）的功能：</p>
-<ol>
-<li>模式定义：定义数据库的结构、数据类型、关系等（即数据库模式的创建和设计）。</li>
-<li>存储结构和访问方法定义：定义数据存储的方式、访问方式以及存储管理的策略。</li>
-<li>模式和物理组织的修改：允许对数据库模式（结构）和数据的物理存储组织进行修改和调整。</li>
-<li>授予数据访问权限：为不同的用户或用户组授予对数据的访问权限和操作权限。</li>
-<li>日常维护：包括数据库的备份、恢复、性能优化和其他维护任务，确保数据库的稳定运行。</li>
-</ol>
-<p><span class="sub_title">数据库管理员 DBA</span></p>
-<p>The functions of a DBA</p>
-<ol>
-<li>Schema definition. The DBA creates the original database schema by executing a set of data definition statements in the DDL.</li>
-<li>Storage structure and access-method definition.</li>
-<li>Schema and physical-organization modification. The DBAcarries out changes to the schema and physical organization to reflect the changing needs of the organization, or to alter the physical organization to improve performance.</li>
-<li>Granting of authorization for data access. By granting different types of authorization, the database administrator can regulate which parts of the database various users can access. The authorization information is kept in a special system structure that the database system consults whenever someone attempts to access the data in the system.</li>
-<li>Routine maintenance.<ol>
-<li>Periodically backing up the database, either onto tapes or onto remote servers, to prevent loss of data in case of disasters such as flooding.</li>
-<li>Ensuring that enough free disk space is available for normal operations,and upgrading disk space as required.</li>
-<li>Monitoring jobs running on the database and ensuring that performance is not degraded by very expensive tasks submitted by some users.</li>
-</ol>
-</li>
-</ol>
-<p>数据库管理员（DBA）的功能：</p>
-<ol>
-<li>模式定义：DBA通过在数据定义语言（DDL）中执行一组数据定义语句来创建原始的数据库模式。</li>
-<li>存储结构和访问方法定义：DBA负责定义数据存储的结构和访问方法，以确保数据高效存储和访问。 </li>
-<li>模式和物理组织的修改：DBA根据组织需求的变化或为了提高性能，对数据库模式和物理组织进行更改。例如，可能需要根据业务需求或性能优化的要求调整数据的存储方式。</li>
-<li>授予数据访问权限：DBA通过授予不同类型的权限来控制不同用户对数据库的访问。授权信息保存在一个特殊的系统结构中，数据库系统在任何人尝试访问数据时会参考这些授权信息。</li>
-<li>日常维护：<ol>
-<li>定期备份数据库，无论是备份到磁带还是远程服务器，以防止发生灾难（如洪水）时数据丢失。</li>
-<li>确保有足够的空闲磁盘空间以支持正常操作，并根据需要升级磁盘空间。</li>
-<li>监控数据库上运行的任务，确保不会因为某些用户提交的高开销任务而导致性能下降。</li>
-</ol>
-</li>
-</ol>
-<p><span class="sub_title">数据模型 DataModel</span></p>
+<p><span class="sub_title">🌄数据库系统 DBS</span></p>
+<section class="first_box">
+    <!-- title -->
+    <article class="title">The Functions of a DBS</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>Schema definition.</li>
+            <li>Storage structure and access-method definition.</li>
+            <li>Schema and physical-organization modification.</li>
+            <li>Granting of authorization for data access.</li>
+            <li>Routine maintenance.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">数据库系统的功能</div>
+        <ul class="list">
+            <li>模式定义。</li>
+            <li>存储结构和访问方法定义。</li>
+            <li>模式和物理组织的修改。</li>
+            <li>授予数据访问权限。</li>
+            <li>常规维护。</li>
+        </ul>
+    </article>
+</section>
+
+
+<p><span class="sub_title">🌄数据库管理员 DBA</span></p>
+<section class="first_box">
+    <!-- title -->
+    <article class="title">The Functions of a DBA (数据库管理员的职能)</article>
+    <!-- main points in English and Chinese -->
+    <ul class="list">
+        <li>Schema definition. The DBA creates the original database schema by executing a set of data definition
+            statements in the DDL.
+            <br><span class="translation">模式定义。数据库管理员通过执行一组数据定义语句（DDL）来创建原始的数据库模式。</span>
+        </li>
+        <li>Storage structure and access-method definition.
+            <br><span class="translation">存储结构和访问方法定义。</span>
+        </li>
+        <li>Schema and physical-organization modification. The DBA carries out changes to the schema and physical
+            organization to reflect the changing needs of the organization, or to alter the physical organization to
+            improve performance.
+            <br><span class="translation">模式和物理组织的修改。数据库管理员根据组织需求的变化，或通过更改物理组织来提高性能，进行模式和物理组织的修改。</span>
+        </li>
+        <li>Granting of authorization for data access. By granting different types of authorization, the database
+            administrator can regulate which parts of the database various users can access. The authorization
+            information is kept in a special system structure that the database system consults whenever someone
+            attempts to access the data in the system.
+            <br><span
+                class="translation">授予数据访问权限。通过授予不同类型的权限，数据库管理员可以控制不同用户访问数据库的不同部分。授权信息存储在一个特殊的系统结构中，每当有人尝试访问系统中的数据时，数据库系统会查阅此信息。</span>
+        </li>
+        <li>Routine maintenance.
+            <br><span class="translation">常规维护。</span>
+            <ul class="sublist">
+                <li>Periodically backing up the database, either onto tapes or onto remote servers, to prevent loss of
+                    data in case of disasters such as flooding.
+                    <br><span class="translation">定期备份数据库，可以备份到磁带或远程服务器，以防止灾难（如洪水）导致数据丢失。</span>
+                </li>
+                <li>Ensuring that enough free disk space is available for normal operations, and upgrading disk space as
+                    required.
+                    <br><span class="translation">确保有足够的空闲磁盘空间进行正常操作，并根据需要升级磁盘空间。</span>
+                </li>
+                <li>Monitoring jobs running on the database and ensuring that performance is not degraded by very
+                    expensive tasks submitted by some users.
+                    <br><span class="translation">监控数据库中运行的作业，确保性能不会因某些用户提交的高消耗任务而受到影响。</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+
+
+<p><span class="sub_title">🌄数据模型 DataModel</span></p>
 <p>数据模型的发展历程</p>
 <ol>
 <li>层次模型</li>
@@ -406,11 +460,12 @@
 <li>表示型&#x2F;实现型模型：中间层模型</li>
 <li>物理数据模型：低层模型</li>
 </ol>
-<h3 id="概念数据模型——高层模型"><a href="#概念数据模型——高层模型" class="headerlink" title="概念数据模型——高层模型"></a>概念数据模型——高层模型</h3><p><span style="color: red;">实体联系模型</span>和<span style="color: red;">对象数据模型</span></p>
-<div class="sub_title">实体-联系模型 entity-relation model</div>
+<p><span class="sub_title">🌄概念数据模型——高层模型</span></p>
+<p><span style="color: red;">实体联系模型</span>和<span style="color: red;">对象数据模型</span></p>
+<div class="sub_title">🌄实体-联系模型 entity-relation model</div>
 
 <p>实体是一个集合名词，表示真是世界中的对象集合或概念。<br>属性表示进一步描述实体的某个感兴趣的特性。<br>联系表示在两个或多个实体间的关联。</p>
-<div class="sub_title">对象-数据模型 object-data model</div>
+<div class="sub_title">🌄对象-数据模型 object-data model</div>
 
 <p>类间的关系：</p>
 <ol>
@@ -434,17 +489,19 @@
 </ol>
 </li>
 </ol>
-<h3 id="表示型-实现型模型——中间层模型"><a href="#表示型-实现型模型——中间层模型" class="headerlink" title="表示型&#x2F;实现型模型——中间层模型"></a>表示型&#x2F;实现型模型——中间层模型</h3><p>表示型数据模型使用记录结构来表示数据，因此也称为基于记录的数据模型。目前主要的数据库模型是关系数据模型。</p>
-<h3 id="物理数据模型——低层模型"><a href="#物理数据模型——低层模型" class="headerlink" title="物理数据模型——低层模型"></a>物理数据模型——低层模型</h3><p>提供的概念只对计算机专家有意义，而不是最终用户。描述了数据如何在计算机存储介质（硬盘）上存储的细节。</p>
-<h3 id="数据库得三层模式体系结构-Three-Schema"><a href="#数据库得三层模式体系结构-Three-Schema" class="headerlink" title="数据库得三层模式体系结构 Three-Schema"></a>数据库得三层模式体系结构 Three-Schema</h3><div class="sub_title">内模式 internal schema</div>
-
+<p><span class="sub_title">🌄表示型&#x2F;实现型模型——中间层模型</span></p>
+<p>表示型数据模型使用记录结构来表示数据，因此也称为基于记录的数据模型。目前主要的数据库模型是关系数据模型。</p>
+<p><span class="sub_title">🌄物理数据模型——低层模型</span></p>
+<p>提供的概念只对计算机专家有意义，而不是最终用户。描述了数据如何在计算机存储介质（硬盘）上存储的细节。</p>
+<p><span class="sub_title">🌄数据库规范化 Normalization Theory</span></p>
+<p>数据库规范化是将数据库组织成符合一定规则和标准的过程。其核心目标是消除数据冗余、增强数据一致性、提高查询性能。规范化通常分为几个阶段或“范式”，每个范式都有特定的规则和标准。</p>
+<p>1.第一范式（1NF）要求消除重复的列，从而确保每个列都包含原子值。<br>2.第二范式（2NF）在第一范式的基础上，消除非主属性对部分关键字的依赖。<br>3.第三范式（3NF）要求消除非主属性对主关键字的传递依赖。进一步的规范化阶段如BCNF（Boyce Codd范式）。<br>4.第四范式（4NF），则解决了更复杂的依赖和多值依赖问题。</p>
+<h2 id="数据库三层模式体系结构-Three-Schema"><a href="#数据库三层模式体系结构-Three-Schema" class="headerlink" title="数据库三层模式体系结构 Three-Schema"></a>数据库三层模式体系结构 Three-Schema</h2><p><span class="sub_title">🌄内模式 internal schema</span></p>
 <p>内层对应内模式，用于描述数据库的物理存储结构。内模式使用物理数据模型，描述数据库的从存取路径和数据存储的全部细节。</p>
-<div class="sub_title">概念模式 conceptual schema</div>
-
+<p><span class="sub_title">🌄概念模式 conceptual schema</span></p>
 <p>简称模式，中间层为概念层，对应概念模式。<br>用于为所有用户描述整个数据库的结构，注重描述实体、数据类型、联系、用户操作和约束，并隐藏了物理存储结构的细节。</p>
 <p>使用表示型数据模型 E-R 模型来描述概念模式。<br>使用实现型数据模型 OO 模型来进行概念模式设计。</p>
-<div class="sub_title">外模式 external schema</div>
-
+<p><span class="sub_title">🌄外模式 external schema</span></p>
 <p>外层或者视图层，对应若干位模式或用户视图。</p>
 <p>每个外模式描述了特定用户组感兴趣的一部分数据库，并且对该组用户隐藏数据库的其他部分。</p>
 <blockquote>
@@ -457,7 +514,277 @@
 <li>如果是一个数据库检索请求，那么从存储在数据库中提取出的数据必须经过格式转化，来匹配用户外部视图所要求的格式。</li>
 <li>在各层之间完成请求和结果转换的处理过程被称为映射。</li>
 </ol>
+<p><span class="sub_title">🌄数据独立性</span></p>
+<p>较低层的修改不会对较高层产生影响</p>
+<ol>
+<li>逻辑数据独立性: 外模式不会受概念模式变化的影响</li>
+<li>物理数据独立性: 概念模式不会受内模式变化的影响</li>
+</ol>
+<h2 id="DBMS-体系结构"><a href="#DBMS-体系结构" class="headerlink" title="DBMS 体系结构"></a>DBMS 体系结构</h2><ol>
+<li>Centralized</li>
+<li>Client-server</li>
+<li>Parallel computer architectures.</li>
+<li>Distributed databases</li>
+</ol>
+<p>数据库是一整套数据管理体系，包括数据存储的模型、数据组织的架构、数据分析的算法、数据管理的工具以及数据访问的接口等等。</p>
+<img src="/img/039.png" srcset="/img/loading.gif" lazyload alt="" style="height: 400px;">
 
+<p>ppt 中有大量的概念，这里直接附上英文原文和翻译，虽然完全记不住：</p>
+<section class="first_box">
+    <!-- title -->
+    <article class="title">Storage Manager</article>
+    <!-- english -->
+    <article class="content">
+        <div class="text">Storage manager is a program module that provides the interface between the low-level data
+            stored in the database and the application programs and queries submitted to the system.</div>
+        <div class="text">The storage manager is responsible for the following tasks:</div>
+        <ul class="list">
+            <li>Interaction with the file manager</li>
+            <li>Efficient storing, retrieving and updating of data</li>
+        </ul>
+        <div class="text">Issues:</div>
+        <ul class="list">
+            <li>Storage access</li>
+            <li>File organization</li>
+            <li>Indexing and hashing</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">存储管理器是一个程序模块，它提供了数据库中存储的低级数据与提交给系统的应用程序和查询之间的接口。</div>
+        <div class="text">存储管理器负责以下任务：</div>
+        <ul class="list">
+            <li>与文件管理器的交互</li>
+            <li>数据的高效存储、检索和更新</li>
+        </ul>
+        <div class="text">问题：</div>
+        <ul class="list">
+            <li>存储访问</li>
+            <li>文件组织</li>
+            <li>索引和哈希</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">Query Processor</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>DDL interpreter</li>
+            <li>DML Compiler</li>
+            <li>Query Evaluation Engine</li>
+        </ul>
+        <div class="text">Alternative ways of evaluating a given query</div>
+        <ul class="list">
+            <li>Equivalent expressions</li>
+            <li>Different algorithms for each operation</li>
+        </ul>
+        <div class="text">Cost difference between a good and a bad way of evaluating a query can be enormous</div>
+        <div class="text">Need to estimate the cost of operations</div>
+        <ul class="list">
+            <li>Depends critically on statistical information about relations which the database must maintain</li>
+            <li>Need to estimate statistics for intermediate results to compute cost of complex expressions</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">查询处理器</div>
+        <ul class="list">
+            <li>DDL 解释器</li>
+            <li>DML 编译器</li>
+            <li>查询评估引擎</li>
+        </ul>
+        <div class="text">评估给定查询的替代方法：</div>
+        <ul class="list">
+            <li>等效表达式</li>
+            <li>每个操作的不同算法</li>
+        </ul>
+        <div class="text">评估查询的好方式和坏方式之间的成本差异可能是巨大的，需要估算操作的成本：</div>
+        <ul class="list">
+            <li>成本估算严重依赖于数据库必须维护的关系的统计信息。</li>
+            <li>为了计算复杂表达式的成本，还需要估算中间结果的统计信息。</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">Possible Issues in Databases</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>What if the system fails?</li>
+            <li>What if more than one user is concurrently updating the same data?</li>
+            <li>A transaction is a collection of operations that performs a single logical function in a database
+                application.</li>
+            <li>Transaction-management component ensures that the database remains in a consistent (correct) state
+                despite system failures (e.g., power failures and operating system crashes) and transaction failures.
+            </li>
+            <li>Concurrency-control manager controls the interaction among the concurrent transactions, to ensure the
+                consistency of the database.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <ul class="list">
+            <li>如果多个用户同时更新相同的数据怎么办？</li>
+            <li>事务是一个操作集合，在数据库应用程序中执行一个单一的逻辑功能。</li>
+            <li>事务管理组件确保数据库在系统故障（例如电力故障和操作系统崩溃）和事务失败的情况下仍保持一致（正确）状态。</li>
+            <li>并发控制管理器控制并发事务之间的交互，确保数据库的一致性。</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">ACID of A Transaction - Atomicity</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>Often, several operations on the database form a single logical unit of work (Transaction).</li>
+            <li>An example is a funds transfer.</li>
+            <li>One department account (say A) is debited.</li>
+            <li>Another department account (say B) is credited.</li>
+        </ul>
+        <div class="text">Clearly, it is essential that either both the credit and debit occur, or that neither occur.
+            That is, the funds transfer must happen in its entirety or not at all.</div>
+        <div class="text">This all-or-none requirement is called Atomicity.</div>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">事务的ACID——原子性 (Atomicity)</div>
+        <ul class="list">
+            <li>通常，多个操作在数据库上形成一个单一的逻辑工作单元（事务）。</li>
+            <li>例如，一个资金转账操作。</li>
+            <li>一个部门账户（如A）被扣款。</li>
+            <li>另一个部门账户（如B）被存款。</li>
+        </ul>
+        <div class="text">显然，至关重要的是，扣款和存款要么都发生，要么都不发生。也就是说，资金转账要么完全发生，要么完全不发生。</div>
+        <div class="text">这种“全有或全无”的要求被称为原子性。</div>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">ACID of A Transaction - Consistency</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>It is essential that the execution of the funds transfer preserve the consistency of the database.</li>
+            <li>That is, the value of the sum of the balances of A and B must be preserved.</li>
+            <li>This correctness requirement is called consistency.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">事务的ACID —— 一致性 (Consistency)</div>
+        <ul class="list">
+            <li>确保资金转账的执行保持数据库的一致性是至关重要的。</li>
+            <li>也就是说，A和B账户余额的总和必须保持不变。</li>
+            <li>这种正确性要求被称为一致性。</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">ACID of A Transaction - Durability</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>Finally, after the successful execution of a funds transfer, the new values of the balances of accounts
+                A and B must persist, despite the possibility of system failure.</li>
+            <li>This persistence requirement is called durability.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">事务的ACID —— 持久性 (Durability)</div>
+        <ul class="list">
+            <li>最后，在资金转账成功执行后，账户A和B的新余额值必须持久存在，即使系统发生故障也不受影响。</li>
+            <li>这种持久性要求被称为持久性。</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">ACID of A Transaction - Isolation</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>Even if the consistency and atomicity properties are ensured for each transaction, if several
+                transactions are executed concurrently, their operations may interleave in some undesirable way,
+                resulting in an inconsistent state.</li>
+            <li>For example, as we saw earlier, the database is temporarily inconsistent while the transaction to
+                transfer funds from A to B is executing, with the deducted total written to A and the increased total
+                yet to be written to B.</li>
+            <li>If a second concurrently running transaction reads A and B at this intermediate point and computes A+B,
+                it will observe an inconsistent value.</li>
+            <li>Furthermore, if this second transaction then performs updates on A and B based on the inconsistent
+                values that it read, the database may be left in an inconsistent state even after both transactions have
+                completed.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">事务的ACID —— 隔离性 (Isolation)</div>
+        <ul class="list">
+            <li>即使每个事务都确保了一致性和原子性属性，如果多个事务并发执行，它们的操作可能会以某种不期望的方式交错，导致数据库处于不一致状态。</li>
+            <li>例如，如前所述，在从A账户转账到B账户的事务执行期间，数据库是暂时不一致的，因为A账户的扣款已写入，而B账户的增加金额尚未写入。</li>
+            <li>如果第二个并发运行的事务在这个中间状态下读取A和B，并计算A+B，它将观察到一个不一致的值。</li>
+            <li>此外，如果这个第二个事务基于读取到的不一致值对A和B进行更新，即使两个事务都已完成，数据库仍可能处于不一致的状态。</li>
+        </ul>
+    </article>
+</section>
+
+<section class="first_box">
+    <!-- title -->
+    <article class="title">ACID of A Transaction - Isolation</article>
+    <!-- english -->
+    <article class="content">
+        <ul class="list">
+            <li>A way to avoid the problem of concurrently executing transactions is to execute transactions
+                serially—that is, one after the other. However, concurrent execution of transactions provides
+                significant performance benefits.</li>
+            <li>Other solutions have therefore been developed; they allow multiple transactions to execute concurrently.
+                We discuss the problems caused by concurrently executing transactions in Section 14.5.</li>
+            <li>The isolation property of a transaction ensures that the concurrent execution of transactions results in
+                a system state that is equivalent to a state that could have been obtained had these transactions
+                executed one at a time in some order.</li>
+            <li>Ensuring the isolation property is the responsibility of a component of the database system called the
+                concurrency-control system.</li>
+        </ul>
+    </article>
+    <!-- divide line -->
+    <div class="divider"></div>
+    <!-- chinese -->
+    <article class="content">
+        <div class="text">事务的ACID —— 隔离性 (Isolation)</div>
+        <ul class="list">
+            <li>避免并发执行事务问题的一种方法是串行执行事务——即一个接一个地执行。然而，并发执行事务能够提供显著的性能提升。</li>
+            <li>因此，已经开发出其他解决方案，它们允许多个事务并发执行。我们将在第14.5节讨论并发执行事务引发的问题。</li>
+            <li>事务的隔离性属性确保并发执行的事务结果等同于按某种顺序逐个执行这些事务时所得到的系统状态。</li>
+            <li>确保隔离性属性是数据库系统中的一个组件——并发控制系统——的责任。</li>
+        </ul>
+    </article>
+</section>
                 
               </div>
             
@@ -525,6 +852,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/12/19/DataBase4/" title="数据库八股文——E-R模型">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数据库八股文——E-R模型</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
