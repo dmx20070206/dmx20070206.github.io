@@ -1434,7 +1434,7 @@ figure.highlight td.code > pre {
   border-bottom-left-radius: 0;
 }
 .markdown-body {
-  font-size: 1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
   font-family: var(--font-family-sans-serif);
   margin-bottom: 2rem;
