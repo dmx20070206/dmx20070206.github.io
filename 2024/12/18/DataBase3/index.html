@@ -19,55 +19,29 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="简单专门关系代数  关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。 选择运算  选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。 投影运算  投影运算为一元运算，其中 (A1, A2, …, An) 为输入的属性列表，R 为输入的关系，结果是 R 中所有">
+    <meta name="description" content="E-R 模型  数据模型概述数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，数据语义即数据操作，以及一致性(完整性)约束的概念和工具的集合。                 概念数据模型         逻辑数据模型         物理数据模型                   实体(Entity)         实体(Entity)         表(table)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据库八股文——关系代数">
-<meta property="og:url" content="https://dmx20070206.github.io/2024/12/16/DataBase2/index.html">
+<meta property="og:title" content="数据库八股文——E-R模型">
+<meta property="og:url" content="https://dmx20070206.github.io/2024/12/18/DataBase3/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="简单专门关系代数  关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。 选择运算  选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。 投影运算  投影运算为一元运算，其中 (A1, A2, …, An) 为输入的属性列表，R 为输入的关系，结果是 R 中所有">
+<meta property="og:description" content="E-R 模型  数据模型概述数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，数据语义即数据操作，以及一致性(完整性)约束的概念和工具的集合。                 概念数据模型         逻辑数据模型         物理数据模型                   实体(Entity)         实体(Entity)         表(table)">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dmx20070206.github.io/img/007.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/009.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/013.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/014.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/015.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/017.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/018.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/019.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/020.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/021.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/022.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/023.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/024.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/025.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/026.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/027.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/029.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/030.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/010.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/015.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/011.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/012.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/031.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/032.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/033.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/034.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/035.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/036.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/037.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/038.png">
-<meta property="article:published_time" content="2024-12-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2024-12-20T15:45:42.552Z">
+<meta property="og:image" content="https://dmx20070206.github.io/img/040.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/041.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/042.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/043.png">
+<meta property="article:published_time" content="2024-12-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-20T15:47:31.378Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="DataBase">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/007.png">
+<meta name="twitter:image" content="https://dmx20070206.github.io/img/040.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>数据库八股文——关系代数 - Hexo</title>
+  <title>数据库八股文——E-R模型 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -244,7 +218,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="数据库八股文——关系代数"></span>
+            <span id="subtitle" data-typed-text="数据库八股文——E-R模型"></span>
           
         </div>
 
@@ -255,8 +229,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-12-16 00:00" pubdate>
-          December 16, 2024 am
+        <time datetime="2024-12-18 00:00" pubdate>
+          December 18, 2024 am
         </time>
       </span>
     
@@ -267,7 +241,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k words
+          2.4k words
         
       </span>
     
@@ -278,7 +252,7 @@
         
         
         
-          12 mins
+          20 mins
         
       </span>
     
@@ -324,117 +298,135 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">数据库八股文——关系代数</h1>
+            <h1 id="seo-header">数据库八股文——E-R模型</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="简单专门关系代数"><a href="#简单专门关系代数" class="headerlink" title="简单专门关系代数"></a>简单专门关系代数</h2><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
+                <h1 id="E-R-模型"><a href="#E-R-模型" class="headerlink" title="E-R 模型"></a>E-R 模型</h1><link rel="stylesheet" href="/css/DataBase_RelationModel.css">
 
-<p>关系代数是施加于关系之上的一组集合代数运算，每个运算都以一个或多个关系作为运算对象，并生成另外一个关系作为该关系运算的结果。</p>
-<h3 id="选择运算"><a href="#选择运算" class="headerlink" title="选择运算"></a>选择运算</h3><img src="/img/007.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<h2 id="数据模型概述"><a href="#数据模型概述" class="headerlink" title="数据模型概述"></a>数据模型概述</h2><p>数据库结构的基础是数据模型，它是描述数据(数据结构)、数据之间的联系，<span class="just_red">数据语义</span>即<span class="just_red">数据操作</span>，以及一致性(完整性)约束的概念和工具的集合。</p>
+<img src="/img/040.png" srcset="/img/loading.gif" lazyload alt="" style="height: 260px; margin-bottom: 20px;">
 
-<p>选择运算为一元运算，其中 p 为谓词语句，R 为输入的关系，结果是 R 中所有符合谓词语句 p 的元组构成的新关系。</p>
-<h3 id="投影运算"><a href="#投影运算" class="headerlink" title="投影运算"></a>投影运算</h3><img src="/img/009.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<table>
+    <tr>
+        <th>概念数据模型</th>
+        <th>逻辑数据模型</th>
+        <th>物理数据模型</th>
+    </tr>
+    <tr>
+        <td>实体(Entity)</td>
+        <td>实体(Entity)</td>
+        <td>表(table)</td>
+    </tr>
+    <tr>
+        <td>--</td>
+        <td>属性(Attribute)</td>
+        <td>列(Column)</td>
+    </tr>
+    <tr>
+        <td>--</td>
+        <td>标识符(Primary/Foreign Identifier)</td>
+        <td>键(Primary/Foreign Key)</td>
+    </tr>
+    <tr>
+        <td>关系</td>
+        <td>关系(Relation)</td>
+        <td>参照完整性约束(Reference)</td>
+    </tr>
+</table>
 
-<p>投影运算为一元运算，其中 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 为输入的属性列表，R 为输入的关系，结果是 R 中所有元组的 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub> 列构成的新关系。</p>
-<h2 id="复杂专门关系代数"><a href="#复杂专门关系代数" class="headerlink" title="复杂专门关系代数"></a>复杂专门关系代数</h2><h3 id="重命名运算"><a href="#重命名运算" class="headerlink" title="重命名运算"></a>重命名运算</h3><img src="/img/013.png" srcset="/img/loading.gif" lazyload alt="" style="height: 44px; border: 3px solid skyblue;">
+<h2 id="E-R-模型的基本元素"><a href="#E-R-模型的基本元素" class="headerlink" title="E-R 模型的基本元素"></a>E-R 模型的基本元素</h2><h3 id="实体-Entity"><a href="#实体-Entity" class="headerlink" title="实体(Entity)"></a>实体(Entity)</h3><p>一个实体(Entity)可以表示对于组织机构的业务非常重要的事物及其相关的信息集合，实体一般用集合名词或名词词组来表示，因此，实体也被称为实体集(Entity Set)。</p>
+<h3 id="实体实例-Entity-Instance"><a href="#实体实例-Entity-Instance" class="headerlink" title="实体实例(Entity Instance)"></a>实体实例(Entity Instance)</h3><p>实体实例是实体的一个具体出现，或者说是实体的一个具体的记录值。</p>
+<div class="just_red">实体对应类，实体示例对应对象。</div>
 
-<p>重命名运算为一元运算，其中 R 为输入的关系，S 为要修改的关系名，(A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 为依次要修改的属性名。<br>也可以不传入 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>) 参数，表示只需要修改关系名。</p>
-<p>有点巧妙，放这里了<br>查找最高工资的关系代数表达式：</p>
-<img src="/img/014.png" srcset="/img/loading.gif" lazyload alt="" style="height: 100px;">
+<h3 id="属性-Attribute"><a href="#属性-Attribute" class="headerlink" title="属性(Attribute)"></a>属性(Attribute)</h3><p>一个实体的所有实体实例，都具有相同的性质特征。使用属性来描述实体的性质特征，就像类内的属性一样。实体具有哪些属性，是根据用户对信息的需求来决定的。</p>
+<h4 id="实体的标识符"><a href="#实体的标识符" class="headerlink" title="实体的标识符"></a>实体的标识符</h4><p>在描述实体的属性中，存在一组属性(可以是单个属性，也可以是多个属性)，使用这组属性的特征，可以唯一地标识客观世界中的特定实体实例。如果这组属性不可约(减少任何一个属性)，就不能再唯一地标识这个特定实体实例，那么我们说，这组属性是候选的实体的<span class="just_red">标识符(Identifier)</span>。</p>
+<p>一个实体可能有多个候选的实体标识符。选择其中一组作为该实体的<span class="just_red">主实体标识符(Primary Identifier)</span>，其余的候选的实体标识符称为<span class="just_red">辅助的实体标识符(Auxiliary Identifier)</span>。</p>
+<div class="sub_title">在多个候选的实体标识符中选择一个作为主标识符的标准(Bruce1992)</div>
+<ul>
+    <li>选择在实体实例的生命周期内不会被改变其值的属性作为标识符</li>
+    <li>选择实体实例中有有效值且不为空(或未知)的属性作为标识符。如果标识符是个复合属性，则
+    要确保组成标识符的所有属性的属性值都有效</li>
+    <li>避免使用可以表示分类、位置信息等所谓的智能标识符(或键) </li>
+    <li>尽量使用单一属性代理标识符替代复合属性标识符</li>
+</ul>
 
-<p>通过位置标记也可以获取第 i 个属性，使用关键字 $。</p>
-<img src="/img/015.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px;">
+<h4 id="属性的分类"><a href="#属性的分类" class="headerlink" title="属性的分类"></a>属性的分类</h4><p>E-R 模型中的属性可以不是原子值，原子值指简单属性 + 单值属性。</p>
+<h5 id="简单属性-复合属性-Simple-Attribute-Composite-Attribute"><a href="#简单属性-复合属性-Simple-Attribute-Composite-Attribute" class="headerlink" title="简单属性&#x2F;复合属性 Simple Attribute &#x2F; Composite Attribute"></a>简单属性&#x2F;复合属性 Simple Attribute &#x2F; Composite Attribute</h5><p>简单属性：不能划分为更小部分的属性<br>复合属性：由若干个有意义的详细属性组合成的属性</p>
+<p>例如：<br><span class="sub_title">年龄</span>是一个简单属性，因为其不能再划分为更小的部分<br><span class="sub_title">简历</span>是一个复合属性，因为其可以继续分成姓名、年龄、学历等属性</p>
+<h5 id="单值属性-多值属性-single-valued-multi-valued"><a href="#单值属性-多值属性-single-valued-multi-valued" class="headerlink" title="单值属性&#x2F;多值属性 single-valued &#x2F; multi-valued"></a>单值属性&#x2F;多值属性 single-valued &#x2F; multi-valued</h5><p>单值属性：属性对一个特定实体都只有单独的一个值<br>多值属性：属性对某个特定实体而言，可能对应于一组值</p>
+<p>用 {} 将属性名包起来表示该属性为多值属性</p>
+<p>例如：<br><span class="sub_title">学号</span>是一个单值属性，因为每一个实体实例只能拥有一个学号<br><span class="sub_title">手机号</span>是一个多值属性，因为每一个实体实例可以拥有多个手机号</p>
+<h5 id="必要属性-可选属性-Mandatory-Attribute-Optional-Attribute"><a href="#必要属性-可选属性-Mandatory-Attribute-Optional-Attribute" class="headerlink" title="必要属性&#x2F;可选属性 Mandatory Attribute &#x2F; Optional Attribute"></a>必要属性&#x2F;可选属性 Mandatory Attribute &#x2F; Optional Attribute</h5><p>必要属性：每个实体实例必须存在的属性<br>可选属性：每个实体实例可以为空值的属性</p>
+<p><span class="sub_title">身份证号</span>是一个必要属性，因为身份证号必须填写<br><span class="sub_title">性别</span>是一个可选属性，因为性别可以不填写</p>
+<h5 id="存储属性-派生属性-Stored-Attribute-Derive-Attribute"><a href="#存储属性-派生属性-Stored-Attribute-Derive-Attribute" class="headerlink" title="存储属性&#x2F;派生属性 Stored Attribute &#x2F; Derive Attribute"></a>存储属性&#x2F;派生属性 Stored Attribute &#x2F; Derive Attribute</h5><p>派生属性：值从别的相关属性或实体派生出来<br>存储属性：不属于派生属性</p>
+<p>派生属性可以定期计算并存储，也可以完全不存储，等需要时计算。</p>
+<p><span class="sub_title">出生年份</span>是一个派生属性，因为出生年份可以通过当前日期减去年龄算出<br><span class="sub_title">年龄</span>是一个存储属性，因为它不是派生属性</p>
+<h5 id="复杂属性-Complex-Attribute"><a href="#复杂属性-Complex-Attribute" class="headerlink" title="复杂属性 Complex Attribute"></a>复杂属性 Complex Attribute</h5><p>复杂属性：复合属性和多值属性通过嵌套方式组合构成</p>
+<p>用 () 将复合属性的各个组成部分包起来，用逗号分隔。</p>
+<h3 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h3><p>联系是客观世界中，事物内部或者事物之间的规则。数据规则表示的是数据间如何关联，行为规则表示当属性为某个特殊值时，应当进行何种操作。E-R模型可以建模数据规则，但不能建模行为规则。</p>
+<h4 id="结构完整性规则-基数约束规则"><a href="#结构完整性规则-基数约束规则" class="headerlink" title="结构完整性规则(基数约束规则)"></a>结构完整性规则(基数约束规则)</h4><h5 id="最大基数约束规则"><a href="#最大基数约束规则" class="headerlink" title="最大基数约束规则"></a>最大基数约束规则</h5><p>一个联系的最大基数是指：实体 B 中的实体实例可以和实体 A 中的实体实例发生关联的最大个数</p>
+<ul>
+    <li>一对一</li>
+    <li>一对多/多对一</li>
+    <li>多对多</li>
+</ul>
 
-<h3 id="连接运算"><a href="#连接运算" class="headerlink" title="连接运算"></a>连接运算</h3><img src="/img/017.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<ul>
+    <li>一个教师只能指导一个学生，一个学生只能被一个教师所指导</li>
+    <li>一个教师可以指导多个学生，一个学生只能被一个教师所指导</li>
+    <li>一个教师可以指导多个学生，一个学生可以被多个教师所指导</li>
+</ul>
 
-<h4 id="第一种连接"><a href="#第一种连接" class="headerlink" title="第一种连接"></a>第一种连接</h4><img src="/img/018.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
+<h5 id="最小基数约束规则"><a href="#最小基数约束规则" class="headerlink" title="最小基数约束规则"></a>最小基数约束规则</h5><p>一个联系的最小基数是指：实体 B 中的实体实例可以和实体 A 中的实体实例发生关联的最小个数。</p>
+<ul>
+    <li>部分参与</li>
+    <li>完全参与</li>
+</ul>
 
-<p>先求笛卡尔积，再进行选择运算，其中选择运算的谓词语句和连接的谓词语句相同。</p>
-<h4 id="第二种连接"><a href="#第二种连接" class="headerlink" title="第二种连接"></a>第二种连接</h4><img src="/img/019.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
+<ul>
+    <li>一个教师可以指导学生，也可以不指导学生</li>
+    <li>一个教师至少指导一个学生</li>
+</ul>
 
-<p>先求笛卡尔积，再进行选择运算，其中选择运算的谓词语句和连接的谓词语句相同。</p>
-<h4 id="自然连接"><a href="#自然连接" class="headerlink" title="自然连接"></a>自然连接</h4><img src="/img/020.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<h4 id="参照完整性约束规则"><a href="#参照完整性约束规则" class="headerlink" title="参照完整性约束规则"></a>参照完整性约束规则</h4><p>参照完整性约束规则确保属性取值的有效性，只能取所参照的实体对应属性中存在的值。</p>
+<p>参照完整性大多是人为规定的，不能在 E-R 模型中表示出来。</p>
+<h4 id="联系实例"><a href="#联系实例" class="headerlink" title="联系实例"></a>联系实例</h4><p>联系和联系实例类似于实体和实体实例</p>
+<ul>
+    <li>人类是一个实体，陈髋髋是一个实体实例</li>
+    <li>老师指导学生的指导是一个联系，陈宽宽老师指导陈髋髋学生是一个联系实例</li>
+</ul>
 
-<p>先求笛卡尔积，再找到 R 和 S 的<span style="color: red;">公共属性</span>，例如为 (A<sub>1</sub>, A<sub>2</sub>, …, A<sub>n</sub>)，通过谓词语句 R.A<sub>1</sub> &#x3D; S.A<sub>1</sub> … R.A<sub>n</sub> &#x3D; S.A<sub>n</sub> 筛选出符合要求的元组。</p>
-<p>对于两个关系 R, S，我们称 R 的悬浮元组为不满足 R.A<sub>1</sub> &#x3D; S.A<sub>1</sub> … R.A<sub>n</sub> &#x3D; S.A<sub>n</sub> 的元组，S 同理。</p>
-<p><span style="color: red;">外连接</span> 可以将悬浮元组保留表中，在其他属性上填写 NULL。<br><span style="color: red;">左外连接</span> 可以将左关系 R 悬浮元组保留表中，在其他属性上填写 NULL。<br><span style="color: red;">右外连接</span> 可以将右关系 S 悬浮元组保留表中，在其他属性上填写 NULL。</p>
-<p>自然连接结果属性出现的顺序为：相同属性 &gt; 只属于第一个关系的属性 &gt; 只属于第二个关系的属性。</p>
-<p>代数运算表示，但是我不想看：</p>
-<img src="/img/021.png" srcset="/img/loading.gif" lazyload alt="" style="height: 300px;">
+<h4 id="联系的描述性属性-关联"><a href="#联系的描述性属性-关联" class="headerlink" title="联系的描述性属性(关联)"></a>联系的描述性属性(关联)</h4><p>联系的描述性属性描述联系本身的特征，联系的属性本身不属于任何一个实体，仅仅用来描述联系的特征。</p>
+<p>关联本身没有标识符，关联适合用来建模一次性的联系，而不是多次同类的联系。例如老师和学生之间的指导关系，教师成为学生的导师可以使用关联描述(是导师&#x2F;不是导师)，成为导师后多次指导学生，每次指导过程为同类联系，不能用关联建模。</p>
+<h4 id="联系的度"><a href="#联系的度" class="headerlink" title="联系的度"></a>联系的度</h4><p>联系的度指参与联系的实体的个数，称为 n 元关系。</p>
+<img src="/img/041.png" srcset="/img/loading.gif" lazyload alt="" style="height: 500px;">
 
-<h3 id="赋值运算"><a href="#赋值运算" class="headerlink" title="赋值运算"></a>赋值运算</h3><img src="/img/022.png" srcset="/img/loading.gif" lazyload alt="" style="height: 35px; border: 3px solid skyblue;">
+<h4 id="关联实体"><a href="#关联实体" class="headerlink" title="关联实体"></a>关联实体</h4><p>联系是一个动词，关联实体是一个动名词。</p>
+<p>教师指导学生做项目是一个三元关系，其中三个实体是教师、学生、项目。<br>将指导行为转变成指导活动，将三元关系转换成三个二元关系。</p>
+<p>本质是将关联提升为一个关联实体，关联实体是由行为动作<span class="just_red">名词化</span>而抽象出来的实体。此时，关联实体具有一个自己的标识符。</p>
+<h4 id="实体参与联系的角色"><a href="#实体参与联系的角色" class="headerlink" title="实体参与联系的角色"></a>实体参与联系的角色</h4><p>当参与一个联系的多个实体名字不同时，角色是隐含的<br>当参与一个联系的多个实体名字相同时，需要为实体集指定参与联系的角色名</p>
+<ul>
+    <li>递归联系：课程和课程的先修/后修关系</li>
+    <li>同一组实体之间的多种联系：员工和企业的工作/股份关系</li>
+</ul>
 
-<p>E 为关系代数表达式，T 为临时关系变量，通过赋值运算可以分解复杂的关系代数表达式，使查询变得简单。</p>
-<img src="/img/023.png" srcset="/img/loading.gif" lazyload alt="" style="height: 60px;">
+<h3 id="强实体和弱实体"><a href="#强实体和弱实体" class="headerlink" title="强实体和弱实体"></a>强实体和弱实体</h3><p>弱实体集是指在数据库中不能独立存在的实体集，它的存在依赖于另一个称为“强实体集”的实体集。弱实体集没有主键属性(Primary Key)，而是通过与强实体集的关系以及自身的部分属性(称为部分键)来唯一标识其实体。</p>
+<img src="/img/042.png" srcset="/img/loading.gif" lazyload alt="" style="width: 100%;">
 
-<h3 id="除运算"><a href="#除运算" class="headerlink" title="除运算"></a>除运算</h3><img src="/img/024.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
+<p>弱实体集特点：</p>
+<ul>
+    <li>依赖性：弱实体集依赖于强实体集存在。每个弱实体都<span class="just_red">必须与一个强实体关联</span>，才能存在。</li>
+    <li>部分键：弱实体集使用<span class="just_red">部分键(Partial Key)</span>来区分不同的弱实体。部分键在弱实体集内部是唯一的，但不能单独作为唯一标识符，需要结合强实体集的主键一起使用。</li>
+    <li>标识关系：弱实体集和强实体集之间存在一种称为<span class="just_red">标识关系(Identifying Relationship)</span>的特殊关系。这种关系帮助弱实体集通过引用强实体集的主键来唯一标识自身的实例。</li>
+</ul>
 
-<p>假设有两个关系 R(X, Y), S(Z) 其中，Y 和 Z 有相容性。</p>
-<p>则 R(X, Y) ÷ S(Z) 为：<br>1 结果的属性集为 X，且是 R 中 X 的一个子集<br>2 保留下来的元组和 S(Z) 求笛卡尔积，得到的结果必须包含于 R(X, Y)<br>3 S 中的属性必须包含于 R 中</p>
-<h3 id="去重运算"><a href="#去重运算" class="headerlink" title="去重运算"></a>去重运算</h3><img src="/img/025.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
+<p>E-R 图中，用双矩形框表示弱实体，标识关系用双菱形标识，部分键用虚线下划线表示。</p>
+<img src="/img/043.png" srcset="/img/loading.gif" lazyload alt="" style="width: 100%;">
 
-<p>去重运算可以去除关系中的重复元组，并返回去重之后的关系。</p>
-<h3 id="广义投影运算"><a href="#广义投影运算" class="headerlink" title="广义投影运算"></a>广义投影运算</h3><img src="/img/026.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
-
-<p>允许在投影列表中使用算术运算和字符串函数等来对投影运算进行扩展，写过 miniob 都说好。</p>
-<h3 id="聚集运算"><a href="#聚集运算" class="headerlink" title="聚集运算"></a>聚集运算</h3><img src="/img/027.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
-
-<p>其中 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>k</sub> 为 R 中的属性列，F 为作用在属性 A 上的聚集函数，例如 count, sum, avg, min, max 等。</p>
-<p>通过书法体 G 还可以完成 SQL 语句中的 GROUP BY 功能。</p>
-<p>通过 distinct 关键字也可以完成去重功能，例如聚集函数 count-distionct。</p>
-<img src="/img/029.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
-   
-<p>其中 G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 为属性集合，要求根据属性集合分组后，同一组的属性集合取值一样，不同组的属性集合取值不一样。也即，各组属性可以通过 G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 来唯一区分。</p>
-<p>G<sub>1</sub>, G<sub>2</sub>, …, G<sub>n</sub> 为可选参数，如果不填写该参数，将所有元组视作一个组别。</p>
-<h3 id="排序运算"><a href="#排序运算" class="headerlink" title="排序运算"></a>排序运算</h3><img src="/img/030.png" srcset="/img/loading.gif" lazyload alt="" style="height: 50px; border: 3px solid skyblue;">
-
-<p>其中 A<sub>1</sub>, A<sub>2</sub>, …, A<sub>k</sub> 为 R 中的属性列，按照顺序依次对元组进行排序。</p>
-<h2 id="传统集合运算"><a href="#传统集合运算" class="headerlink" title="传统集合运算"></a>传统集合运算</h2><h3 id="关系的相容性"><a href="#关系的相容性" class="headerlink" title="关系的相容性"></a>关系的相容性</h3><p>关系 R 和 关系 S 相容的充分必要条件是：</p>
-<ol>
-<li>R 和 S 中的属性个数相同</li>
-<li>R 和 S 中属性存在一一对应关系</li>
-<li>R 和 S 中的对应属性的域相同</li>
-</ol>
-<h3 id="并运算"><a href="#并运算" class="headerlink" title="并运算"></a>并运算</h3><img src="/img/010.png" srcset="/img/loading.gif" lazyload alt="" style="height: 40px; border: 3px solid skyblue;">
-
-<p>并运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的并集。</p>
-<h3 id="交运算"><a href="#交运算" class="headerlink" title="交运算"></a>交运算</h3><img src="/img/015.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
-
-<p>交运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的交集。</p>
-<h3 id="差运算"><a href="#差运算" class="headerlink" title="差运算"></a>差运算</h3><img src="/img/011.png" srcset="/img/loading.gif" lazyload alt="" style="height: 45px; border: 3px solid skyblue;">
-
-<p>差运算为二元运算，其中 R, S 为输入的两个<span style="color: red;">相容</span>关系，结果是 R 和 S 的差集。</p>
-<h3 id="笛卡儿积运算"><a href="#笛卡儿积运算" class="headerlink" title="笛卡儿积运算"></a>笛卡儿积运算</h3><img src="/img/012.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
-
-<p>笛卡儿积运算为二元运算，其中 R, S 为输入的两个关系，结果是 R 和 S 的笛卡尔积。<br>若关系 R 是 m 度关系，有 x 个元组；关系 S 是 n 度关系，有 y 个元组；则笛卡尔积为 m + n 度关系，元组个数为 x × y。</p>
-<p>换句话说，一个关系一定是：其所有属性的域的笛卡儿积的一个子集。</p>
-<h2 id="关系演算语言"><a href="#关系演算语言" class="headerlink" title="关系演算语言"></a>关系演算语言</h2><h3 id="元组关系演算语言"><a href="#元组关系演算语言" class="headerlink" title="元组关系演算语言"></a>元组关系演算语言</h3><img src="/img/031.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
-
-<p>P 是原子公式，有以下三种形式：</p>
-<img src="/img/032.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
-
-<p>其中 t 为元组变量，R 为关系。</p>
-<img src="/img/033.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
-
-<p>其中 t, s 为元组变量，x, y 为关系中在元组 t, s 下的属性。</p>
-<img src="/img/034.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;"> 
-
-<p>其中 c 是属于 x 域中的常量。</p>
-<h3 id="域关系演算语言"><a href="#域关系演算语言" class="headerlink" title="域关系演算语言"></a>域关系演算语言</h3><img src="/img/035.png" srcset="/img/loading.gif" lazyload alt="" style="height: 42px; border: 3px solid skyblue;">
-
-<p>其中 x<sub>1</sub>, x<sub>2</sub>, …, x<sub>k</sub> 是域变量或者域常量。</p>
-<blockquote>
-<p>元组关系演算语言和域关系演算语言不是很好理解，下面附上一道例题</p>
-</blockquote>
-<img src="/img/036.png" srcset="/img/loading.gif" lazyload alt="" style="height: 400px;">
-
-<img src="/img/037.png" srcset="/img/loading.gif" lazyload alt="" style="height: 250px;">
-
-<p>感觉不太好用言语形容为什么做出来的答案是这样（尤其是域关系演算），多做题吧。</p>
-<p>同时，关系代数表达式也有自己的优先级：</p>
-<img src="/img/038.png" srcset="/img/loading.gif" lazyload alt="" style="width: 100%;">
+<p>在关系数据库中，弱实体集通常通过外键约束来实现，确保弱实体集中的实体只能在与强实体集关联时存在。</p>
+<h2 id="E-R-模型和关系模型的转换"><a href="#E-R-模型和关系模型的转换" class="headerlink" title="E-R 模型和关系模型的转换"></a>E-R 模型和关系模型的转换</h2>
                 
               </div>
             
@@ -458,8 +450,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>数据库八股文——关系代数</div>
-      <div>https://dmx20070206.github.io/2024/12/16/DataBase2/</div>
+      <div>数据库八股文——E-R模型</div>
+      <div>https://dmx20070206.github.io/2024/12/18/DataBase3/</div>
     </div>
     <div class="license-meta">
       
@@ -471,7 +463,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>December 16, 2024</div>
+          <div>December 18, 2024</div>
         </div>
       
       
@@ -503,9 +495,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/12/17/DataBase_practice1/" title="数据库八股文——关系数据库习题">
+                      <a href="/2024/12/20/DataBase4/" title="数据库八股文——规范化理论">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数据库八股文——关系数据库习题</span>
+                        <span class="hidden-mobile">数据库八股文——规范化理论</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -513,8 +505,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/12/15/DataBase1/" title="数据库八股文——关系模型的基本概念">
-                        <span class="hidden-mobile">数据库八股文——关系模型的基本概念</span>
+                      <a href="/2024/12/17/DataBase_practice1/" title="数据库八股文——关系数据库习题">
+                        <span class="hidden-mobile">数据库八股文——关系数据库习题</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
