@@ -1,0 +1,79 @@
+/* General reset and font styling */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f3f6;
+    /* Light grey background for a clean look */
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+
+/* Styling for grammar rules */
+.grammar {
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+
+.rule {
+    margin: 18px 0;
+    padding: 12px;
+    border-left: 4px solid #2980b9;
+    /* Blue vertical line for emphasis */
+    background-color: #ecf0f1;
+    /* Light grey background for each rule */
+    border-radius: 6px;
+}
+
+.lhs {
+    font-weight: bold;
+    background: linear-gradient(90deg, #00b894, #1abc9c);
+    /* Gradient from purple to blue */
+    -webkit-background-clip: text;
+    color: transparent;
+    /* Clip the background to the text */
+}
+
+.rhs {
+    color: #e67e22;
+    margin-left: 10px;
+}
+
+.rhs:not(:last-child) {
+    margin-right: 10px;
+}
+
+/* Pipe separator for alternatives */
+.rhs:contains("|") {
+    display: inline-block;
+}
+
+/* Add hover effect for the rules */
+.rule:hover {
+    background-color: #dfe6e9;
+    /* Darker grey when hovering */
+    cursor: pointer;
+}
+
+/* Media Query for responsive design */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .grammar {
+        font-size: 1em;
+    }
+}
