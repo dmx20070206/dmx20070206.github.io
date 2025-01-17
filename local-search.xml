@@ -4,44 +4,6 @@
   
   
   <entry>
-    <title>编译原理八股文——文法和语言</title>
-    <link href="/2025/01/05/compile1/"/>
-    <url>/2025/01/05/compile1/</url>
-    
-    <content type="html"><![CDATA[<h1 id="文法和语言"><a href="#文法和语言" class="headerlink" title="文法和语言"></a>文法和语言</h1><link rel="stylesheet" href="/css/compile.css"><h2 id="符号、符号串及其集合的运算"><a href="#符号、符号串及其集合的运算" class="headerlink" title="符号、符号串及其集合的运算"></a>符号、符号串及其集合的运算</h2><p>任何一种语言都是由该语言的基本符号组成的符号串的集合</p><h3 id="字母表和符号串"><a href="#字母表和符号串" class="headerlink" title="字母表和符号串"></a>字母表和符号串</h3><p>字母表是元素的非空又穷集合，又称符号集，例如对于全部由小写字母组成的字符串，其字母表为 {a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z}</p><p>符号串是字母表中的符号组成的任何有序序列</p><h3 id="字母表上的运算"><a href="#字母表上的运算" class="headerlink" title="字母表上的运算"></a>字母表上的运算</h3><ul>    <li>字母表的乘积：{a, b}{0, 1} = {a0, a1, b0, b1}</li>    <li>字母表的 n 次幂：{0, 1}<sup>3</sup> = {0, 1}{0, 1}{0, 1}，0 次幂是空串</li>    <li>字母表的正闭包：字母表从 1 次方到 n 次方求并</li>    <li>字母表的克林闭包：正闭包加空串</li></ul><h3 id="串"><a href="#串" class="headerlink" title="串"></a>串</h3><p>串是字母表中符号的一个有穷序列，串的长度指串中符号个数，空串长度为 0</p><h2 id="文法的直观概念"><a href="#文法的直观概念" class="headerlink" title="文法的直观概念"></a>文法的直观概念</h2><p>对语言结构的描述和定义，即在形式上用来描述和规定语言结构的称为 “文法”</p><h3 id="规则"><a href="#规则" class="headerlink" title="规则"></a>规则</h3><p>&lt;句子&gt; -&gt; &lt;名词短语&gt;&lt;动词短语&gt;<br>&lt;名词短语&gt; -&gt; &lt;形容词&gt;&lt;名词短语&gt;<br>&lt;形容词&gt; -&gt; little<br>…<br>尖括号中是语法成分，未用尖括号的部分是语言的基本符号</p><p>每一条都是一个规则，也称为产生式</p><h3 id="推导"><a href="#推导" class="headerlink" title="推导"></a>推导</h3><p>使用某一条规则，用左半部分替换右半部分，称为使用规则推导句子</p><h2 id="文法和语言的形式化定义"><a href="#文法和语言的形式化定义" class="headerlink" title="文法和语言的形式化定义"></a>文法和语言的形式化定义</h2><img src="/img/compile/007.png" alt="" style="width: 60%;"><ul>    <li>V<sub>T</sub>：终结符集合</li>    <li>V<sub>N</sub>：非终结符集合</li>    <li>P：产生式集合</li>    <li>S：开始符号</li></ul><img src="/img/compile/008.png" alt="" style="width: 80%;"><h2 id="推导和规约"><a href="#推导和规约" class="headerlink" title="推导和规约"></a>推导和规约</h2><p>句子的推导是从开始符号起，不断用表达式的左部去替换右部，直到推导出特定句子</p><p>句子的归约是从指定句子起，不断将句型的成分根据表达式变成左部，直到归约出开始符号</p><ul>    <li>句子的推导：从生成语言的角度</li>    <li>句子的归约：从识别语言的角度</li></ul><h2 id="语言的形式化定义"><a href="#语言的形式化定义" class="headerlink" title="语言的形式化定义"></a>语言的形式化定义</h2><p>由文法 G 开始符号 S 推导出的所有句子构成的集合称为文法 G 生成的语言，记为 L(G)</p><ul>    <li>句型：推导/归约过程中既可以包含终结符也可以包含非终结符的部分</li>    <li>句子：推导/归约过程中只包含终结符的句型</li></ul><p>两个文法生成的语言相同，即 L(G1) &#x3D; L(G2)，则称 G1 和 G2 等价</p><h2 id="文法的类型"><a href="#文法的类型" class="headerlink" title="文法的类型"></a>文法的类型</h2><h3 id="0-型文法-——-无限制文法"><a href="#0-型文法-——-无限制文法" class="headerlink" title="0 型文法 —— 无限制文法"></a>0 型文法 —— 无限制文法</h3><img src="/img/compile/009.png" alt="" style="width: 70%;"><h3 id="1-型文法-——-上下文有关文法-CSG"><a href="#1-型文法-——-上下文有关文法-CSG" class="headerlink" title="1 型文法 —— 上下文有关文法 CSG"></a>1 型文法 —— 上下文有关文法 CSG</h3><img src="/img/compile/010.png" alt="" style="width: 80%;"><h3 id="2-型文法-——-上下文无关文法-CFG"><a href="#2-型文法-——-上下文无关文法-CFG" class="headerlink" title="2 型文法 —— 上下文无关文法 CFG"></a>2 型文法 —— 上下文无关文法 CFG</h3><img src="/img/compile/011.png" alt="" style="width: 55%;"><h3 id="3-型文法-——-正则文法-RG"><a href="#3-型文法-——-正则文法-RG" class="headerlink" title="3 型文法 —— 正则文法 RG"></a>3 型文法 —— 正则文法 RG</h3><img src="/img/compile/012.png" alt="" style="width: 75%;"><h2 id="CFG-语法分析树"><a href="#CFG-语法分析树" class="headerlink" title="CFG 语法分析树"></a>CFG 语法分析树</h2><p>根节点的标号为文法开始符号</p><p>内部结点表示一个产生式的应用，该结点的标号是此产生式左部。该结点的子结点的标号从左到右构成了产生式的右部</p><p>叶节点的标号既可以是终结符也可以是非终结符，从左到右排列叶节点得到的符号串称为这棵树的产出或边缘</p><img src="/img/compile/013.png" alt="" style="width: 75%;"><p>每一个推导对应一棵分析树</p><h3 id="短语、直接短语、句柄"><a href="#短语、直接短语、句柄" class="headerlink" title="短语、直接短语、句柄"></a>短语、直接短语、句柄</h3><p>给定一个句型，其分析树中的每一棵子树的边缘称为该句型的一个短语</p><p>如果子树只有父子两代结点，那么这棵子树的边缘称为该句型的一个直接短语</p><p><strong>对于一棵语法树，所有非叶子结点构成的子树的边缘的集合为短语集合，如果子树只有两层，则为直接短语</strong></p><p>最靠左的一棵只有两层的子树对应的直接短语称为句柄</p><h3 id="二义性"><a href="#二义性" class="headerlink" title="二义性"></a>二义性</h3><p>如果一个文法可以为某个句子生成多棵分析树，则称这个文法是二义的</p><p>我们无法检验一个文法是否具有二义性，但是可以提出一组规则，满足这组规则的文法一定没有二义性</p><h2 id="有关文法实际应用的一些说明"><a href="#有关文法实际应用的一些说明" class="headerlink" title="有关文法实际应用的一些说明"></a>有关文法实际应用的一些说明</h2><p>文法中不能含有有害规则和多余规则</p><ul>    <li>有害规则：例如 D -> D 这类会引起二义性的推导</li>    <li>多余规则：文法中任何句子的推导都不会用到的规则，不可到达 or 不可终止</li></ul>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>Compile</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>编译原理八股文——绪论</title>
-    <link href="/2025/01/04/compile0/"/>
-    <url>/2025/01/04/compile0/</url>
-    
-    <content type="html"><![CDATA[<h1 id="绪论"><a href="#绪论" class="headerlink" title="绪论"></a>绪论</h1><link rel="stylesheet" href="/css/compile.css"><h2 id="什么是编译程序"><a href="#什么是编译程序" class="headerlink" title="什么是编译程序"></a>什么是编译程序</h2><p>翻译程序和解释程序的区别：</p><ul>    <li>翻译程序：将源代码翻译成目标代码</li>    <li>解释程序：将目标代码直接得出结果，目标代码只是其中间过程</li>    <li>编译程序将全部源代码先成功编译后才会运行，例如编译 C++ 程序，如果遇到错误一条语句都不会运行</li>    <li>解释程序会将源代码一行一行的翻译成机器语言并直接运行，例如运行 python 程序、bash 脚本，程序会一直执行到发生错误</li>    <li>编译程序的错误报告是在整个程序编译完成后，解释程序的错误报告是在对应报错的指令后</li></ul><img src="/img/compile/001.png" alt="" style="width: 100%;"><p>编译程序和汇编程序的区别：</p><ul>    <li>编译程序：将高级语言翻译成低级语言</li>    <li>汇编程序：将汇编语言翻译成机器二进制码</li></ul><h2 id="编译程序的组成结构"><a href="#编译程序的组成结构" class="headerlink" title="编译程序的组成结构"></a>编译程序的组成结构</h2><img src="/img/compile/002.png" alt="" style="width: 80%;"><h3 id="词法分析-Scanner"><a href="#词法分析-Scanner" class="headerlink" title="词法分析 Scanner"></a>词法分析 Scanner</h3><p>任务：根据语言的构词规则识别单词符号</p><p>从左向右逐行扫描源程序的字符，识别出各个单词，确定单词的类型，将识别出的单词转换成统一的机内表示 —— token</p><img src="/img/compile/003.png" alt="" style="width: 85%;"><h3 id="语法分析-Parser"><a href="#语法分析-Parser" class="headerlink" title="语法分析 Parser"></a>语法分析 Parser</h3><p>任务：根据语言的语法规则对词法分析的输出 token 串进行分析，识别出一个一个语法成分，并进行语法检查</p><p>在 token 序列中识别出各类短语，并构造语法分析树</p><img src="/img/compile/004.png" alt="" style="width: 80%;"><h3 id="语义分析-Semantic-Analyzer"><a href="#语义分析-Semantic-Analyzer" class="headerlink" title="语义分析 Semantic Analyzer"></a>语义分析 Semantic Analyzer</h3><p>任务：根据语言的语义规则对语法分析所识别的各种语法成分的意义(即语义)进行确定并加以处理</p><img src="/img/compile/005.png" alt="" style="width: 80%;"><h3 id="中间码生成器-Intermediate-Code-Generator"><a href="#中间码生成器-Intermediate-Code-Generator" class="headerlink" title="中间码生成器 Intermediate Code Generator"></a>中间码生成器 Intermediate Code Generator</h3><p>任务：从源程序的树形或其它形式，产生源程序的中间代码</p><p>包括三地址码和语法树，三地址码用三元式&#x2F;四元式表示</p><img src="/img/compile/006.png" alt="" style="width: 60%;"><h3 id="目标码生成器-Target-Code-Generator"><a href="#目标码生成器-Target-Code-Generator" class="headerlink" title="目标码生成器 Target Code Generator"></a>目标码生成器 Target Code Generator</h3><p>任务：将中间代码转换成汇编代码或者机器语言</p><p>目标代码生成的一个重要任务是为程序中使用的变量合理分配寄存器</p><h3 id="代码优化"><a href="#代码优化" class="headerlink" title="代码优化"></a>代码优化</h3><p>任务：通过等价程序变换改进代码，使其与逆行的更快有一些、占用空间更小一些</p><h3 id="符号表管理"><a href="#符号表管理" class="headerlink" title="符号表管理"></a>符号表管理</h3><p>符号表管理是一个贯穿编译全过程的工作，编译程序在分析源程序时，需要记录标识符的各种属性信息</p><p>在语义分析和代码生成阶段，还要对建立的符号表进行检索，提取相应的属性信息 —— 类型、作用域、分配存储信息</p><h3 id="错误处理-Error-Handler"><a href="#错误处理-Error-Handler" class="headerlink" title="错误处理 Error Handler"></a>错误处理 Error Handler</h3><ul>    <li>错误可发生在编译的各个阶段，错误处理也是贯穿编译全过程</li>    <li>词法分析阶段可查出的错误，如标识符的组成不符合词法规则</li>    <li>语句结构错误是在语法分析中可查出的错误</li>    <li>语义分析阶段可查出的错误，即结构正确，但所涉及的操作无意义或错误</li>    <li>在编译时查出的，Compile-time error，在运行时表现才表现出来的错误叫 Run-time error</li></ul><h2 id="编译程序的前端和后端"><a href="#编译程序的前端和后端" class="headerlink" title="编译程序的前端和后端"></a>编译程序的前端和后端</h2><ul>    <li>前端：分析部分，和源语言相关</li>    <li>后端：综合部分，和目标语言相关</li></ul><p>前端包括编译逻辑结构中的分析部分即词法分析、语法分析、语义分析和中间代码生成，除此还包括符号表建造及相应分析中的错误处理以及与机器无关的优化部分</p><p>后端包括与目标机有关的部分，即综合部分，它包括目标代码生成及生成期间对符号表的相应检索操作和错误处理操作，以及与机器相关的代码优化部分</p><p>将编译系统划分为前后端，有利于移植编译系统和利用后端为同一目标机配置不同语言的编译系统</p><h2 id="编译程序中的-遍-pass"><a href="#编译程序中的-遍-pass" class="headerlink" title="编译程序中的 遍 pass"></a>编译程序中的 遍 pass</h2><p>对源程序(或其中间形式)从头至尾扫描一次并进行有关加工处理，生成新的中间形式或最终目标程序，称为一遍</p><ul>    <li>目标质量高低，高则多遍</li>    <li>机器内存大小，小则多遍</li>    <li>源语言简繁：繁则多遍</li>    <li>设计人员多少：多则多遍</li></ul>]]></content>
-    
-    
-    
-    <tags>
-      
-      <tag>Compile</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>downfall</title>
     <link href="/2024/12/21/downfall/"/>
     <url>/2024/12/21/downfall/</url>
