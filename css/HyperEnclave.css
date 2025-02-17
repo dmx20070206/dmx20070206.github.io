@@ -1,0 +1,44 @@
+/* 原文内容样式 */
+.original-text {
+    /* 视觉层次 */
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+
+    /* 文字排版 */
+    font-family: 'Georgia', serif;
+
+    /* 适合学术文章的衬线字体 */
+    font-size: 16px;
+    line-height: 1.8;
+    color: #2d3436;
+    text-align: justify;
+    margin-bottom: 10px;
+}
+
+/* 解析内容样式 */
+.analysis-section {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+
+    /* 解析内容文字样式 */
+    font-family: 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #444;
+    margin: 1.2em 0;
+    padding-left: 1.2em;
+    border-left: 2px solid #a5d8ff;
+    border-right: 2px solid #a5d8ff;
+}
+
+/* 悬浮交互效果 */
+.original-text {
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-3px);
+    }
+}

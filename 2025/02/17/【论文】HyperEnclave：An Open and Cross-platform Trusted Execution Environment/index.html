@@ -1,0 +1,1319 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/DMX.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="DM-X~X~X">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="论文思路整理Threat Module     page-table-based attacks     enclave malware attacks     memory mapping attacks     controlled-channel attacks   论文精读Abstract     A number of trusted execution environments (">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment">
+<meta property="og:url" content="https://dmx20070206.github.io/2025/02/17/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91HyperEnclave%EF%BC%9AAn%20Open%20and%20Cross-platform%20Trusted%20Execution%20Environment/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="论文思路整理Threat Module     page-table-based attacks     enclave malware attacks     memory mapping attacks     controlled-channel attacks   论文精读Abstract     A number of trusted execution environments (">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F1.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F2.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F3.png">
+<meta property="article:published_time" content="2025-02-16T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-02-17T18:09:01.965Z">
+<meta property="article:author" content="DM-X~X~X">
+<meta property="article:tag" content="GPU TEE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dmx20070206.github.io/img/HyperEnclave/F1.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment - Hexo</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"dmx20070206.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>DM-X~X~X</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/" target="_self">
+                <i class="iconfont icon-link-fill"></i>
+                <span>Links</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-02-17 00:00" pubdate>
+          February 17, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 mins
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> views
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <link rel="stylesheet" href="/css/HyperEnclave.css">
+
+<h2 id="论文思路整理"><a href="#论文思路整理" class="headerlink" title="论文思路整理"></a>论文思路整理</h2><h3 id="Threat-Module"><a href="#Threat-Module" class="headerlink" title="Threat Module"></a>Threat Module</h3><ul>
+    <li>page-table-based attacks</li>
+    <li>enclave malware attacks</li>
+    <li>memory mapping attacks</li>
+    <li>controlled-channel attacks</li>
+</ul>
+
+<h2 id="论文精读"><a href="#论文精读" class="headerlink" title="论文精读"></a>论文精读</h2><h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><div class="original-text">
+    A number of trusted execution environments (TEEs) have been proposed by both academia and industry. However, most of them require specific hardware or firmware changes and are bound to specific hardware vendors (such as Intel, AMD, ARM,
+    and IBM). In this paper, we propose HyperEnclave, an open and cross-platform process-based TEE that relies on the
+    widely-available virtualization extension to create the isolated execution environment. In particular, HyperEnclave is
+    designed to support the flexible enclave operation modes to fulfill the security and performance demands under various
+    enclave workloads. We provide the enclave SDK to run existing SGX programs on HyperEnclave with little or no source code
+    changes. We have implemented HyperEnclave on commodity AMD servers and deployed the system in a world-leading FinTech
+    company to support real-world privacy-preserving computations. The evaluation on both micro-benchmarks and application
+    benchmarks shows the design of HyperEnclave introduces only a small overhead.
+</div>
+
+<div class="analysis-section">
+    现存 TEE 需要特定的硬件、固件修改，绑定硬件厂商 <br> <br>
+    论文提出 HyperEnclave 的设计，其特点如下：<br>
+    1. 开源 + 跨平台 + 基于进程 + 广泛虚拟化 <br>
+    2. 支持灵活的飞地运行模式
+</div>
+
+<h3 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h3><div class="original-text">
+    In recent years, trusted execution environments (TEEs) are emerging as a new form of computing paradigm, known as
+    confidential computing, due to the high demand for privacypreserving data processing technologies that can handle
+    massive data samples. TEEs provide hardware-enforced memory partitions where sensitive data can be securely processed.
+    Existing TEE designs support different levels of TEE abstractions, such as process-based (Intel’s Software Guard
+    eXtensions (SGX) [55]), VM-based (AMD SEV [45]), separate worlds (ARM TrustZone [16]), and hybrid (Keystone [49]).
+    Currently, the most prominent example of TEEs is Intel SGX, which is widely available in commercial off-the-shelf (COTS)
+    desktop and server processors.
+</div>
+
+<div class="analysis-section">
+    TEE 的需求日益增长，为私密数据提供硬件隔离 <br>
+    现有 TEE 提供不同级别的抽象：基于进程、基于虚拟机、独立世界、混合等
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Motivations.</p> 
+    Most of today’s TEE technologies are closesourced and require specific hardware or firmware changes that are difficult to audit, slow to evolve, and thus are inferior to cryptographic alternatives (such as homomorphic
+    encryption), which are based upon public algorithms and widely available hardware. Moreover, most existing TEE designs
+    restrict the enclaves (i.e., the protected TEE regions) to run only in fixed mode.1 It is difficult to support the
+    performance and security requirements of various types of applications that need to be protected by TEEs. For example,
+    Intel SGX enclaves run in the user mode and cannot access privileged resources (such as the file system, the IDT, and
+    page tables) and process privileged events (interrupt and exceptions). As a result, running I/O-intensive and
+    memory-demanding tasks leads to significant performance degradation.
+</div>
+
+<div class="analysis-section">
+    现有 TEE 大多闭源、需要硬固件修改、发展缓慢 <br>
+    同时只支持飞地运行在固定模式，不适应多种机密计算场景
+</div>
+
+<div class="original-text">
+    To fill the gap, in this paper we propose the design of HyperEnclave to support confidential cloud computing that can
+    run securely on both legacy servers readily available in the cloud, and on the rising ARM (or RISC-V in the future)
+    servers, without requiring specific hardware features. For this purpose, our design provides a process-based TEE
+    abstraction using the widely available virtualization extension (for isolation) and TPM (for root of trust and
+    randomness etc.). To better fulfill the needs for specific enclave workloads, HyperEnclave supports the flexible enclave
+    operation modes, i.e., the enclaves can run at different privilege levels and can have access to certain privileged
+    resources (see Sec. 4 for more details).
+</div>
+
+<div class="analysis-section">
+    应用场景：安全云计算 <br>
+    通过 虚拟化技术、TPM 建立基于进程抽象的 TEE <br>
+    飞地可以运行在多种特权模式下，访问特定特权资源
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Design details.</p>
+    In our design, the system runs in three modes. A trusted software layer, called RustMonitor (security monitor written in
+    Rust), runs in the monitor mode, which is mapped to the VMX root mode. RustMonitor is responsible for enforcing the
+    isolation and is part of the trusted computing base (TCB). The untrusted OS (referred to as the primary OS) provides an
+    execution environment for the untrusted part of applications; the untrusted OS and application parts run in the normal
+    mode, which is mapped to the VMX non-root mode. The trusted part of application (i.e., enclave) runs in the secure mode,
+    which can be mapped flexibly to ring-3 or ring-0 of the VMX non-root mode, or ring-3 of the VMX root mode.
+</div>
+
+<div class="analysis-section">
+    HyperEnclave 在三种模式下运行：<br>
+    1. monitor mode：RustMonitor，可信软件（属于 TCB）<br>
+    2. normal mode：OS 和 untrusted application <br>
+    3. secure mode：enclave（trusted application）<br>
+    <br>
+    monitor mode 映射到 VMX-root-r0 <br>
+    normal mode 映射到 VMX-non-root-r0~3 <br>
+    secure mode 映射到 VMX-non-root-r3 | VMX-non-root-r0 | VMX-root-r3（对应三种飞地运行模式）
+</div>
+
+<div class="original-text">
+    Memory isolation is enforced with hardware-based memory protection of the memory-management unit (MMU). As we observe
+    that existing process-based TEEs (e.g., Inktag [38] and Intel SGX [55]) are vulnerable to page-table-based attacks [74],
+    our memory isolation scheme chooses to manage the enclave’s page table and page fault events entirely by the trusted
+    code, removing the involvement of the primary OS. The design also prevents certain types of enclave malware attacks
+    (Sec. 3.2).
+</div>
+
+<div class="analysis-section">
+    地址映射和隔离是由硬件 MMU 完成的，现有 TEE 的设计中，飞地的页表和也错误均由 OS 处理，可能会遭到基于页表的攻击。在 HyperEnclave 中，将页表和也错误完完全全交给可信代码管理（消除了 OS 的参与）
+</div>
+
+<div class="original-text">
+    To minimize the attack surface, we adopt an approach called measured late launch: the primary OS kernel is first booted;
+    then a chunk of special kernel code, implemented as a kernel module in the primary OS, runs to initiate RustMonitor in
+    the most privileged level (i.e., the monitor mode) and demotes the primary OS to the normal mode. All booted components
+    during the booting process are measured and extended to the TPM Platform Configuration Registers (PCRs). Since the TPM
+    attestation guarantees that PCRs cannot be rolled back, the design ensures that RustMonitor is securely launched;
+    otherwise, a violation of the TPM quote would be detected during remote attestation.
+</div>
+
+<div class="analysis-section">
+    为了最小化攻击面，HyperEnclave 采取 measured late launch 的策略 <br>
+    启动顺序：OS 内核 -> 特定内核代码（初始化 RustMonitor，将其变成 monitor mode，将 OS 变成 normal mode） <br>
+    <br>
+    所有启动组件都会被测量并记录到 TPM PCR 寄存器中（只允许扩展），用于远程验证
+</div>
+
+<div class="original-text">
+    We have implemented HyperEnclave on commodity AMD servers. In total RustMonitor consists of about 7,500 lines of Rust
+    code. The APIs of our enclave SDK are compatible with the official SGX SDK. As a result, code written for SGX could be
+    easily ported to run on HyperEnclave by recompiling the code with little (or no) source code changes. We have ported a
+    number ofSGX applications, as well as the Rust SGX SDK [71] and the Occlum library OS [64] to HyperEnclave. The
+    micro-benchmarks show that the overheads for ECALLs and OCALLs are < 9,700 and < 5,260 cycles respectively (14,432 and
+    12,432 cycles respectively on Intel SGX). The evaluation on a suite of real-world applications shows that the
+    overhead is small (e.g., the overhead on SQLite is only 5%).
+</div>
+
+<div class="analysis-section">
+    在商用 AMD 服务器上实现等内容
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Contributions.</p>
+    In summary, the paper proposes the design of HyperEnclave, with the following contributions:
+    <ul>
+        <li>An open2 and cross-platform processed-based TEE with minimum hardware requirements (virtualization extensions and TPM)
+        that can run existing SGX programs with little or no source code changes, which enables the reuse of the rich toolchains
+        and ecosystem for Intel SGX.</li>
+        <li>Supporting the flexible enclave operation modes to fulfill the diverse security and performance requirements of enclave
+        applications without hardware or firmware changes.</li>
+        <li>A memory isolation scheme that the enclave’s page table and page fault are managed entirely by the trust code, which
+        mitigates the page-table-based attacks and the enclave malware attacks.</li>
+        <li>A measured late launch approach, combined with the TPMbased attestation to reduce the attack surface.</li>
+        <li>An implementation on commodity servers (mostly) using the memory safe language Rust, and an evaluation on real hardware and applications, demonstrating that the proposed design is practical and only has a small overhead</li>
+    </ul>
+</div>
+
+<div class="analysis-section">
+    论文的贡献：
+    <ul>
+        <li>设计了一个开源、跨平台、进程抽象层的 TEE </li>
+        <li>支持灵活的飞地运行模式</li>
+        <li>提出了内存管理模式：页表和页错误全部由可信代码管理</li>
+        <li>检测后启动原则</li>
+        <li>使用 Rust 语言在商用服务器上实现</li>
+    </ul>
+</div>
+
+<h3 id="2-Background"><a href="#2-Background" class="headerlink" title="2 Background"></a>2 Background</h3><h4 id="2-1-Trusted-Execution-Environment"><a href="#2-1-Trusted-Execution-Environment" class="headerlink" title="2.1 Trusted Execution Environment"></a>2.1 Trusted Execution Environment</h4><div class="original-text">
+    A Trusted Execution Environment (TEE) is designed to ensure that sensitive data is stored, processed, and protected in
+    an isolated and trusted environment. The isolated area could be a separate system apart from the normal operating system
+    (such as the TrustZone [16] secure world), a part of a process address space (such as an Intel SGX [55] enclave), or a
+    stand-alone VM (such as a virtual machine protected by AMD SEV [45] or Intel TDX [41]). To resist the privileged
+    attacker, TEE needs to thwart not only the OS-level adversary but also the malicious party who has physical access to
+    the platform. To this end, it offers hardware-enforced security features including isolated execution, integrity, and
+    confidentiality protection of the enclave, along with the ability to authenticate the code running inside a trusted
+    platform through remote attestation.
+</div>
+
+<div class="analysis-section">
+    TEE 需要保证：
+    <ul>
+        <li>隔离执行、完整性保护、机密性保护</li>
+        <li>远程验证</li>
+    </ul>
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Isolation.</p>
+    At the core of a TEE is the memory isolation scheme, which guarantees that code, data, and the runtime state of the
+    enclave cannot be accessed or tampered with by untrusted parties. For Intel SGX, the protected memory (i.e., the
+    enclave) is mapped to a special physical memory area called Enclave Page Cache (EPC), which is encrypted and cannot be
+    directly accessed by other software, firmware, BIOS, and direct memory access (DMA).
+</div>
+
+<div class="analysis-section">
+    TEE 核心是内存隔离模式 <br>
+    对于 Intel SGX，被保护的内存被映射到内存的特殊区域（EPC），EPC 被加密且不能被其他软件、固件、BIOS、DMA 访问
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Attestation.</p>
+    The goal of remote attestation is to generate an attestation quote, which includes the measurement of the software
+    state, signed with the attestation key embedded in the hardware. The remote user verifies the validity of the quote by
+    checking the signature (which reflects the hardware identity) and the measurement (which proves the software state).
+</div>
+
+<div class="analysis-section">
+    远程验证的目的是生成一个验证引用 <br>
+    引用包含软件的测量值和嵌入硬件的私钥签名，用户可以通过引用检查软硬件的合法性
+</div>
+
+<h4 id="2-2-Trusted-Platform-Module"><a href="#2-2-Trusted-Platform-Module" class="headerlink" title="2.2 Trusted Platform Module"></a>2.2 Trusted Platform Module</h4><div class="original-text">
+    Trusted Platform Module (TPM) is both an industrystandard [36] and an ISO/IEC standard [4] for a secure cryptoprocessor.
+    It is used by nearly all PC and server manufacturers. Firmware TPMs (fTPMs) are firmware-based (e.g. UEFI) TPM
+    implementations. At the time of this writing, Intel, AMD, and Qualcomm all have implemented fTPMs.
+</div>
+
+<div class="analysis-section">
+    TPM 是安全加密处理器，广泛使用于当代计算机中
+</div>
+
+<div class="original-text">
+    TPM has a set of Platform Configuration Registers (PCRs), which can be used for the measurement of the booted code
+    during the boot process. PCRs are reset to zero on system reboot or power on-off. During every boot process, the PCRs
+    can only be extended with the new measurement (called PCR extend), and thus cannot be set to arbitrary values.
+</div>
+
+<div class="analysis-section">
+    TPM 中包含 PCR 寄存器，用于存储启动软件的测量值，开机重置为 0，只能扩展不能重写
+</div>
+
+<div class="original-text">
+    Every TPM ships with a unique asymmetric key, called the Endorsement Key (EK), embedded by the manufacturer as the root
+    of trust. The TPM can generate a quote of the PCR values, signed using the TPM Attestation Identity Keys (AIK), while the AIK is generated inside TPM and certified using EK. Any modifications of the booted code would be reflected in the quote. Upon receiving the quote, the remote party can validate the signing key comes from an authentic TPM and can be assured that the PCR digest report has not been altered.
+</div>
+
+<div class="analysis-section">
+    TPM 拥有嵌入硬件的密钥 EK <br>
+    TPM 内部生成并由 EK 认证的密钥 AIK <br>
+    TPM PCRs 测量值由 AIK 签名，交给用户，用户进行审核
+</div>
+
+<h4 id="2-3-Threat-Model"><a href="#2-3-Threat-Model" class="headerlink" title="2.3 Threat Model"></a>2.3 Threat Model</h4><div class="original-text">
+    Like the other TEE proposals [23, 49], we trust the underlying hardware, including the processor establishing the
+    virtualization-based isolation, the System Management Mode (SMM) code, as well as the TPM. We assume that the Core Root
+    of Trust for Measurement (CRTM) is trusted and immutable. HyperEnclave mitigates certain physical memory attacks, such
+    as cold boot attacks and bus snooping attacks with the hardware support for memory encryption. We don’t fully trust the
+    operator and assume the attacker cannot mount physical attacks during the boot process, i.e., we assume that the system
+    is initially benign (during system boot), and the early OS during the boot stage is part of the TCB. This can be
+    achieved in two ways.
+    <ul>
+        <li>Firstly, the power-on event can be secured with a hardware device, such as an HSM (i.e., hardware security module). The
+        platform enters the boot process only with the engagement and supervision of a trusted party, who owns the HSM. After
+        that, the operators for maintenance are not trusted.</li>
+        <li>Secondly, the boot process can be enhanced to defend against adversaries with physical accesses. To prevent I/O attacks,
+        we can harden the OS to remove unnecessary devices and disable the DMA capability of peripherals before IOMMU is
+        enabled. We can enable memory encryption at an early stage (e.g., in the BIOS, before any off-chip memory is used) to
+        prevent physical memory attacks.</li>
+    </ul>
+</div>
+
+<div class="analysis-section">
+    信任软硬件名单：
+    <ul>
+        <li>负责提供虚拟化隔离机制的处理器</li>
+        <li>系统管理模式代码 SMM Code</li>
+        <li>TPM 和 CRTM</li>
+    </ul>
+    额外的假设：
+    <ul>
+        <li>攻击者无法在系统启动阶段实施物理攻击</li>
+        <li>启动初期系统是良态的，初期 OS 属于 TCB</li>
+    </ul>
+    论文通过理论描述，证明了额外的假设一定可以实现
+</div>
+
+<h3 id="3-Design"><a href="#3-Design" class="headerlink" title="3 Design"></a>3 Design</h3><div class="original-text">
+    HyperEnclave is designed to support confidential cloud computing without requiring specific hardware features.
+    Therefore, HyperEnclave is built upon the widely available virtual ization extension. In particular, HyperEnclave is designed to support the process-based TEE model (similar to Intel SGX) for the following reasons.
+    <ul>
+        <li>Minimized TCB. To protect an application using the process-based TEE, the TCB includes only the protected code itself,
+        while in the other forms of TEE, much more code must be included, such as the guest operating system for VM-based TEEs.</li>
+        <li>Established ecosystem. Since Intel SGX is currently the most prevalent TEE supported in the cloud (major CSPs, including
+        GCP, Azure, and Aliyun, provide SGX-based instances [9, 62]), a rich set of toolchains and applications have been
+        developed. Supporting the SGX model reduces the porting effort and makes it easy to deploy confidential computing tasks
+        in the cloud.</li>
+        <li>Cloud computing trends. We have witnessed a clear trend towards running container-based serverless applications in the
+        cloud. Protecting these applications against untrusted clouds using TEEs is important. Considering that such computing
+        tasks are typically short-lived, and favor a short startup time, maintaining a VM seems to be too heavy-weight.</li>
+    </ul>
+    In this section, we introduce HyperEnclave using x86 notations, as we prototyped HyperEnclave on AMD servers.
+</div>
+
+<div class="analysis-section">
+    为什么要模仿 SGX 实现一个进程抽象的 TEE <br>
+    最小化 PCB + SGX 很火可以借鉴 + 短期云计算畅行（虚拟机管理成本高）
+</div>
+
+<h4 id="3-1-System-Overview"><a href="#3-1-System-Overview" class="headerlink" title="3.1 System Overview"></a>3.1 System Overview</h4><div class="original-text">
+    HyperEnclave supports the following modes: the monitor mode, i.e., VMX root operation mode; the normal mode for the
+    primary OS and untrusted part of applications, i.e., ring-0 and ring-3 of the VMX non-root operation mode respectively;
+    and the secure mode for the enclave, which could be ring-3 and ring-0 of the VMX non-root operation mode, or ring-3 of
+    the VMX root operation mode, depending on the enclave operation mode. We will introduce the flexible operation mode
+    supported by HyperEnclave in Sec. 4. As illustrated in Figure 1, HyperEnclave consists of the following components:
+    <ul>
+        <li>RustMonitor is a lightweight hypervisor running in the monitor mode that manages the enclave memory, enforces the memory
+        isolation, and controls the enclave state transitions. It works as a resource monitor, while complicated tasks are
+        offloaded to the primary OS.</li>
+        <li>RustMonitor creates a unique guest VM (referred to as the normal VM) that runs the primary OS (such as Linux) and hosts
+        the untrusted part of applications in the normal mode. The primary OS is still in charge of process scheduling and I/O
+        devices management, but it is not trusted by the RustMonitor and enclaves.</li>
+        <li>Application is the untrusted part of the application which runs in the primary OS.</li>
+        <li>The kernel module. We provide a kernel module in the primary OS to load, measure, and launch RustMonitor, as well as to
+        invoke the emulated privileged operations.</li>
+        <li>To ease development, HyperEnclave provides an enclave SDK with APIs compatible with the official Intel SGX SDK [12],
+        including both the untrusted runtime and trusted runtime (i.e., SDK uRTS and SDK tRTS). As such, most SGX programs can
+        run on HyperEnclave with little or no source code changes.</li>
+        <li>Enclave is the trusted part of the application running in the secure mode.</li>
+    </ul>
+    <img src="/img/HyperEnclave/F1.png" srcset="/img/loading.gif" lazyload alt="" style="width: 75%;">
+</div>
+
+<div class="analysis-section">
+    HyperEnclave 包括五个组成部分：
+    <ul>
+        <li>1. RustMonitor</li>
+        <li>2. guest VM</li>
+        <li>3. Application</li>
+        <li>4. kernel module</li>
+        <li>5. enclave SDK</li>
+        <li>6. Enclave</li>
+    </ul>
+    一个应用进程调用步骤示例： <br>
+    使用 SDK 提供的 API 发起 Enclave 调用 -> 内核模块捕获指令 -> RustMonitor 验证合法性 -> 初始化飞地并执行 -> 结果返回给 OS
+</div>
+
+<h4 id="3-2-Memory-Management-and-Protection"><a href="#3-2-Memory-Management-and-Protection" class="headerlink" title="3.2 Memory Management and Protection"></a>3.2 Memory Management and Protection</h4><div class="original-text">
+    <p style="font-weight: bold;">Challenges.</p>
+    For process-based TEEs, the enclave runs in the user mode and is not able to manage its own page table. Existing designs
+    (e.g., Intel SGX, TrustVisor [54]) allow the untrusted OS to manage the enclave’s page table. To prevent memory mapping
+    attacks (i.e., attacks by manipulating the enclave’s address mappings, as shown in Figure 9, Appendix A.1), the design
+    of SGX extends the Page Missing Handler (PMH) and introduces a new metadata called EPCM for additional security checks
+    on TLB misses [32]. Without secure hardware support, a prevalent software solution [19, 54, 75] is to make the page
+    tables write-protected by setting the page table entries (PTEs) for pages holding the page tables, i.e., any update to
+    the page table traps to the hypervisor and then be verified. However, on x86 platforms the updates of access and dirty
+    bits of the PTEs also trap into the hypervisor, leading to non-negligible overhead. Even-worse, since the enclave page
+    fault is also processed by the OS, the above designs are still vulnerable to the page table-basedattacks, such as the
+    controlled-channel attacks [74].
+</div>
+
+<div class="analysis-section">
+    SGX 的页表由 OS 管理，SGX 将页表设置为只读防止页表映射攻击，但是由于每次更新页表都需要经过管理程序的验证（包括访问位和脏位），开销过大 <br>
+    页错误仍由 OS 管理，会受到受控通道攻击的影响
+</div>
+
+<div class="original-text">
+    The design becomes more challenging to support enclave dynamic memory management (i.e., EDMM on SGX2 platforms [34]),
+    i.e, dynamically adding or removing enclave pages, or changing the enclave page attributes or types after the enclave is
+    initialized. Without EDMM, all physical memory that the enclave might ever use must be committed before enclave
+    initialization. Therefore, EDMM reduces enclave build time and enables new enclave features, such as on-demand stack and heap growth, and on-demand creation of code pages to support just-in-time (JIT) compilation. On SGX2 platforms, the enclaves need to send the EDMM request to the SGX driver through OCALLs, who then makes the requested changes. Since the driver is untrusted by the enclaves, the changes need to be explicitly checked and accepted by the enclaves to take effect, which involves heavy enclave mode
+    switches.
+</div>
+
+<div class="analysis-section">
+    另外一大难点是支持动态分配飞地内存（EDMM），即在飞地初始化后动态添加/删除飞地页 <br>
+    SGX 中飞地发送 OCALL 指令给驱动程序，驱动程序修改后交给飞地管理程序，由于驱动不可信，飞地管理程序需要显示检查后才能接受，这涉及大量安全区模式切换。
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">HyperEnclave memory management.</p>
+    The design becomes more challenging to support enclave dynamic memory management (i.e., EDMM on SGX2 platforms [34]),
+    i.e, dynamically adding or removing enclave pages, or changing the enclave page attributes or types after the enclave is
+    initialized. Without EDMM, all physical memory that the enclave might ever use must be committed before enclave
+    initialization. Therefore, EDMM reduces enclave build time and enables new enclave features, such as on-demand stack and
+    heap growth, and on-demand creation of code pages to support just-in-time (JIT) compilation. On SGX2 platforms, the
+    enclaves need to send the EDMM request to the SGX driver through OCALLs, who then makes the requested changes. Since the
+    driver is untrusted by the enclaves, the changes need to be explicitly checked and accepted by the enclaves to take
+    effect, which involves heavy enclave mode switches.
+</div>
+
+<div class="analysis-section">
+    上述问题的本质：飞地页表和页错误由 OS 管理 <br>
+    HyperEnclave 为飞地设置一个单独的页表，飞地页表和页错误全部由 RustMonitor 管理，但是会带来飞地页表和普通进程页表的同步问题。
+</div>
+
+
+<div class="original-text">
+    To eliminate the overhead for synchronization, we preallocate a marshalling buffer in the application’s address space,
+    which is shared with the enclave. The mappings of the marshalling buffer are fixed during the entire enclave life cycle
+    by pre-populating the physical memory and pinning it in the memory. All data exchanged between the enclave and the
+    application must be passed through the marshalling buffer. The application’s memory mappings (except those for the
+    marshalling buffer) are not needed by the enclave and are not included in the enclave’s page table. Such a design also
+    mitigates the known enclave malware attacks [63], as the enclave cannot access the application’s address space but the
+    marshalling buffer (Sec. 6 for more details). We remind the attacker may manipulate the marshalling buffer, however it
+    does not cause additional security issues, since the buffer is untrusted by design where the developer is responsible to
+    ensure that the data transmitted through the buffer is authentic and protected (same as the SGX model).
+</div>
+
+<div class="analysis-section">
+    为了消除飞地页表和普通进程页表的同步问题，HyperEnclave 引入了 marshalling buffer 用来完成进程用户空间和飞地空间的参数交换，marshalling buffer 的映射是固定的，用户在撰写代码时有责任确保 marshalling buffer 涉及的参数交换是安全的。 <br>
+    飞地的页表无需存放普通的进程空间映射，应用进程也无法意识到飞地空间的存在
+</div>
+
+<div class="original-text">
+    When the enclave accesses a virtual address that is not committed with a physical page (e.g., due to page swapping or
+    EDMM), a page fault is raised and the enclave traps to RustMonitor. RustMonitor picks up a free page from the enclave
+    memory pool, inserts a new mapping to the enclave’s page table, and resumes the enclave’s execution. When the enclave
+    requests changing the page permissions, the enclave issues a hypercall to RustMonitor to update the permissions in the
+    enclave’s page table and clear the corresponding TLB entries.4
+</div>
+
+<div class="analysis-section">
+    发生缺页错误时，RustMonitor 响应该错误并在对应飞地内存池中分配一个空闲页，恢复飞地的运行。当飞地希望修改页面权限时，RustMonitor 响应，更新飞地页面权限以及清空 TLB 对应栏目
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">HyperEnclave memory isolation.</p>
+    Figure 2 shows the memory mappings of the applications within the normal VM and the enclaves. The application’s memory within the normal VM is managed with nested paging, while the enclave’s memory could be managed through nested paging or through normal 1-level address translation, determined by the corresponding operation mode (Sec. 4). As a result, HyperEnclave enforces the
+    following security requirements.
+    <ul>
+        <li>R-1: The primary OS and applications are not allowed to access the physical memory belonging to RustMonitor and the
+        enclaves.</li>
+        <li>R-2: The enclave is not allowed to access physical memory belonging to RustMonitor and other enclaves. It is designed to
+        have access to only a specific memory region shared with the untrusted application for parameter passing (i.e., the
+        marshalling buffer).</li>
+        <li>R-3: DMA accesses from malicious peripherals to the physical memory belonging to RustMonitor and the enclaves are not
+        allowed. In order to prevent such attacks, HyperEnclave restricts the physical memory used by the peripherals with the
+        support of the Input-Output Memory Management Unit (IOMMU) in modern processors.</li>
+    </ul>
+    <img src="/img/HyperEnclave/F2.png" srcset="/img/loading.gif" lazyload alt="" style="width: 75%;">
+</div>
+
+<div class="analysis-section">
+    OS 和不可信应用进程运行在虚拟机内，访问通过嵌套页表（客户虚拟地址 -> 客户物理地址 -> 主机物理地址），而飞地根据不同的模式通过嵌套页表或 1 级地址转换 <br>
+    HyperEnclave 的地址隔离原则如下：
+    <ul>
+        <li>R-1: OS 和不可信应用不能访问 RustMonitor 和 enclave</li>
+        <li>R-2: enclave 不能访问 RustMonitor 和其他 enclave</li>
+        <li>R-3: 外围设备的 DMA 请求地址不能为 RustMonitor 和 enclave，通过 IOMMU 实现</li>
+    </ul>
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Memory encryption.</p>
+    To thwart physical memory attacks, such as cold boot and bus snooping attacks, HyperEnclave may leverage hardware memory
+    encryption (such as AMD SME [44] and Intel MKTME [42]) to encrypt partial physical memory at the page granularity. If
+    the platform does not support hardware memory encryption, HyperEnclave may consider to apply software approaches [76] to
+    encrypt the isolated memory. This approach, however, may impose substantial overhead compared with hardware based
+    solutions.
+</div>
+
+<div class="analysis-section">
+    HyperEnclave 提供硬件和软件的内存加密，防止内存物理攻击
+</div>
+
+<h4 id="3-3-Trusted-Boot-Attestation-and-Sealing"><a href="#3-3-Trusted-Boot-Attestation-and-Sealing" class="headerlink" title="3.3 Trusted Boot, Attestation and Sealing"></a>3.3 Trusted Boot, Attestation and Sealing</h4><div class="original-text">
+    <p style="font-weight: bold;">Measured Late Launch.</p>
+    The boot process of HyperEnclave is shown in Figure 3. On system boot, a static and immutable piece of code, known as
+    the Core Root of Trust for Measurement (CRTM), executes first to bootstrap the process of building a measurement chain
+    for subsequent firmware and software, including the BIOS, grub, the primary OS kernel, and initramfs. The measurements
+    are stored to TPM PCRs for each boot component, so that any modification will be reflected in the attestation quote.
+    <img src="/img/HyperEnclave/F3.png" srcset="/img/loading.gif" lazyload alt="" style="width: 75%;">
+</div>
+
+<div class="analysis-section">
+    系统启动时，首先运行一段固定且无法修改的内核代码 CRTM，这段内核代码会启动一系列测量链，包括 BIOS，grub，初始 OS kernel，initramfs。测量值将写入 TPM 的 PCR 寄存器中，任何修改都将在引用中体现
+</div>
+
+<div class="original-text">
+    To reduce the attack surface from the primary OS, we put the RustMonitor image into the initramfs. The kernel measures
+    the RustMonitor image and extends the value to TPM PCRs, then it launches RustMonitor in early userspace, i.e., before
+    any userspace program that relies on the disk file system starts to run. Along with the measured boot, it ensures that
+    the software state when RustMonitor is loaded is trusted.
+</div>
+
+<div class="analysis-section">
+    initramfs：临时根文件系统，一个压缩的 CPIO 归档文件，在内核启动初期被加载到内存中。在内核完成硬件初始化后，为挂载真正的根文件系统（/）提供必要的工具和驱动。将 RustMonitor 的镜像加载至其中，在 early userspace 阶段启动
+</div>
+
+<div class="original-text">
+    After RustMonitor is loaded, the execution continues at the pre-defined entry. RustMonitor sets up its own running
+    context (such as the stack, page table, IDT, etc.) and prepares the virtual CPU (vCPU) configurations for each CPU. Then
+    RustMonitor launches the normal VM and demotes the primary OS to the normal mode. Returning to the kernel module, the
+    kernel continues to boot in the normal mode and is unaware of the existence of RustMonitor.
+</div>
+
+<div class="analysis-section">
+    RustMonitor 加载后，初始化上下文 -> 准备 vCPU -> 加载 normal VM -> 将 OS 降级为 normal mode 并使其运行在 normal VM 中 -> 回到内核模块继续启动，此时内核无法意识到 RustMonitor 的存在
+</div>
+
+<div class="original-text">
+    HyperEnclave applies the above approach (referred to as measured late launch) so that RustMonitor is loaded as a type2
+    hypervisor (like KVM) while runs as a type-1 hypervisor (like Xen). In this way, RustMonitor does not need to trust the
+    primary OS anymore after the primary OS is demoted to the normal mode.
+</div>
+
+<div class="analysis-section">
+    RustMonitor 加载时是 Type-2 虚拟机，运行时是 Type-1 虚拟机 <br>
+    Type-1 虚拟机：运行在裸机上，无需操作系统 <br>
+    Type-2 虚拟机：运行在操作系统上
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Remote Attestation.</p>
+    With the measured late launch, all booted components are measured and extended to the TPM. After RustMonitor is booted,
+    it needs to extend the trust to the enclaves. For this purpose, RustMonitor derives an attestation key pair which is
+    used to sign the enclave measurement. Then RustMonitor extends the derived public key to the TPM PCR, and the private key never leaves RustMonitor which is protected by memory isolation and encryption.
+</div>
+
+<div class="analysis-section">
+    RustMonitor 需要将信任扩展到飞地（用户信任飞地），RustMonitor 内部生成一个密钥，用私钥（永远不离开 RustMonitor）对飞地进行签名
+</div>
+
+<div class="original-text">
+    During enclave creation, all pages added to the enclave (including the corresponding page content, page type, and RWX
+    permissions) are measured by RustMonitor to generate the enclave measurement. The (intermediate) measurement is stored
+    in RustMonitor’s memory, which is invisible to the enclaves and the primary OS.
+</div>
+
+<div class="analysis-section">
+    飞地创建时，RustMonitor 会对其所有页面（页面内容、类型、RWX 权限）进行测量，存储在 OS 和飞地不可见的内存中
+</div>
+
+<div class="original-text">
+    Similar to TPM and Intel SGX, HyperEnclave adopts a SIGn-and-MAc (SIGMA) attestation protocol for the remote attestation
+    flow. As shown in Figure 4, we denote the public key of RustMonitor’s attestation key by the hypervisor attestation
+    public key (hapk). The enclave measurement is signed using RustMonitor’s attestation key to form the enclave measurement
+    signature (ems). The TPM quote TMP_Quote, which is signed using the TPM attestation key, includes the PCRs for the
+    measurement of all booted code, and the measurement of hapk. Upon receiving the attestation report, the remote user can
+    verify the report by comparing the measurement of booted code (including the CRTM, BIOS, grub, kernel, initramfs, and
+    hypervisor) and the enclave, as well as verifying the certificate chain for generating the signature.
+</div>
+
+<div class="analysis-section">
+    HyperEnclave 遵循 SIGMA 远程验证协议 <br>
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>术语</th>
+                <th>作用</th>
+                <th>安全属性</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>SIGMA 协议</td>
+                <td>双向认证协议，确保通信双方身份和数据的完整性</td>
+                <td>防止中间人攻击、数据篡改</td>
+            </tr>
+            <tr>
+                <td>hapk</td>
+                <td>RustMonitor 的认证公钥，用于签名飞地度量值</td>
+                <td>私钥受内存隔离和加密保护</td>
+            </tr>
+            <tr>
+                <td>ems</td>
+                <td>飞地度量值的签名（由 hapk 对应的私钥生成）</td>
+                <td>证明飞地未被篡改</td>
+            </tr>
+            <tr>
+                <td>TPM_Quote</td>
+                <td>TPM 签名的报告，包含 PCR 值和 hapk 的度量值</td>
+                <td>硬件级防伪，证明启动链可信</td>
+            </tr>
+            <tr>
+                <td>PCR（Platform Configuration Register）</td>
+                <td>TPM 中的寄存器，存储启动过程各阶段的累积哈希值</td>
+                <td>任何组件篡改将导致 PCR 值变化</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="original-text">
+    <p style="font-weight: bold;">Secret key generation.</p>
+    When RustMonitor is initialized for the first time, it generates a root key Kroot from the random number generator (RNG)
+    module of the TPM. Kroot is stored outside the TPM using TPM’s seal operation. During the booting process on system
+    reset, RustMonitor decrypts Kroot using TPM’s unseal operation, which guarantees that Kroot can only be unsealed with
+    the exactly same TPM chip with matching PCR configurations. Furthermore, RustMonitor floods the PCRs with a constant
+    before transferring control to the primary OS to prevent it from retrieving Kroot . All other key materials, including
+    the enclave’s sealing key and report key are derived from both Kroot and the enclave’s measurement.
+</div>
+
+<div class="analysis-section">
+
+</div>
+
+<h4 id="3-4-The-Enclave-SDK"><a href="#3-4-The-Enclave-SDK" class="headerlink" title="3.4 The Enclave SDK"></a>3.4 The Enclave SDK</h4><div class="original-text">
+    Porting existing applications to the enclaves can be cumbersome since TEEs usually expose limited hardware and software
+    interfaces and provide additional security services (e.g., attestation and sealing). For process-based TEEs, the
+    applications need to be partitioned into the trusted and untrusted parts, and the interfaces need to be carefully
+    designed to avoid various security pitfalls [27, 46, 69]. A lot of effort has been spent and many tools have been
+    developed for Intel SGX, due to its dominant position in the market, including library OSes [64, 67], containers [18],
+    automatic partition and protection tools [50, 68], WebAssembly Micro Runtime [57], and interface protection [65].
+    Consequently, Intel SGX has supported securely running applications written in C/C++, Rust, Java, Python, etc., without
+    expensive code refactoring.
+</div>
+
+<div class="analysis-section">
+    进程抽象的 TEE 需要将应用分成可信和不可信部分，将现有应用程序移植到飞地可能很麻烦，但是 SGX 相关工具很充分
+</div>
+
+<div class="original-text">
+    We provide the enclave SDK with APIs compatible with the official Intel SGX SDK to ease the development of applications
+    on HyperEnclave. The enclave SDK is retrofitting the official SGX SDK. By replacing the SGX user leaf functions (e.g., EENTER, EEXIT, and ERESUME) with hypercalls, SGX programs can run on HyperEnclave with little or no source code changes. Once the enclave executes these user leaf functions, it traps to RustMonitor and RustMonitor emulates the functionalities of the corresponding SGX instructions.
+</div>
+
+<div class="analysis-section">
+    论文为飞地设计了和 SGX SDK 兼容的 API，当应用调用 HyperCall 时，RustMonitor 将其捕获并模拟对应的 SGX 指令
+</div>
+
+<div class="original-text">
+    The enclave is compiled as a trusted library of the application, while the application itself runs in the primary OS.
+    The enclave life cycle is managed through the emulation of a set of privileged SGX instructions (i.e., ECREATE, EADD,
+    EINIT, etc.). To this end, the kernel module running in the primary OS provides similar functionalities by invoking
+    RustMonitor through hypercalls, and exposes the functionalities to the applications by the ioctl() interfaces. By
+    emulating the privileged SGX instructions, RustMonitor is responsible for the management of the enclave’s life cycle
+    (Sec. 4).
+</div>
+
+<div class="analysis-section">
+    SGX 中，飞地的生命周期通过一组特权指令管理，RustMonitor 通过模拟特权 SGX 指令完成飞地生命周期的管理任务 
+</div>
+
+<div class="original-text">
+    To be compatible with the official Intel SGX SDK, most data structures involved in HyperEnclave (such as the SIGSTRUCT
+    structure, the SECS page, and the TCS page) are similar to that of SGX. With the HyperEnclave design, it is
+    straightforward to support dynamic enclave management in an enclave, since the enclave memory and page fault are all
+    managed by RustMonitor. Multi-threading within the enclave is supported by associating one TCS page for each enclave
+    thread within the enclave. Exception handling within the enclave is supported by setting more than 1 SSA page for each
+    TCS. The details are omitted due to space constraints and we refer the readers to the SGX manual [11] for more details.
+</div>
+
+<div class="analysis-section">
+    为了兼容 SGX，沿用其很多机制和数据结构：
+    <ul>
+        <li>SIGSTRUCT：enclave 的数字身份证</li>
+        <li>SECS：enclave 的元数据</li>
+        <li>TCS：enclave 的线程控制结构</li>
+        <li>SSA：enclave 异常时用于保存现场</li>
+    </ul>
+</div>
+
+<h3 id="4-Flexible-Enclave-Operation-Mode"><a href="#4-Flexible-Enclave-Operation-Mode" class="headerlink" title="4 Flexible Enclave Operation Mode"></a>4 Flexible Enclave Operation Mode</h3><h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/GPU-TEE/" class="print-no-link">#GPU TEE</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment</div>
+      <div>https://dmx20070206.github.io/2025/02/17/【论文】HyperEnclave：An Open and Cross-platform Trusted Execution Environment/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>DM-X~X~X</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>February 17, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/12/21/downfall/" title="downfall">
+                        <span class="hidden-mobile">downfall</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://lib.baomitu.com/valine/1.5.1/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"LaZlZczZ7WZl8fj2Kff3EQ6N-MdYXbMMI","appKey":"4rxpDeW2APFf9wOxXFRgXfHD","path":"window.location.pathname","placeholder":"4rxpDeW2APFf9wOxXFRgXfHD","avatar":"retro","meta":["nick","mail","link"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":false,"recordIP":false,"serverURLs":"https://lazlzczz.api.lncldglobal.com","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          var imgSelector = '#valine .vcontent img:not(.vemoji)';
+          Fluid.plugins.imageCaption(imgSelector);
+          Fluid.plugins.fancyBox(imgSelector);
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <span> Welcome to DMX blog </span> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
