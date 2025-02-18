@@ -29,8 +29,10 @@
 <meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F1.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F2.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F3.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F5.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HyperEnclave/F6.png">
 <meta property="article:published_time" content="2025-02-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-17T18:09:01.965Z">
+<meta property="article:modified_time" content="2025-02-18T08:40:25.283Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="GPU TEE">
 <meta name="twitter:card" content="summary_large_image">
@@ -240,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3k words
+          3.9k words
         
       </span>
     
@@ -251,7 +253,7 @@
         
         
         
-          25 mins
+          33 mins
         
       </span>
     
@@ -883,7 +885,7 @@
 </div>
 
 <div class="analysis-section">
-
+    TODO
 </div>
 
 <h4 id="3-4-The-Enclave-SDK"><a href="#3-4-The-Enclave-SDK" class="headerlink" title="3.4 The Enclave SDK"></a>3.4 The Enclave SDK</h4><div class="original-text">
@@ -942,7 +944,190 @@
     </ul>
 </div>
 
-<h3 id="4-Flexible-Enclave-Operation-Mode"><a href="#4-Flexible-Enclave-Operation-Mode" class="headerlink" title="4 Flexible Enclave Operation Mode"></a>4 Flexible Enclave Operation Mode</h3><h4 id=""><a href="#" class="headerlink" title=""></a></h4>
+<h3 id="4-Flexible-Enclave-Operation-Mode"><a href="#4-Flexible-Enclave-Operation-Mode" class="headerlink" title="4 Flexible Enclave Operation Mode"></a>4 Flexible Enclave Operation Mode</h3><div class="original-text">
+    A wide range of existing applications can be offloaded to the TEEs, such as computing-intensive tasks (machine learning
+    [60]), input and output (IO)-intensive tasks (such as the Apache and Nginx web server [18]), memory-intensive tasks
+    (Redis and Memcached [18]), and tasks which favor in-enclave exception handling and privilege separation [21]. Most TEEs
+    support running the enclaves only in fixed mode, Intel SGX (also TrustVisor [54] and Secage [51]) enclaves in
+    particular, as part of the application address space, run in user mode. As a result, the user mode enclave is not
+    allowed to access the privileged resources (such as the IDT and page tables) and process the privileged events
+    (interrupt and exceptions). It must switch to the untrusted code to gain access to privileged resources and handle the
+    events. The I/O-intensive and memory-intensive tasks essentially involve the frequent world switches which are expensive
+    and introduce non-negligible performance losses, even though both software and hardware optimizations have been proposed
+    trying to reduce the context switch latencies [61, 66, 73]. In this section, we introduce the three enclave operation
+    modes supported by HyperEnclave, as shown in Figure 5. The world switches in different enclave operation modes are shown
+    in Figure 6.
+    <br>
+    <img src="/img/HyperEnclave/F5.png" srcset="/img/loading.gif" lazyload alt="" style="width: 45%; display: flexbox; margin-right: 70px;">
+    <img src="/img/HyperEnclave/F6.png" srcset="/img/loading.gif" lazyload alt="" style="width: 45%; display: flexbox;">
+</div>
+
+<div class="analysis-section">
+    TEE 中执行的应用进程任务种类繁多，计算密集型任务、IO 密集型任务、内存密集型任务等 <br>
+    现有飞地只支持固定模式运行，例如 SGX 运行在用户模式，对于 IO 密集型任务，需要进行世界切换（切换至不可信部分）才能访问特权资源，带来巨大的性能消耗。
+</div>
+
+<h4 id="4-1-Guest-User-Enclaves"><a href="#4-1-Guest-User-Enclaves" class="headerlink" title="4.1 Guest User Enclaves"></a>4.1 Guest User Enclaves</h4><div class="original-text">
+    Guest user enclave (GU-Enclave) is the basic enclave operation mode which is typically running computing-intensive
+    tasks. The enclave runs in the guest user mode (i.e., guest ring-3 of the VMX non-root operation mode). During the
+    enclave creation, RustMonitor prepares a vCPU structure which contains a guest page table (GPT) and a nested page table
+    (NPT) for GU-Enclave. On entry and exit between the normal VM and the enclave VM, RustMonitor switches the vCPU states
+    (e.g. the instruction pointer, thread pointer, NPT, and GPT) accordingly. To handle the interrupts and exceptions during
+    the enclave running, RustMonitor configures the vCPU to trap all interrupts and exceptions to the monitor mode.
+    RustMonitor then saves the enclave’s context, forwards the interrupt or exception to the normal VM. After the primary OS
+    completes handling the interrupt or exception, the application invokes the ERESUME hypercall, which traps to RustMonitor
+    to restore the enclave’s context and resume the execution of the enclave.
+</div>
+
+<div class="analysis-section">
+    GU-Enclave 是最基本的飞地运行模式，用于运行计算密集型任务。飞地在 VMX-non-root-r3 模式下运行 <br>
+    在飞地创建时，RustMonitor 准备一个 vCPU 结构，包含飞地对应的 GPT 和 NPT。在 normal VM 和 enclave VM 的切换中，RustMonitor 负责切换相应的 vCPU 状态 <br>
+    当飞地发生中断或异常时，vCPU 捕获并交付给 RustMonitor 进行处理，保存飞地上下文后转交给 OS 处理，处理完毕后再由 RustMonitor 恢复飞地上下文并继续执行
+</div>
+
+<h4 id="4-2-Host-User-Enclaves"><a href="#4-2-Host-User-Enclaves" class="headerlink" title="4.2 Host User Enclaves"></a>4.2 Host User Enclaves</h4><div class="original-text">
+    Host user enclave (HU-Enclave) is running in host user mode. It delivers the optimal world switch efficiency by
+    substituting the mode switch (hypercalls: ∼ 880 CPU cycles on our platform) with the ring switch (syscalls: ∼ 120 CPU
+    cycles on our platform) (Figure 6). It further eliminates the extra virtualization overhead (e.g. vCPU context switching and
+    two-dimensional page walking) in GU-Enclave. HU-Enclave may benefit the I/O-intensive workload according to our
+    evaluation in Sec 7. By comparison, running enclaves in the guest user mode provides more defensive depth.
+    When loading the HU-Enclave, RustMonitor prepares a process context, e.g. creates a level-1 page table. On enclave
+    entry, RustMonitor updates the CPU state and invokes the system call return instruction (i.e., SYSRET on x86 platforms)
+    to enter the HU-Enclave. Correspondingly, on enclave exit, HU-enclave invokes the system call instruction (i.e., SYSCALL
+    on x86 platforms) and traps into RustMonitor. The ENCLU leaf instructions (e.g., EGETKEY, EREPORT) are emulated as a
+    system call. Interrupts and exceptions within the HUEnclaves also trap into the RustMonitor. The procedures are similar
+    to those for the GU-Enclaves described in Sec. 4.1.
+</div>
+
+<div class="analysis-section">
+    HU-Enclave 用于运行 IO 密集型任务。飞地在 VMX-root-r3 模式下运行 <br>
+    在飞地创建时，RustMonitor 为飞地准备一级页表，通过系统调用进入和退出飞地，相较于 GU-Enclave 有更好模式切换性能，但是更浅的防御深度
+</div>
+
+<h4 id="4-3-Privileged-Enclaves"><a href="#4-3-Privileged-Enclaves" class="headerlink" title="4.3 Privileged Enclaves"></a>4.3 Privileged Enclaves</h4><div class="original-text">
+    Inspired by the VM-based TEEs, such as AMD SEV [45], HyperEnclave supports privilege enclaves (P-Enclaves) which run in
+    guest privileged mode. P-Enclave is permitted to access the GDT, IDT, and level-1 page table which benefits a wide
+    variety of applications, as demonstrated by Dune [21]. One such example is the garbage collector, an essential feature
+    for Java applications (existing works port the JVM to enclaves [26, 43]). The garbage collector frequently changes page
+    permissions to trigger page faults in order to track the page status. For user mode enclaves (e.g., GU-Enclaves and
+    HU-Enclaves), it has to involve the primary OS to update the page table and handle the page fault which suffers huge
+    performance loss due to world switches. P-Enclaves eliminate the world switch by supporting in-enclave exception
+    handling and level-1 page table management. More specifically, P-Enclaves configures its own exception handler to handle
+    certain exceptions (such as page fault). RustMonitor passes through the white-list exceptions to the P-Enclave and forwards others to the primary OS. Furthermore, P-Enclaves can also support page-table-based in-enclave isolation schemes, e.g., sandboxing untrusted third-party libraries.
+    With the ability to receive interrupts within the enclaves, PEnclaves may also detect abnormal interrupt events by
+    counting the frequency, before requesting RustMonitor to route them to the primary OS. As such, existing interrupt-based
+    side channel attacks [24, 37, 40, 58, 59, 70] could be detected and mitigated. We leave further exploration in this
+    direction to future work due to space constraints.
+</div>
+
+<div class="analysis-section">
+    P-Enclave 运行在 VMX-non-root-r0 模式下，用于例如垃圾收集器的特殊任务 <br>
+    P-Enclave 可以自己管理页表和白名单内的异常，同时可以通过内部计数来减轻基于不正常中断的测信道攻击
+</div>
+
+<h3 id="5-Implementations"><a href="#5-Implementations" class="headerlink" title="5 Implementations"></a>5 Implementations</h3><div class="original-text">
+    We report our implementation of HyperEnclave on an AMD platform that supports hardware virtualization technology and
+    memory encryption. In the current implementation, RustMonitor consists of about 7,500 lines of code written mostly in
+    Rust, and the kernel module for the primary OS has about 3,500 lines of C code. Also, we made about 2,000 lines of code
+    changes to the official Intel SGX SDK (version 2.13).
+</div>
+
+<div class="analysis-section">
+    RustMonitor 由 7500 行 Rust 代码组成，OS 内核由 3500 行 C 代码组成，同时修改了约 2000 行 SGX 代码
+</div>
+
+<h4 id="5-1-RustMonitor"><a href="#5-1-RustMonitor" class="headerlink" title="5.1 RustMonitor"></a>5.1 RustMonitor</h4><div class="original-text">
+    RustMonitor runs at the highest privilege level and enforces the isolation for the enclaves. To reduce the risks caused
+    by memory corruption or concurrency bugs, we implemented RustMonitor mostly in Rust, a memory-safe language, with only a
+    few lines of assembly code used for context switches. Compared with existing hypervisors such as KVM [47] and Xen [29],
+    RustMonitor is much smaller and thus easier to be formally verified. We are working on the formal verification of
+    RustMonitor and plan to release the result as a separate report. When the platform is booted, we configure the kernel
+    command line parameters in the grub to reserve regions of physical memory, which are exclusively used by RustMonitor and
+    the enclaves. RustMonitor manages the reserved physical memory by maintaining a list of free pages. When an enclave page
+    is needed, e.g., when adding an enclave page during enclave creation, a free page is retrieved from the pool; when the
+    enclave page is freed, the page is attached to the list again. Moreover, RustMonitor also manages the enclave’s page
+    tables and processes the page fault.
+</div>
+
+<div class="analysis-section">
+    RustMonitor 运行在最高特权级，代码量小方便验证 <br>
+    RustMonitor 通过维护空闲页面列表来管理保留的物理内存，需要飞地页面时从内存池分配一个空闲页面，释放飞地页面时将其重新添加到空闲页面列表。RustMonitor 同时还管理安全区页表并处理页错误
+</div>
+
+<h4 id="5-2-The-Kernel-Module"><a href="#5-2-The-Kernel-Module" class="headerlink" title="5.2 The Kernel Module"></a>5.2 The Kernel Module</h4><div class="original-text">
+    The kernel module is loaded by the primary OS during the booting process. Then it loads, measures, and launches
+    RustMonitor, with the measurement extended to the TPM PCR as part of the TPM quote. When the kernel module is loaded, a
+    device file is created and mounted at /dev/hyper_enclave. The application can open it and issue the ioctl() to invoke
+    the emulated privileged operations.
+</div>
+
+<div class="analysis-section">
+    内核模块在启动过程中由 OS 加载，它负责加载、测量、启动 RustMonitor，将测量值扩展到 TPM PCRs 并体现在 TPM 引用中 <br>
+    加载内核模块时，将创建一个设备文件并将其装载到 /dev/hyper_enclave 中，应用程序可以打开它并发出 ioctl() 来调用模拟的特权操作
+</div>
+
+<h4 id="5-3-The-Enclave-SDK"><a href="#5-3-The-Enclave-SDK" class="headerlink" title="5.3 The Enclave SDK"></a>5.3 The Enclave SDK</h4><div class="original-text">
+    HyperEnclave retrofits the official SGX SDK as follows.
+    <p style="font-weight: bold;">Supporting the SGX SDK APIs.</p>
+    We replace the SGX user leaf functions (e.g. EENTER, EEXIT, ERESUME, etc.) in the SGX SDK with hypercalls or system
+    calls. Our implementation retains the same parameter semantics and orders as SGX for compatibility purposes.
+    <p style="font-weight: bold;">Parameters passing with the marshalling buffer.</p>
+    In HyperEnclave, the enclave can only access its own address space and the marshalling buffer shared with the
+    application. The size of the marshalling buffer can be configured in the enclave’s configuration file, with a default
+    size. The data needs to be transmitted to the marshalling buffer before invoking edge calls. We modified SGX SDK to
+    handle the transitions, which are thus transparent to the developer.
+</div>
+
+<div class="analysis-section">
+    TODO
+</div>
+
+<div class="original-text">
+    We modified the untrusted runtime library in the SDK (i.e., libsgx_urts.so), such that during enclave initialization a
+    marshalling buffer is allocated using mmap() with MAP_POPULATE flags set. As a result, the GPAs for the marshalling
+    buffers are pre-populated. Then an ioctl() is issued to request the primary OS not to compact or swap out the physical
+    pages of the marshalling buffers during the enclave’s lifetime. When the application invokes the emulated EINIT
+    instruction to mark the initialization of the enclave, the base address and the size of the marshalling buffer are
+    passed to RustMonitor, who will add the mapping of the marshalling buffer in the enclave’s page table. In this way, the
+    marshalling buffer is now shared between the enclave and the untrusted application. The base address and the size of the
+    marshalling buffer are also passed to the trusted runtime library to transmit data from the marshalling buffer to the
+    enclave.
+</div>
+
+<div class="analysis-section">
+    TODO
+</div>
+
+<div class="original-text">
+    The current OCALL’s implementation in the SGX SDK invokes the sgx_ocalloc() within the enclave to allocate a buffer on
+    the stack area of the untrusted application, which is then used for cross-enclave data transmission. As such, we only
+    need to modify the sgx_ocalloc() function to allocate a memory area in the marshalling buffer. To support parameter
+    passing through the marshalling buffer for ECALLs, we modified SGX’s Edger8r tool to automatically generate code that
+    copies the transmitted data into the marshalling buffer. The SGX programming model supports passing parameters with the
+    user_check attribute. For such parameters, the SDK tool will not generate code to check the address range or perform
+    data movement. Since the enclave code could access the entire process’s address space, some enclave programs may use a
+    pointer with the user_check attribute to manipulate the data buffer outside the enclave directly, without accounting for
+    the overhead for copying the data across the enclave boundary. To deal with it, we added an interface for the developer
+    to allocate the buffer within the marshalling buffer, in the cases when the developer may use parameters with the
+    user_check attribute.
+</div>
+
+<div class="analysis-section">
+    TODO
+</div>
+
+<div class="original-text">
+    The remote attestation flow is similar to SGX, following the same SIGn-and-MAc (SIGMA) protocol. We extended the sgx_quote_t structure in the SDK to include the HyperEnclave
+    quote, and the modification is transparent to the enclave code. With the above design, most SGX programs could run on
+    HyperEnclave without source code changes. Furthermore, to ease the development of HyperEnclave applications, we have
+    also ported the Rust SGX SDK [71] and the Occlum library OS [64] to HyperEnclave.
+</div>
+
+<div class="analysis-section">
+    TODO
+</div>
+
+<h3 id="6-Security-Analysis"><a href="#6-Security-Analysis" class="headerlink" title="6 Security Analysis"></a>6 Security Analysis</h3>
                 
               </div>
             
@@ -1010,6 +1195,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/02/18/GPU-TEE/" title="GPU-TEE">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">GPU-TEE</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
