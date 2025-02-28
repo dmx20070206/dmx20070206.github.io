@@ -19,20 +19,24 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="论文思路整理Threat Module     off-the-shelf reverse engineering tool   论文精读Abstract     Traditional CPUs and cloud systems based on them have embraced the hardware-based trusted execution environments to">
+    <meta name="description" content="论文思路整理Threat ModuleHIX ArchitectureArchitecture Overview 目标：保护主机和 GPU 的数据通路，将 Driver 运行在 enclave 中，OS 无法修改 MMIO 映射和 PCIe 路由。 必须的硬件&#x2F;软件修改：  Isolated GPU management with GPU enclave: 将 GPU Driver">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【论文】Heterogeneous Isolated Execution for Commodity GPUs">
 <meta property="og:url" content="https://dmx20070206.github.io/2025/02/18/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Heterogeneous%20Isolated%20Execution%20for%20Commodity%20GPUs/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="论文思路整理Threat Module     off-the-shelf reverse engineering tool   论文精读Abstract     Traditional CPUs and cloud systems based on them have embraced the hardware-based trusted execution environments to">
+<meta property="og:description" content="论文思路整理Threat ModuleHIX ArchitectureArchitecture Overview 目标：保护主机和 GPU 的数据通路，将 Driver 运行在 enclave 中，OS 无法修改 MMIO 映射和 PCIe 路由。 必须的硬件&#x2F;软件修改：  Isolated GPU management with GPU enclave: 将 GPU Driver">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F3.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HIX/T1.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F4.png">
+<meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F5.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F1.png">
 <meta property="article:published_time" content="2025-02-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-02-20T13:03:28.655Z">
+<meta property="article:modified_time" content="2025-02-28T17:20:11.167Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="GPU TEE">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/HIX/F1.png">
+<meta name="twitter:image" content="https://dmx20070206.github.io/img/HIX/F3.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -238,7 +242,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          894 words
+          1.9k words
         
       </span>
     
@@ -249,7 +253,7 @@
         
         
         
-          8 mins
+          16 mins
         
       </span>
     
@@ -302,10 +306,61 @@
                 
                 <link rel="stylesheet" href="/css/GPU_TEE.css">
 
-<h2 id="论文思路整理"><a href="#论文思路整理" class="headerlink" title="论文思路整理"></a>论文思路整理</h2><h3 id="Threat-Module"><a href="#Threat-Module" class="headerlink" title="Threat Module"></a>Threat Module</h3><ul>
-    <li>off-the-shelf reverse engineering tool</li>
-</ul>
-
+<h2 id="论文思路整理"><a href="#论文思路整理" class="headerlink" title="论文思路整理"></a>论文思路整理</h2><h3 id="Threat-Module"><a href="#Threat-Module" class="headerlink" title="Threat Module"></a>Threat Module</h3><h3 id="HIX-Architecture"><a href="#HIX-Architecture" class="headerlink" title="HIX Architecture"></a>HIX Architecture</h3><h4 id="Architecture-Overview"><a href="#Architecture-Overview" class="headerlink" title="Architecture Overview"></a>Architecture Overview</h4><p><img src="/img/HIX/F3.png" srcset="/img/loading.gif" lazyload></p>
+<p>目标：保护主机和 GPU 的数据通路，将 Driver 运行在 enclave 中，OS 无法修改 MMIO 映射和 PCIe 路由。</p>
+<p>必须的硬件&#x2F;软件修改：</p>
+<ol>
+<li>Isolated GPU management with GPU enclave: 将 GPU Driver 运行在 GPU enclave 中，只有 GPU enclave 可以访问 MMIO 区域</li>
+<li>Secure hardware I&#x2F;O path: 对 SGX 做硬件扩展，OS 无法修改 GPU MMIO region，OS 无法修改 PCIe 路由，保护通过 MMIO&#x2F;DMA 传输的命令&#x2F;代码&#x2F;数据</li>
+<li>Trusted application-to-GPU communication: U-enclave 发起的 GPU 命令要先通过对称加密的密钥保护的信道传递给 G-enclave，由其作为代表发送</li>
+</ol>
+<p><img src="/img/HIX/T1.png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="GPU-Enclave"><a href="#GPU-Enclave" class="headerlink" title="GPU Enclave"></a>GPU Enclave</h4><p>G-Enclave 的目标：对 GPU 的单一控制 + 用户访问 GPU 的唯一接口</p>
+<p>HIX 将 GPU Driver 的核心功能转移至 G-enclave，其他良性内核功能仍保留在内核中。需要对 SGX 做扩展，使有且仅有 G-enclave 可以访问 GPU MMIO 区域。</p>
+<h5 id="GPU-MMIO-Registration"><a href="#GPU-MMIO-Registration" class="headerlink" title="GPU MMIO Registration"></a>GPU MMIO Registration</h5><p>HIX 扩展了两条 SGX 指令，EGCREATE, EGADD，用于注册 GPU MMIO regions</p>
+<p>扩展的硬件需要知道：</p>
+<ol>
+<li>哪部分 MMIO region 应该被保护起来</li>
+<li>这部分 MMIO region 应该被映射到 G-enclave 的哪部分地址空间</li>
+<li>哪个 G-enclave 应该被允许访问</li>
+</ol>
+<p>HIX 新增了两种数据结构，存放到 EPC 中</p>
+<ol>
+<li>GPU enclave control structure (GECS): the control information regarding the GPU enclave including the hardware GPU number and GPU enclave ID.</li>
+<li>GPU MMIO region table (TGMR): the virtual and physical address mapping information of the GPU MMIO region, which is used to verify the address mapping for the MMIO region.</li>
+</ol>
+<p><img src="/img/HIX/F4.png" srcset="/img/loading.gif" lazyload></p>
+<p>（1）通过指令 EGCREATE 创建 G-enclave：将 &lt;GPU-BDF, G-enclave-ID&gt; 存放进 GECS 中，保证同一个 G-enclave 只对应一个 GPU<br>（2）通过指令 EADD 添加 GPU MMIO 区域的 &lt;VA, PA&gt; 存放进 TGMR 中，之后对 MMIO region 的访问会经过验证</p>
+<h5 id="GPU-Initialization-and-Measurement"><a href="#GPU-Initialization-and-Measurement" class="headerlink" title="GPU Initialization and Measurement"></a>GPU Initialization and Measurement</h5><p>G-enclave 创建并加载后，首先验证 GPU BIOS 的完整性，并彻底清空 GPU 的状态</p>
+<h5 id="GPU-Protection-on-GPU-Enclave-Termination"><a href="#GPU-Protection-on-GPU-Enclave-Termination" class="headerlink" title="GPU Protection on GPU Enclave Termination"></a>GPU Protection on GPU Enclave Termination</h5><p>如果 OS 强行杀死 G-enclave 进程，杀死的 G-enclave 进程仍然唯一的拥有 GPU 对应资源，除非系统断电重启，否则任何软件都无法访问这部分资源，而重启时 GECS 和 TGMR 都会重置并清空 GPU 数据。</p>
+<p>如果 OS 优雅的结束 G-enclave 进程，G-enclave 会先清空 GPU 数据并将 GPU 使用权还给 OS，同时通知 U-enclave GPU 不再可信。</p>
+<h4 id="Securing-I-O-Path-MMIO-and-DMA"><a href="#Securing-I-O-Path-MMIO-and-DMA" class="headerlink" title="Securing I&#x2F;O Path: MMIO and DMA"></a>Securing I&#x2F;O Path: MMIO and DMA</h4><p>保护向 GPU 发送的命令和数据，保护以 MMIO&#x2F;DMA 发送的数据得以保护</p>
+<h5 id="MMIO-Access-Protection"><a href="#MMIO-Access-Protection" class="headerlink" title="MMIO Access Protection"></a>MMIO Access Protection</h5><p>发生 TLB Miss 后添加新的 TLB entry 前，硬件 page table walker 会进行四次检查：</p>
+<ol>
+<li>检查 GECS，确保当前进程是 G-enclave</li>
+<li>VA 和 G-enclave 的请求对应</li>
+<li>VA 和 TGMR 中某一项相符</li>
+<li>PA 和 TGMR 对应项相符</li>
+</ol>
+<h5 id="MMIO-Lockdown-and-Securing-PCIe-Routing"><a href="#MMIO-Lockdown-and-Securing-PCIe-Routing" class="headerlink" title="MMIO Lockdown and Securing PCIe Routing"></a>MMIO Lockdown and Securing PCIe Routing</h5><p>HIX 提供 MMIO 锁机制，即 PCIe RC 在收到主机发来的事务包时，会检测其是否为修改 MMIO 映射或修改 PCIe 路由，若是则直接丢弃该包。</p>
+<p>锁机制在 EGCREATE 命令时启用</p>
+<h5 id="Trusted-DMA"><a href="#Trusted-DMA" class="headerlink" title="Trusted DMA"></a>Trusted DMA</h5><p>OS 通过恶意篡改 IOMMU 页表可以将 DMA 数据传送至任何页面。HIX 要求 DMA 数据必须进行加密并通过 message authentication code (MAC) 进行验证。</p>
+<p>通过该机制，只有加密的 DMA 数据才会出现在不安全的缓冲区，并通过 MAC 验证，密钥的传递是安全的（后文），故 DMA 数据得以保护。</p>
+<h4 id="Application-to-GPU-Communication"><a href="#Application-to-GPU-Communication" class="headerlink" title="Application-to-GPU Communication"></a>Application-to-GPU Communication</h4><p><img src="/img/HIX/F5.png" srcset="/img/loading.gif" lazyload></p>
+<p>G-enclave 对 GPU 有唯一的控制权，故需要向 U-enclave 提供一些获取 GPU 服务的接口，GPU 和不同的 U-enclave 同i性能使用不同的密钥。</p>
+<p><strong>Trusted Runtime User Library</strong></p>
+<p>HIX 为 U-enclave 提供了一套安全的 API，U-enclave 通过这些 API 和 GPU 交互，隐藏 HIX 的硬件细节。</p>
+<h5 id="Secure-Inter-Enclave-Communication"><a href="#Secure-Inter-Enclave-Communication" class="headerlink" title="Secure Inter-Enclave Communication"></a>Secure Inter-Enclave Communication</h5><p>HIX 使用对称加密技术确保 G-enclave，U-enclave，GPU 三方通信，使用 SGX local attestation 技术完成彼此的验证。</p>
+<p>U-enclave 和 G-enclave 中设立了两条通道：message queue 和 shared memory。U-enclave 将发送给 G-enclave 的数据放至 shared memory，然后向 message queue 发送请求，G-enclave 接受并处理数据。</p>
+<h5 id="Secure-Communication-between-the-GPU-Enclave-and-GPU"><a href="#Secure-Communication-between-the-GPU-Enclave-and-GPU" class="headerlink" title="Secure Communication between the GPU Enclave and GPU"></a>Secure Communication between the GPU Enclave and GPU</h5><p>GPU command buffer 在 HIX 保护下的 MMIO region，G-enclave 通过 MMIO 向 GPU 发送 U-enclave 对 GPU 的请求。</p>
+<p>数据传输链：U-enclave -&gt; G-enclave -&gt; GPU，期间涉及两对密钥的加解密过程，性能开销大。HIX 采取 single-copy 方法，使用相同的密钥，G-enclave 可以发送命令将 GPU 数据复制到 shared memory 或将 shared memory 数据复制到 GPU，复制可以通过 MMIO 或 DMA 来完成。</p>
+<h5 id="Communication-Example"><a href="#Communication-Example" class="headerlink" title="Communication Example"></a>Communication Example</h5><p>U-enclave 向 GPU 传递数据&#x2F;命令的流程：</p>
+<ol>
+<li>向 message queue 发送 cuMemcpyHtoD request，同时附带元数据</li>
+<li>向 shared memory 发送加密的实际数据</li>
+<li>G-enclave 将加密数据直接复制给 GPU</li>
+<li>G-enclave 向 GPU 发送一个解密内核任务，用于对加密数据的解密</li>
+</ol>
 <h2 id="论文精读"><a href="#论文精读" class="headerlink" title="论文精读"></a>论文精读</h2><h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><div class="original-text">
     Traditional CPUs and cloud systems based on them have embraced the hardware-based trusted execution environments to securely isolate computation from malicious OS or hardware attacks. However, GPUs and their cloud deployments have yet to include such support for hardware-based trusted computing. As large amounts of sensitive data are offloaded to GPU acceleration in cloud environments, ensuring the security of the data is a current and pressing need. As deployed today, the outsourced GPU model is vulnerable to attacks from compromised privileged software. To support isolated remote execution on GPUs even under vulnerable operating systems, this paper proposes a novel hardware and software architecture, called HIX (Heterogeneous Isolated eXecution). HIX does not require modifications to the GPU architecture to offer protections: Instead, it offers security by modifying the I/O interconnect between the CPU and GPU, and by refactoring the GPU device driver to work from within the CPU trusted environment. A result of the architectural choices behind HIX is that the concept can be applied to other offload accelerators besides GPUs. This work implements the proposed HIX architecture on an emulated machine with KVM and QEMU. Experimental results from the emulated security support with a real GPU show that the performance overhead for security is curtailed to 26% on average for the Rodinia benchmark, while providing secure isolated GPU computing.
 </div>
@@ -548,9 +603,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/02/21/GPU-TEE/" title="GPU-TEE">
+                      <a href="/2025/02/26/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Building%20GPU%20TEEs%20using%20CPU%20Secure%20Enclaves%20with%20GEVisor/" title="【论文】Building GPU TEEs using CPU Secure Enclaves with GEVisor">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">GPU-TEE</span>
+                        <span class="hidden-mobile">【论文】Building GPU TEEs using CPU Secure Enclaves with GEVisor</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
