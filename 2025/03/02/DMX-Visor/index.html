@@ -29,7 +29,7 @@
 <meta property="og:image" content="https://dmx20070206.github.io/img/GEVisor/F3.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F3.png">
 <meta property="article:published_time" content="2025-03-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-02T10:10:49.995Z">
+<meta property="article:modified_time" content="2025-03-02T10:25:11.057Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="GPU TEE">
 <meta name="twitter:card" content="summary_large_image">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          957 words
+          977 words
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          8 mins
+          9 mins
         
       </span>
     
@@ -397,14 +397,15 @@
 <li>一部分运行在 c-OS 中，提供良性的内核服务，例如分配 DMA | MMIO buffer 等</li>
 <li>HV 负责转发和管理 trust-app, G-enclave, GPU 之间的通信</li>
 </ol>
-<p>example: trust-app 需要访问 GPU 上的数据，对应 MMIO 地址为 0x1000 - 0x1004</p>
-<ol>
-<li>trust-app 通过 ENCLAVE GPU RUNTIME 提供的 API 访问内存地址 0x1000 - 0x1004 后触发 EPT trapping 或主动发起 HyperCall，被 HV 拦截</li>
-<li>HV 根据数据结构中的信息，判断访问是否合法（根据 Eclave-ID, PA, VA 等），不合法则丢弃</li>
-<li>HV 访问 GPU 对应数据，</li>
-<li></li>
-</ol>
-
+<div class="original-text">
+    example: trust-app 需要访问 GPU 上的数据，对应 MMIO 地址为 0x1000 - 0x1004
+    <ul>
+        <li>trust-app 通过 ENCLAVE GPU RUNTIME 提供的 API 访问内存地址 0x1000 - 0x1004 后触发 EPT trapping 或主动发起 HyperCall，被 HV 拦截</li>
+        <li>HV 根据数据结构中的信息，判断访问是否合法（根据 Eclave-ID, PA, VA 等），不合法则丢弃</li>
+        <li>HV 访问 GPU 对应数据，将数据返回给 trust-app</li>
+        <li>ENCLAVE GPU RUNTIME 和 HV 的通信需要使用加密信道</li>
+    </ul>
+</div>
                 
               </div>
             
