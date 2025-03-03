@@ -19,27 +19,24 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="框架设计思路 主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O portsGPU -&gt; 保护的设备c-device -&gt; 恶意设备c-OS -&gt; 恶意操作系统HV -&gt; HyperVisoruntrust-app -&gt; 不受信任的应用进程trust-app -&gt; 受信任的应用进程，需要访问 GPU  设备枚举与初始化 —— 保护设备配置空">
+    <meta name="description" content="18 岁     不 知 不 觉 就 成 年 了     平时经常因为年龄小被好朋友调侃，聊天一旦涉及时间因素，必有人来一句：“这个时候 dmx 才多大多大”，之前总盼着成年，真到这个时候了反而有些不舍了。还记得小时候和关系好的女生顺路回家的时候，感叹她怎么这么快就 14 岁了，时间过得好快，我对 17 岁这年还算满意，但是再也回不去了...     不过往好了想，能用自己的身份证实">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HyperVisor 设计思路">
-<meta property="og:url" content="https://dmx20070206.github.io/2025/03/02/DMX-Visor/index.html">
+<meta property="og:title" content="两个月过去喽">
+<meta property="og:url" content="https://dmx20070206.github.io/2025/02/28/2025-2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="框架设计思路 主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O portsGPU -&gt; 保护的设备c-device -&gt; 恶意设备c-OS -&gt; 恶意操作系统HV -&gt; HyperVisoruntrust-app -&gt; 不受信任的应用进程trust-app -&gt; 受信任的应用进程，需要访问 GPU  设备枚举与初始化 —— 保护设备配置空">
+<meta property="og:description" content="18 岁     不 知 不 觉 就 成 年 了     平时经常因为年龄小被好朋友调侃，聊天一旦涉及时间因素，必有人来一句：“这个时候 dmx 才多大多大”，之前总盼着成年，真到这个时候了反而有些不舍了。还记得小时候和关系好的女生顺路回家的时候，感叹她怎么这么快就 14 岁了，时间过得好快，我对 17 岁这年还算满意，但是再也回不去了...     不过往好了想，能用自己的身份证实">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://dmx20070206.github.io/img/GEVisor/F3.png">
-<meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F3.png">
-<meta property="article:published_time" content="2025-03-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-02T10:25:11.057Z">
+<meta property="article:published_time" content="2025-02-28T15:59:59.000Z">
+<meta property="article:modified_time" content="2025-03-03T13:56:15.021Z">
 <meta property="article:author" content="DM-X~X~X">
-<meta property="article:tag" content="GPU TEE">
+<meta property="article:tag" content="Happiness">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://dmx20070206.github.io/img/GEVisor/F3.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>HyperVisor 设计思路 - Hexo</title>
+  <title>两个月过去喽 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -216,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="HyperVisor 设计思路"></span>
+            <span id="subtitle" data-typed-text="两个月过去喽"></span>
           
         </div>
 
@@ -227,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-02 00:00" pubdate>
-          March 2, 2025 am
+        <time datetime="2025-02-28 23:59" pubdate>
+          February 28, 2025 pm
         </time>
       </span>
     
@@ -239,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          977 words
+          483 words
         
       </span>
     
@@ -250,7 +247,7 @@
         
         
         
-          9 mins
+          5 mins
         
       </span>
     
@@ -296,115 +293,49 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">HyperVisor 设计思路</h1>
+            <h1 id="seo-header">两个月过去喽</h1>
             
             
               <div class="markdown-body">
                 
-                <link rel="stylesheet" href="/css/GPU_TEE.css">
+                <link rel="stylesheet" href="/css/Happiness.css">
 
-<h2 id="框架设计思路"><a href="#框架设计思路" class="headerlink" title="框架设计思路"></a>框架设计思路</h2><blockquote>
-<p>主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O ports<br>GPU -&gt; 保护的设备<br>c-device -&gt; 恶意设备<br>c-OS -&gt; 恶意操作系统<br>HV -&gt; HyperVisor<br>untrust-app -&gt; 不受信任的应用进程<br>trust-app -&gt; 受信任的应用进程，需要访问 GPU</p>
-</blockquote>
-<h3 id="设备枚举与初始化-——-保护设备配置空间"><a href="#设备枚举与初始化-——-保护设备配置空间" class="headerlink" title="设备枚举与初始化 —— 保护设备配置空间"></a>设备枚举与初始化 —— 保护设备配置空间</h3><div class="original-text">
-    A fundamental building block of our prevention mechanisms against I/O port conflicts  and MMIO mapping attacks is protecting the device configuration space. 
-    </br>
-    </br>
-    —— 《Building Verifiable Trusted Path on Commodity x86 Computers》
+<div class="event-card">
+    <div class="summary-title">18 岁</div>
+    <div class="explanation">不 知 不 觉 就 成 年 了</div>
+    <div class="explanation">平时经常因为年龄小被好朋友调侃，聊天一旦涉及时间因素，必有人来一句：“这个时候 dmx 才多大多大”，之前总盼着成年，真到这个时候了反而有些不舍了。还记得小时候和关系好的女生顺路回家的时候，感叹她怎么这么快就 14 岁了，时间过得好快，我对 17 岁这年还算满意，但是再也回不去了...</div>
+    <div class="explanation">不过往好了想，能用自己的身份证实名打游戏，能在淘宝上买剪刀这种危险物品，也是很爽的</div>
+    <div class="explanation">不想担起责任，但是不得不担起越来越多的责任...</div>
 </div>
 
-<p>设备配置空间是保护 MMIO&#x2F;DMA&#x2F;IO-port 的基础，如果无法保证 GPU 的 BARs 寄存器中数据的真实性，对访问设备的数据通路的任何加强都没有意义。</p>
-<div class="original-text">
-    This address information is only correlated with the targeted device’s static geographic position in the system hierarchy where the targeted PCI/PCIe device is hard-wired or plugged. I/O ports and MMIO memory remapping cannot manipulate device hierarchic positions, and thus cannot cause the manipulated devices to claim the configuration space cycles of other devices.
-    </br>
-    </br>
-    —— 《Building Verifiable Trusted Path on Commodity x86 Computers》
+<div class="event-card">
+    <div class="summary-title">又玩上王者了</div>
+    <div class="explanation">上学期因为太忙一度退游了俩月，放假了手痒痒了，好朋友也回归了，王者启动！</div>
 </div>
 
-<p>对于设备配置空间的访问一般通过 MMIO&#x2F;IO-port 方式，看似出现了依赖环路，但由于 PCIe RC 转发设备配置空间访问事务包根据设备的 BDF 以及在系统架构中的物理位置进行路由，故 HV 首要目标是正确初始化设备配置空间并防止任何非法修改。</p>
-<h3 id="主机-设备通信的三种途径-——-I-O-Ports-MMIO-DMA"><a href="#主机-设备通信的三种途径-——-I-O-Ports-MMIO-DMA" class="headerlink" title="主机-设备通信的三种途径 —— I&#x2F;O Ports | MMIO | DMA"></a>主机-设备通信的三种途径 —— I&#x2F;O Ports | MMIO | DMA</h3><blockquote>
-<p>I&#x2F;O Ports 传输方式几乎不会被使用</p>
-</blockquote>
-<div class="threat-module">
-    <ul>
-        <li>c-OS/untrust-app 直接访问 GPU I/O ports | DMA | MMIO</li>
-        <li>c-OS 恶意篡改 c-device 的 I/O ports | DMA | MMIO 地址信息</li>
-    </ul>
+<div class="event-card">
+    <div class="summary-title">拿上金标了</div>
+    <div class="explanation">半个月复健效果不错，也是拿上金标了，只不过越来越感觉这种 pvp 游戏，当打到一定的高度就渐渐失去玩游戏的本质了，尤其是最后冲分的时候，已经很明显感觉打游戏打得很累了</div>
 </div>
 
-<div class="original-text">
-    <div style="font-weight: bold;">26.6.4 I/O-Bitmap Addresses</div>
-    The VM-execution control fields include the 64-bit physical addresses of I/O bitmaps A and B (each of which are 4 KBytes in size). I/O bitmap A contains one bit for each I/O port in the range 0000H through 7FFFH; I/O bitmap B contains bits for ports in the range 8000H through FFFFH. A logical processor uses these bitmaps if and only if the 'use I/O bitmaps' control is 1. If the bitmaps are used, execution of an I/O instruction causes a VM exit if any bit in the I/O bitmaps corresponding to a port it accesses is 1. See Section 27.1.3 for details. If the bitmaps are used, their addresses must be 4-KByte aligned.
-    </br>
-    </br>
-    —— 《Intel® 64 and IA-32 Architectures Software Developer’s Manual》
+<div class="event-card">
+    <div class="summary-title">游戏得最好配置是朋友</div>
+    <div class="explanation">无论什么类型的游戏和朋友一起玩就会很爽，泰拉瑞亚、森林之子、王者、PUBG、赛博桌游、博德之门..，每次都能在和兄弟们边玩游戏边搞抽象的过程中乐成啥比，过年后窝在家里那几天，最期待的就是群里有人问玩不玩游戏</div>
 </div>
 
-<p>对于 I&#x2F;O ports，HV 可以配置 VMCS 中的 I&#x2F;O port-access-interception bitmap，拦截 c-OS&#x2F;untrust-app 访问 GPU 端口。</p>
-<p>对于 MMIO | DMA，其本质是内存地址的一部分，故 HV 可以通过设置 EPT trapping，拦截 c-OS&#x2F;untrust-app 访问相关内存地址。设备配置空间的保护是保证这些内存地址的真实性的基础。</p>
-<div class="original-text">
-    Specifically, before executing the PE, the HV scans through all I/O port mappings relevant to the chipset hardware (as mentioned in Section 2.3) and enumerates all plug-and-play (PnP) devices to detect their configured I/O ports.
-    </br>
-    </br>
-    —— 《Building Verifiable Trusted Path on Commodity x86 Computers》
-    </br>
-    -----------------------------------------------------------------------------------------------------------------------------------
-    </br>
-    Before executing a PE, the HV scans through all MMIO memory mappings specified by the chipset hardware, and enumerates
-    all PnP devices to discover their MMIO memory ranges (e.g., check the PCI Base Address Registers in the PCI
-    configuration space).
-    </br>
-    </br>
-    —— 《Building Verifiable Trusted Path on Commodity x86 Computers》
+<div class="event-card">
+    <div class="summary-title">密码的计组课设还不出分</div>
+    <div class="explanation">上学期成绩慢慢地都出来了，计组课设这个 12 周结课，出分只需要计算三个两位数加法的课一直拖到了开学还没出，严重怀疑老师是个大懒蛋</div>
 </div>
 
-<p>HV 在 G-enclave 运行前可以进行一次检查，遍历所有设备的 I&#x2F;O ports，防止和 GPU 的 I&#x2F;O ports 重叠；遍历所有设备的 MMIO region，防止和 GPU 的 MMIO region 重叠。</p>
-<div class="original-text">
-    GEVISOR maintains memory region mapping tables (MRtable) containing the virtual and physical address pairs of both MMIO and DMA memory regions per enclave within a reserved memory region, and traps accesses to these regions for access control.
-    </br>
-    </br>
-    —— 《Building GPU TEEs using CPU Secure Enclaves with GEVisor》
-    <br>
-    -----------------------------------------------------------------------------------------------------------------------------------
-    <br>
-    GECS contains the control information regarding the GPU enclave including the hardware GPU number and GPU enclave ID. TGMR contains the virtual and physical address mapping information of the GPU MMIO region.
-    <br>
-    <br>
-    —— 《Heterogeneous Isolated Execution for Commodity GPUs》
+<div class="event-card">
+    <div class="summary-title">荒废的寒假</div>
+    <div class="explanation"></div>
 </div>
 
-<p>使用数据结构存储 GPU MMIO 信息（例如 HIX 的 GECS&#x2F;TGMR，GEVisor 的 MRTable），并在 EPT 中将这些内存区域设置为触发 EPT trapping，防止 c-OS&#x2F;untrust-app 直接访问 GPU MMIO region。原本的地址信息存在 Driver 中，HV 会根据数据结构中的信息进行验证。</p>
-<p>DMA Buffer 和 MMIO Buffer 不同，DMA Buffer 是由驱动动态分配的：</p>
-<ul>
-    <li>DMA 请求通过写入设备寄存器完成，写入过程使用 MMIO | I/O ports 方式，使用之前的方法可拦截 DMA 请求</li>
-    <li>设置 EPT trapping => HV 可以保证 c-OS 无法访问 DMA Buffer</li>
-    <li>设置数据结构 => HV 可以保证 c-OS 无法通过篡改 DMA 地址信息来攻击</li>
-    <li>设置 IOMMU => 可以保证 c-device 无法访问 GPU DMA Buffer</li>
-</ul>
- 
-<h3 id="G-Enclave-GPU-Driver"><a href="#G-Enclave-GPU-Driver" class="headerlink" title="G-Enclave | GPU-Driver"></a>G-Enclave | GPU-Driver</h3><blockquote>
-<p>借助 Intel SGX 的功能</p>
-</blockquote>
-<img src="/img/GEVisor/F3.png" srcset="/img/loading.gif" lazyload alt="">
-
-<p>将 GPU Runtime 分成两部分：UNTRUSTED RUNTIME 和 ENCLAVE GPU RUNTIME，前者存放在非 enclave 内存区域，负责和 GPU Driver 交互来创建 GPU 上下文以及分配 MMIO&#x2F;DMA Buffer 等；后者存放在 enclave 内存区域，负责和 GPU 通信，将数据从 enclave 复制到 MMIO&#x2F;DMA Buffer 中。</p>
-<img src="/img/HIX/F3.png" srcset="/img/loading.gif" lazyload alt="">
-
-<p>将 GPU Driver 分成两部分，一部分运行在 G-enclave 中，唯一控制 GPU 并提供 GPU 访问接口；另一部分运行在 c-OS 中，提供良性的内核服务。</p>
-<p>本质上都是将 GPU Driver 分割成两部分：</p>
-<ol>
-<li>一部分运行在 SGX enclave 中，负责控制和保护 trust-app 和 GPU 的交互过程</li>
-<li>一部分运行在 c-OS 中，提供良性的内核服务，例如分配 DMA | MMIO buffer 等</li>
-<li>HV 负责转发和管理 trust-app, G-enclave, GPU 之间的通信</li>
-</ol>
-<div class="original-text">
-    example: trust-app 需要访问 GPU 上的数据，对应 MMIO 地址为 0x1000 - 0x1004
-    <ul>
-        <li>trust-app 通过 ENCLAVE GPU RUNTIME 提供的 API 访问内存地址 0x1000 - 0x1004 后触发 EPT trapping 或主动发起 HyperCall，被 HV 拦截</li>
-        <li>HV 根据数据结构中的信息，判断访问是否合法（根据 Eclave-ID, PA, VA 等），不合法则丢弃</li>
-        <li>HV 访问 GPU 对应数据，将数据返回给 trust-app</li>
-        <li>ENCLAVE GPU RUNTIME 和 HV 的通信需要使用加密信道</li>
-    </ul>
+<div class="event-card">
+    <div class="summary-title">不顺利的科研</div>
+    <div class="explanation"></div>
 </div>
                 
               </div>
@@ -417,7 +348,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/GPU-TEE/" class="print-no-link">#GPU TEE</a>
+        <a href="/tags/Happiness/" class="print-no-link">#Happiness</a>
       
     </div>
   
@@ -429,8 +360,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>HyperVisor 设计思路</div>
-      <div>https://dmx20070206.github.io/2025/03/02/DMX-Visor/</div>
+      <div>两个月过去喽</div>
+      <div>https://dmx20070206.github.io/2025/02/28/2025-2/</div>
     </div>
     <div class="license-meta">
       
@@ -442,7 +373,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 2, 2025</div>
+          <div>February 28, 2025</div>
         </div>
       
       
@@ -474,9 +405,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/03/31/2025-3/" title="三个月过去喽">
+                      <a href="/2025/03/01/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Building%20Verifiable%20Trusted%20Path%20on%20Commodity%20x86%20Computers/" title="【论文】Building Verifiable Trusted Path on Commodity x86 Computers">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">三个月过去喽</span>
+                        <span class="hidden-mobile">【论文】Building Verifiable Trusted Path on Commodity x86 Computers</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -484,8 +415,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/01/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Building%20Verifiable%20Trusted%20Path%20on%20Commodity%20x86%20Computers/" title="【论文】Building Verifiable Trusted Path on Commodity x86 Computers">
-                        <span class="hidden-mobile">【论文】Building Verifiable Trusted Path on Commodity x86 Computers</span>
+                      <a href="/2025/02/26/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Building%20GPU%20TEEs%20using%20CPU%20Secure%20Enclaves%20with%20GEVisor/" title="【论文】Building GPU TEEs using CPU Secure Enclaves with GEVisor">
+                        <span class="hidden-mobile">【论文】Building GPU TEEs using CPU Secure Enclaves with GEVisor</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
