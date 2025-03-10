@@ -19,15 +19,15 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="还是 rk1     只能说完全摆烂的一学期还是不小心拿下了加权第一（嘻嘻），室友和上学期绑定组队大作业的好朋友分别拿下 rk234，只能说跟着轩哥混指定有好果汁吃（嘻嘻）        我的牢红     最好的 Best...        又又又过敏了     每次三四月份都是眼睛鼻子嗓子全面崩溃的时候...">
+    <meta name="description" content="优雅倒计时工具              :root {             --primary-color: #4a90e2;             --secondary-color: #f39c12;             --background-light: #f0f0f0;             --text-light: #333333;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="三个月过去喽">
-<meta property="og:url" content="https://dmx20070206.github.io/2025/03/31/2025-3/index.html">
+<meta property="og:title" content="倒计时小工具">
+<meta property="og:url" content="https://dmx20070206.github.io/2025/01/01/count/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="还是 rk1     只能说完全摆烂的一学期还是不小心拿下了加权第一（嘻嘻），室友和上学期绑定组队大作业的好朋友分别拿下 rk234，只能说跟着轩哥混指定有好果汁吃（嘻嘻）        我的牢红     最好的 Best...        又又又过敏了     每次三四月份都是眼睛鼻子嗓子全面崩溃的时候...">
+<meta property="og:description" content="优雅倒计时工具              :root {             --primary-color: #4a90e2;             --secondary-color: #f39c12;             --background-light: #f0f0f0;             --text-light: #333333;">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-03-31T15:59:59.000Z">
-<meta property="article:modified_time" content="2025-03-10T02:04:30.869Z">
+<meta property="article:published_time" content="2024-12-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-03-07T04:51:40.770Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="Happiness">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,7 +36,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>三个月过去喽 - Hexo</title>
+  <title>倒计时小工具 - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -213,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="三个月过去喽"></span>
+            <span id="subtitle" data-typed-text="倒计时小工具"></span>
           
         </div>
 
@@ -224,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-03-31 23:59" pubdate>
-          March 31, 2025 pm
+        <time datetime="2025-01-01 00:00" pubdate>
+          January 1, 2025 am
         </time>
       </span>
     
@@ -236,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          102 words
+          369 words
         
       </span>
     
@@ -247,7 +247,7 @@
         
         
         
-          1 mins
+          4 mins
         
       </span>
     
@@ -293,27 +293,164 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">三个月过去喽</h1>
+            <h1 id="seo-header">倒计时小工具</h1>
             
             
               <div class="markdown-body">
                 
-                <link rel="stylesheet" href="/css/Happiness.css">
+                <!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>优雅倒计时工具</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #f39c12;
+            --background-light: #f0f0f0;
+            --text-light: #333333;
+            --background-dark: #2c3e50;
+            --text-dark: #ecf0f1;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #countdown {
+            font-size: 3em;
+            font-weight: bold;
+            margin: 30px 0;
+            color: var(--primary-color);
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 30%;
+            font-size: 1em;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: inherit;
+        }
+        button {
+            font-size: 1em;
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        #start { background-color: var(--primary-color); color: white; }
+        #pause { background-color: var(--secondary-color); color: white; }
+        #reset { background-color: #e74c3c; color: white; }
+        /* 亮色模式 */
+        body.light-mode {
+            background-color: var(--background-light);
+            color: var(--text-light);
+        }
+        /* 暗色模式 */
+        body.dark-mode {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body class="light-mode">
+    <div class="container">
+        <h1>优雅倒计时</h1>
+        <div id="countdown">00:00:00</div>
+        <div class="input-group">
+            <input type="number" id="hours" placeholder="时" min="0">
+            <input type="number" id="minutes" placeholder="分" min="0" max="59">
+            <input type="number" id="seconds" placeholder="秒" min="0" max="59">
+        </div>
+        <div>
+            <button id="start">开始</button>
+            <button id="pause">暂停</button>
+            <button id="reset">重置</button>
+        </div>
+        <br>
+        <div>项目地址：https://github.com/duoluodexiaoxiaoyuan/daojishi</div>
+    </div>
+    <script>
+        let countdown;
+        let totalSeconds = 0;
+        let isRunning = false;
+        const countdownDisplay = document.getElementById('countdown');
+        const startButton = document.getElementById('start');
+        const pauseButton = document.getElementById('pause');
+        const resetButton = document.getElementById('reset');
+        const hoursInput = document.getElementById('hours');
+        const minutesInput = document.getElementById('minutes');
+        const secondsInput = document.getElementById('seconds');
+        const modeToggle = document.getElementById('mode-toggle');
+        function updateDisplay() {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            countdownDisplay.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        function startCountdown() {
+            if (!isRunning) {
+                if (totalSeconds === 0) {
+                    totalSeconds = parseInt(hoursInput.value || 0) * 3600 +
+                                   parseInt(minutesInput.value || 0) * 60 +
+                                   parseInt(secondsInput.value || 0);
+                }
+                isRunning = true;
+                countdown = setInterval(() => {
+                    if (totalSeconds > 0) {
+                        totalSeconds--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(countdown);
+                        isRunning = false;
+                        alert('倒计时结束！');
+                    }
+                }, 1000);
+            }
+        }
+        function pauseCountdown() {
+            clearInterval(countdown);
+            isRunning = false;
+        }
+        function resetCountdown() {
+            clearInterval(countdown);
+            isRunning = false;
+            totalSeconds = 0;
+            updateDisplay();
+            hoursInput.value = '';
+            minutesInput.value = '';
+            secondsInput.value = '';
+        }
+        startButton.addEventListener('click', startCountdown);
+        pauseButton.addEventListener('click', pauseCountdown);
+        resetButton.addEventListener('click', resetCountdown);
+        // 模式切换
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            document.body.classList.toggle('dark-mode');
+        });
+        updateDisplay();
+    </script>
+</body>
+</html>
 
-<div class="event-card">
-    <div class="summary-title">还是 rk1</div>
-    <div class="explanation">只能说完全摆烂的一学期还是不小心拿下了加权第一（嘻嘻），室友和上学期绑定组队大作业的好朋友分别拿下 rk234，只能说跟着轩哥混指定有好果汁吃（嘻嘻）</div>
-</div>
-
-<div class="event-card">
-    <div class="summary-title">我的牢红</div>
-    <div class="explanation">最好的 Best...</div>
-</div>
-
-<div class="event-card">
-    <div class="summary-title">又又又过敏了</div>
-    <div class="explanation">每次三四月份都是眼睛鼻子嗓子全面崩溃的时候...</div>
-</div>
                 
               </div>
             
@@ -337,8 +474,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>三个月过去喽</div>
-      <div>https://dmx20070206.github.io/2025/03/31/2025-3/</div>
+      <div>倒计时小工具</div>
+      <div>https://dmx20070206.github.io/2025/01/01/count/</div>
     </div>
     <div class="license-meta">
       
@@ -350,7 +487,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 31, 2025</div>
+          <div>January 1, 2025</div>
         </div>
       
       
@@ -382,12 +519,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2025/01/31/2025-1/" title="一个月过去喽">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">一个月过去喽</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/03/02/DMX-Visor/" title="HyperVisor 设计思路">
-                        <span class="hidden-mobile">HyperVisor 设计思路</span>
+                      <a href="/2024/12/20/DataBase4/" title="数据库八股文——规范化理论">
+                        <span class="hidden-mobile">数据库八股文——规范化理论</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

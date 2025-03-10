@@ -19,17 +19,17 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta name="description" content="框架设计思路 主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O portsGPU -&gt; 保护的设备c-device -&gt; 恶意设备c-OS -&gt; 恶意操作系统HV -&gt; HyperVisoruntrust-app -&gt; 不受信任的应用进程trust-app -&gt; 受信任的应用进程，需要访问 GPU  设备枚举与初始化 —— 保护设备配置空">
+    <meta name="description" content="基于硬件指纹的 GPU     ① 部署步骤：      将一体机中的 GPU 提前运行若干指纹提取程序和指纹转换程序，收录一系列指纹和对应的公钥      在特定内存区域以表格的形式存放程序编号和对应公钥      ② 验证设备步骤：      主机侧将指纹提取程序和指纹转换程序以及一个随机数发送给 GPU，GPU 运行指纹提取程序和指纹转换程序后通过生成的私钥加密随机数，将起返回主机">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HyperVisor 设计思路">
 <meta property="og:url" content="https://dmx20070206.github.io/2025/03/02/DMX-Visor/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="框架设计思路 主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O portsGPU -&gt; 保护的设备c-device -&gt; 恶意设备c-OS -&gt; 恶意操作系统HV -&gt; HyperVisoruntrust-app -&gt; 不受信任的应用进程trust-app -&gt; 受信任的应用进程，需要访问 GPU  设备枚举与初始化 —— 保护设备配置空">
+<meta property="og:description" content="基于硬件指纹的 GPU     ① 部署步骤：      将一体机中的 GPU 提前运行若干指纹提取程序和指纹转换程序，收录一系列指纹和对应的公钥      在特定内存区域以表格的形式存放程序编号和对应公钥      ② 验证设备步骤：      主机侧将指纹提取程序和指纹转换程序以及一个随机数发送给 GPU，GPU 运行指纹提取程序和指纹转换程序后通过生成的私钥加密随机数，将起返回主机">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://dmx20070206.github.io/img/GEVisor/F3.png">
 <meta property="og:image" content="https://dmx20070206.github.io/img/HIX/F3.png">
 <meta property="article:published_time" content="2025-03-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-03-02T10:25:11.057Z">
+<meta property="article:modified_time" content="2025-03-06T06:11:50.186Z">
 <meta property="article:author" content="DM-X~X~X">
 <meta property="article:tag" content="GPU TEE">
 <meta name="twitter:card" content="summary_large_image">
@@ -239,7 +239,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          977 words
+          1.5k words
         
       </span>
     
@@ -250,7 +250,7 @@
         
         
         
-          9 mins
+          13 mins
         
       </span>
     
@@ -302,6 +302,16 @@
               <div class="markdown-body">
                 
                 <link rel="stylesheet" href="/css/GPU_TEE.css">
+
+<h2 id="基于硬件指纹的-GPU"><a href="#基于硬件指纹的-GPU" class="headerlink" title="基于硬件指纹的 GPU"></a>基于硬件指纹的 GPU</h2><div class="original-text">
+    ① 部署步骤： <br>
+    将一体机中的 GPU 提前运行若干指纹提取程序和指纹转换程序，收录一系列指纹和对应的公钥 <br>
+    在特定内存区域以表格的形式存放程序编号和对应公钥 <br>
+    ② 验证设备步骤： <br>
+    主机侧将指纹提取程序和指纹转换程序以及一个随机数发送给 GPU，GPU 运行指纹提取程序和指纹转换程序后通过生成的私钥加密随机数，将起返回主机 <br>
+    主机通过验证公钥是否可以解密随机数判断 GPU 是否为原本 GPU <br> 
+</div>
+
 
 <h2 id="框架设计思路"><a href="#框架设计思路" class="headerlink" title="框架设计思路"></a>框架设计思路</h2><blockquote>
 <p>主机和设备交换数据有三种方式：DMA, MMIO, I&#x2F;O ports<br>GPU -&gt; 保护的设备<br>c-device -&gt; 恶意设备<br>c-OS -&gt; 恶意操作系统<br>HV -&gt; HyperVisor<br>untrust-app -&gt; 不受信任的应用进程<br>trust-app -&gt; 受信任的应用进程，需要访问 GPU</p>
@@ -406,6 +416,30 @@
         <li>ENCLAVE GPU RUNTIME 和 HV 的通信需要使用加密信道</li>
     </ul>
 </div>
+
+<h3 id="I-O-中断保护-——-HI-MSI-IPI"><a href="#I-O-中断保护-——-HI-MSI-IPI" class="headerlink" title="I&#x2F;O 中断保护 —— HI | MSI | IPI"></a>I&#x2F;O 中断保护 —— HI | MSI | IPI</h3><div class="threat-module">
+    <ul>
+        <li>c-OS/untrust-app 恶意篡改中断路由，使中断信息无法正确从 GPU 送往 trust-app</li>
+        <li>c-OS/untrust-app 恶意制造虚假中断，将其描述为 GPU 发出，送往 trust-app</li>
+    </ul>
+</div>
+
+<p>对于 HI 类型中断，主要经历下面几个阶段：</p>
+<ol>
+<li>设备通过 IOAPIC 的某一个管脚发送中断信号</li>
+<li>IOAPIC 根据重定向路由表，构建一条规范化的中断信息（包括目标 CPU，中断向量号，触发模式，传递模式等等），构建完毕后通过总线发送出去</li>
+<li>LAPIC 收到中断后存入中断请求队列 IRR 中，根据中断优先级和 CPU 状态决定是否交给 CPU 处理，若处理写入 ISR</li>
+<li>CPU 根据中断向量号查找 IDT，拿到对应中断处理程序的入口地址</li>
+<li>处理完毕后，发送 EOI 信号通知 LAPIC</li>
+<li>LAPIC 和 IOAPIC 清除相关中断信号或电平</li>
+</ol>
+<p>HV 需要保护三个部分：重定向路由表、中断控制寄存器、IDT，这三部分均存放于物理内存中，故可以通过前文的方法进行保护</p>
+<p>对于 MSI 类型中断，主要经历下面几个阶段：</p>
+<ol>
+<li>设备向特定内存区域写入特定的值</li>
+<li>处理器和中断控制器监控这些特定的内存区域，对于写入操作，视为设备发起了中断</li>
+</ol>
+
                 
               </div>
             
