@@ -23,6 +23,25 @@
   
   
   <entry>
+    <title>algorithm</title>
+    <link href="/2025/03/12/algorithm/"/>
+    <url>/2025/03/12/algorithm/</url>
+    
+    <content type="html"><![CDATA[<h2 id="2025-3-12"><a href="#2025-3-12" class="headerlink" title="2025.3.12"></a>2025.3.12</h2><h2 id="2025-3-13"><a href="#2025-3-13" class="headerlink" title="2025.3.13"></a>2025.3.13</h2><p>学习 bitset 的用法。</p><p><img src="/img/algorithm/bitset.png"></p><p>经典的三道回溯问题，复健效果不错：</p><ol><li><a href="https://www.acwing.com/problem/content/94/">递归实现指数型枚举</a></li><li><a href="https://www.acwing.com/problem/content/95/">递归实现组合型枚举</a></li><li><a href="https://www.acwing.com/problem/content/96/">递归实现排列型枚举</a></li></ol>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Learing</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>HyperVisor 设计思路</title>
     <link href="/2025/03/02/DMX-Visor/"/>
     <url>/2025/03/02/DMX-Visor/</url>
