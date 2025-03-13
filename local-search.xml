@@ -27,7 +27,7 @@
     <link href="/2025/03/12/algorithm/"/>
     <url>/2025/03/12/algorithm/</url>
     
-    <content type="html"><![CDATA[<h2 id="2025-3-12"><a href="#2025-3-12" class="headerlink" title="2025.3.12"></a>2025.3.12</h2><h2 id="2025-3-13"><a href="#2025-3-13" class="headerlink" title="2025.3.13"></a>2025.3.13</h2><p>学习 bitset 的用法。</p><p><img src="/img/algorithm/bitset.png"></p><p>经典的三道回溯问题，复健效果不错：</p><ol><li><a href="https://www.acwing.com/problem/content/94/">递归实现指数型枚举</a></li><li><a href="https://www.acwing.com/problem/content/95/">递归实现组合型枚举</a></li><li><a href="https://www.acwing.com/problem/content/96/">递归实现排列型枚举</a></li></ol>]]></content>
+    <content type="html"><![CDATA[<h2 id="2025-3-12"><a href="#2025-3-12" class="headerlink" title="2025.3.12"></a>2025.3.12</h2><h2 id="2025-3-13"><a href="#2025-3-13" class="headerlink" title="2025.3.13"></a>2025.3.13</h2><p>学习 bitset 的用法。</p><p><img src="/img/algorithm/bitset.png"></p><p>经典的三道回溯问题，复健效果不错：</p><ol><li><a href="https://www.acwing.com/problem/content/94/">递归实现指数型枚举</a></li><li><a href="https://www.acwing.com/problem/content/95/">递归实现组合型枚举</a></li><li><a href="https://www.acwing.com/problem/content/96/">递归实现排列型枚举</a></li></ol><p>一道开灯问题，折磨一个半小时发现每轮初始化没做好…<br><a href="https://www.acwing.com/problem/content/97/">费解的开关</a></p><blockquote><p>对于输入 n 解决 n 轮问题，每轮问题的初始化一定要做好</p></blockquote><p>四根柱子的汉诺塔，似懂非懂.jpg<br><a href="https://www.acwing.com/problem/content/description/98/">奇怪的汉诺塔</a></p><blockquote><p>对于没思路的题目，可以强行尝试一个无法证明对错的简单思想</p></blockquote>]]></content>
     
     
     
