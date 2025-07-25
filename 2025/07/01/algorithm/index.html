@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="记录为了保研机试刷的题目">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>算法题训练 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-algorithm" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E5%A5%A5%E6%97%A51.jpg" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      算法题训练
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-06-30T16:00:00.000Z" itemprop="datePublished">
+  2025-07-01
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>记录为了保研机试刷的题目</p>
+<span id="more"></span>
+
+<hr>
+<h2 id="基础算法"><a href="#基础算法" class="headerlink" title="基础算法"></a>基础算法</h2><h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><h3 id="AcWing-154-滑动窗口"><a href="#AcWing-154-滑动窗口" class="headerlink" title="AcWing 154. 滑动窗口"></a>AcWing 154. 滑动窗口</h3><p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/156/">原题链接</a><br><a target="_blank" rel="noopener" href="https://www.acwing.com/activity/content/code/content/9634400/">我的代码</a></p>
+<p>单调队列，可以用 <code>deque</code> 辅助实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以维护最大值为例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonotoneQueue</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	deque&lt;<span class="type">int</span>&gt; nums;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> num)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">        <span class="comment">// 核心逻辑：当 i &lt; j &amp;&amp; arr[i] &lt; arr[j] 时，保留 arr[i] 没有意义。 </span></span><br><span class="line">        <span class="comment">// 此处注意不能写成 &lt;=，因为有可能 push arr[j] 时，将 arr[i] 剔除，pop arr[i] 时，将 arr[j] 剔除。</span></span><br><span class="line">		<span class="keyword">while</span> (!nums.<span class="built_in">empty</span>() &amp;&amp; nums.<span class="built_in">front</span>() &lt; num)</span><br><span class="line">			nums.<span class="built_in">pop_front</span>();</span><br><span class="line"></span><br><span class="line">		nums.<span class="built_in">push_front</span>(num);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">pop</span><span class="params">(<span class="type">int</span> num)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">        <span class="comment">// 核心逻辑：如果 num 不是最大值，则一定被其后面更大的值剔除掉。</span></span><br><span class="line">		<span class="keyword">if</span> (nums.<span class="built_in">back</span>() == num)</span><br><span class="line">			nums.<span class="built_in">pop_back</span>();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="AcWing-830-单调栈"><a href="#AcWing-830-单调栈" class="headerlink" title="AcWing 830. 单调栈"></a>AcWing 830. 单调栈</h3><p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/832/">原题链接</a><br><a target="_blank" rel="noopener" href="https://www.acwing.com/activity/content/code/content/9634457/">我的代码</a></p>
+<p>单调队列，可以用 <code>stack</code> 辅助实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 以升序栈为例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MonotoneStack</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	stack&lt;<span class="type">int</span>&gt; s;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 核心逻辑：保证栈从底到顶是升序的，插入元素时，如果栈顶元素大于当前元素则出栈。</span></span><br><span class="line">	<span class="function"><span class="type">int</span> <span class="title">push</span><span class="params">(<span class="type">int</span> k)</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">while</span> (!s.<span class="built_in">empty</span>() &amp;&amp; s.<span class="built_in">top</span>() &gt;= k)</span><br><span class="line">			s.<span class="built_in">pop</span>();</span><br><span class="line">		</span><br><span class="line">		<span class="type">int</span> res = s.<span class="built_in">empty</span>() ? <span class="number">-1</span> : s.<span class="built_in">top</span>();</span><br><span class="line">		s.<span class="built_in">push</span>(k);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> res;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="搜索与图论"><a href="#搜索与图论" class="headerlink" title="搜索与图论"></a>搜索与图论</h2><h2 id="数学知识"><a href="#数学知识" class="headerlink" title="数学知识"></a>数学知识</h2><h3 id="AcWing-872-最大公约数"><a href="#AcWing-872-最大公约数" class="headerlink" title="AcWing 872. 最大公约数"></a>AcWing 872. 最大公约数</h3><p><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/874/">原题链接</a><br><a target="_blank" rel="noopener" href="https://www.acwing.com/activity/content/code/content/9577830/">我的代码</a></p>
+<p>求 a 和 b 的最大公约数，有两种方法。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 算法一：欧几里得算法</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd1</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>) <span class="keyword">return</span> a;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">gcd1</span>(b, a % b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 算法二：逐步相减算法</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd2</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">while</span> (a != b)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (a &gt; b)</span><br><span class="line">			a = a - b;</span><br><span class="line">		<span class="keyword">else</span> b = b - a;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><h2 id="贪心"><a href="#贪心" class="headerlink" title="贪心"></a>贪心</h2>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%9D%E7%A0%94/" rel="tag">保研</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+    <a href="/2025/07/01/baoyanjilu/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          保研记录
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2012/12/21/yueyanglouji/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">岳阳楼记</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
