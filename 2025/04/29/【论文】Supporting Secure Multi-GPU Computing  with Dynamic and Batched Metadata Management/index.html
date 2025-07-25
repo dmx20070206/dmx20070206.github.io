@@ -19,22 +19,24 @@
   <meta name="author" content="DM-X~X~X">
   <meta name="keywords" content="">
   
-    <meta property="og:type" content="article">
-<meta property="og:title" content="四个月过去喽">
-<meta property="og:url" content="https://dmx20070206.github.io/2025/04/30/2025-4/index.html">
+    <meta name="description" content="会议：HPCA 2024论文链接：https:&#x2F;&#x2F;ieeexplore.ieee.org&#x2F;stamp&#x2F;stamp.jsp?tp&#x3D;&amp;arnumber&#x3D;10476487  论文精读     Abstract—With growing problem sizes for GPU computing, multi-GPU systems with fine-grained memory sh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management">
+<meta property="og:url" content="https://dmx20070206.github.io/2025/04/29/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Supporting%20Secure%20Multi-GPU%20Computing%20%20with%20Dynamic%20and%20Batched%20Metadata%20Management/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="会议：HPCA 2024论文链接：https:&#x2F;&#x2F;ieeexplore.ieee.org&#x2F;stamp&#x2F;stamp.jsp?tp&#x3D;&amp;arnumber&#x3D;10476487  论文精读     Abstract—With growing problem sizes for GPU computing, multi-GPU systems with fine-grained memory sh">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-04-30T15:59:59.000Z">
-<meta property="article:modified_time" content="2025-04-28T08:20:00.920Z">
+<meta property="article:published_time" content="2025-04-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-05-01T06:59:18.032Z">
 <meta property="article:author" content="DM-X~X~X">
-<meta property="article:tag" content="Happiness">
+<meta property="article:tag" content="GPU TEE">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>四个月过去喽 - Hexo</title>
+  <title>【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management - Hexo</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -211,7 +213,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="四个月过去喽"></span>
+            <span id="subtitle" data-typed-text="【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management"></span>
           
         </div>
 
@@ -222,8 +224,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-04-30 23:59" pubdate>
-          April 30, 2025 pm
+        <time datetime="2025-04-29 00:00" pubdate>
+          April 29, 2025 am
         </time>
       </span>
     
@@ -234,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          0 words
+          63 words
         
       </span>
     
@@ -291,15 +293,38 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">四个月过去喽</h1>
+            <h1 id="seo-header">【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management</h1>
             
             
               <div class="markdown-body">
                 
-                <link rel="stylesheet" href="/css/Happiness.css">
+                <link rel="stylesheet" href="/css/GPU_TEE.css">
 
+<blockquote>
+<p>会议：HPCA 2024<br>论文链接：<a target="_blank" rel="noopener" href="https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=10476487">https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&amp;arnumber=10476487</a></p>
+</blockquote>
+<h2 id="论文精读"><a href="#论文精读" class="headerlink" title="论文精读"></a>论文精读</h2><div class="original-text">
+    Abstract—With growing problem sizes for GPU computing, multi-GPU systems with fine-grained memory sharing have emerged
+    to improve the current coarse-grained unified memory support based on page migration. Such multi-GPU systems with shared
+    memory pose a new challenge in securing CPUGPU and inter-GPU communications, as the cost of secure data transfers adds a
+    significant performance overhead. There are two overheads of secure communication in multi-GPU systems: First, extra
+    overhead is added to generate one-time pads (OTPs) for authenticated encryption. Second, the security metadata such as
+    MACs and counters passed along with encrypted data consume precious network bandwidth. This study investigates the
+    performance impact of secure communication in multi-GPU systems and evaluates the prior CPU-oriented OTP precomputation
+    schemes adapted for multi-GPU systems. Our investigation identifies the challenge with the limited OTP buffers for
+    interGPU communication and the opportunity to reduce traffic for security meta-data with bursty communications in GPUs.
+    Based on the analysis, this paper proposes a new dynamic OTP buffer allocation technique, which adjusts the buffer
+    assignment for each source-destination pair to reflect the communication patterns. To address the bandwidth problem by
+    extra security metadata, the study employs a dynamic batching scheme to transfer only a single set of metadata for each
+    batched group of data responses. The proposed design constantly tracks the communication pattern from each GPU,
+    periodically adjusts the allocated buffer size, and dynamically forms batches of data transfers. Our evaluation shows
+    that in a 16-GPU system, the proposed scheme can improve the performance by 13.2% and 17.5% on average from the prior
+    cached and private schemes, respectively.
+</div>
 
-
+<div class="analysis-section">
+    
+</div>
                 
               </div>
             
@@ -311,7 +336,7 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Happiness/" class="print-no-link">#Happiness</a>
+        <a href="/tags/GPU-TEE/" class="print-no-link">#GPU TEE</a>
       
     </div>
   
@@ -323,8 +348,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>四个月过去喽</div>
-      <div>https://dmx20070206.github.io/2025/04/30/2025-4/</div>
+      <div>【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management</div>
+      <div>https://dmx20070206.github.io/2025/04/29/【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management/</div>
     </div>
     <div class="license-meta">
       
@@ -336,7 +361,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>April 30, 2025</div>
+          <div>April 29, 2025</div>
         </div>
       
       
@@ -368,12 +393,18 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2025/04/30/2025-4/" title="四个月过去喽">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">四个月过去喽</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/04/29/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91Supporting%20Secure%20Multi-GPU%20Computing%20%20with%20Dynamic%20and%20Batched%20Metadata%20Management/" title="【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management">
-                        <span class="hidden-mobile">【论文】Supporting Secure Multi-GPU Computing  with Dynamic and Batched Metadata Management</span>
+                      <a href="/2025/04/28/%E3%80%90%E8%AE%BA%E6%96%87%E3%80%91DRAWNAPART%EF%BC%9AA%20Device%20Identification%20Technique%20%20based%20on%20Remote%20GPU%20Fingerprinting/" title="【论文】DRAWNAPART：A Device Identification Technique  based on Remote GPU Fingerprinting">
+                        <span class="hidden-mobile">【论文】DRAWNAPART：A Device Identification Technique  based on Remote GPU Fingerprinting</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
