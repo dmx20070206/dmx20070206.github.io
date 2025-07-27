@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="记录为了保研面试读的英文文章">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>英语训练 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-English" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E4%B9%9D%E6%97%A51.jpg" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      英语训练
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-06-30T16:00:00.000Z" itemprop="datePublished">
+  2025-07-01
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>记录为了保研面试读的英文文章</p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/GPU_TEE.css">
+
+<h3 id="Exposing-the-Guardrails-Reverse-Engineering-and-Jailbreaking-Safety-Filters-in-DALL·E-Text-to-Image-Pipelines"><a href="#Exposing-the-Guardrails-Reverse-Engineering-and-Jailbreaking-Safety-Filters-in-DALL·E-Text-to-Image-Pipelines" class="headerlink" title="Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL·E Text-to-Image Pipelines"></a>Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL·E Text-to-Image Pipelines</h3><blockquote>
+<p>Villa C, Mirza S, Pöpper C. Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL· E Text-to-Image Pipelines[J].</p>
+</blockquote>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>We investigate the specific design and implementation of safety guardrails in black-box text-to-image (T2I) models, sucas DALL·E, which are implemented to prevent potential misuse from generating harmful image content. Specifically, wintroduce a novel timing-based side-channel analysis approach to reverse engineer the safety mechanisms of DALL·E models. Bmeasuring and analyzing the differential response times of these systems, we reverse-engineer the architecture of previouslunknown cascading safety filters at various stages of the T2I pipeline. Our analysis reveals key takeaways by contrastinsafety mechanisms in DALL·E 2 and DALL·E 3: DALL·E 2 uses blocklist-based filtering, whereas DALL·E 3 employs an LLM-baseprompt revision stage to improve image quality and filter harmful content. We find discrepancies between the LLM’s languagunderstanding and the CLIP embedding used for image generation, which we exploit to develop a negation-based jailbreakinattack. We further uncover gaps in the multilingual coverage of safety measures, which render DALL·E 3 vulnerable to a neclass of low-resource language attacks for T2I systems. Lastly, we outline six distinct countermeasures techniques anresearch directions to address our findings. This work emphasizes the challenges of aligning the diverse components of thessystems and underscores the need to improve the consistency and robustness of guardrails across the entire T2I pipeline.</p>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>black box</strong></td>
+<td>黑盒</td>
+</tr>
+<tr>
+<td><strong>reverse engineer</strong></td>
+<td>逆向工程</td>
+</tr>
+<tr>
+<td><strong>cascading safety filters</strong></td>
+<td>级联安全过滤器</td>
+</tr>
+<tr>
+<td><strong>blocklist-based filtering</strong></td>
+<td>黑名单过滤</td>
+</tr>
+<tr>
+<td><strong>negation-based jailbreaking attack</strong></td>
+<td>基于否定的越狱攻击</td>
+</tr>
+<tr>
+<td><strong>low-resource language attacks</strong></td>
+<td>低资源语言攻击</td>
+</tr>
+<tr>
+<td>discrepancies</td>
+<td>差异</td>
+</tr>
+<tr>
+<td>contrast</td>
+<td>对比</td>
+</tr>
+<tr>
+<td>countermeasures</td>
+<td>对策</td>
+</tr>
+<tr>
+<td>multilingual</td>
+<td>多语言的</td>
+</tr>
+<tr>
+<td>render</td>
+<td>呈现</td>
+</tr>
+<tr>
+<td>guardrails</td>
+<td>防护栏</td>
+</tr>
+</tbody></table>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>Text-to-image (T2I) models, such as DALL-E, Stable Diffusion, and Midjourney, have gained immense popularity by enabling users to generate realistic images from textual descriptions. These AI platforms have seen rapid adoption in real-world products, including Microsoft Designer and ad platforms from Google and Meta, revolutionizing the way users create and interact with visual content. However, the widespread use of T2I models has also raised concerns about their potential for generating harmful content. These models can produce sensitive Not-Safe-for-Work (NSFW) images, such as depicting violence, nudity, and child-inappropriate material, as well as disturbing, hateful, and politically charged images. Despite efforts by developers to implement safety guardrails, unsafe synthetic images continue to proliferate across both mainstream and fringe social networks. Communities such as Unstable Diffusion, which focus on generating sexual content, have attracted tens of thousands of members. Moreover, AI-generated variants of notorious memes are being used to spread hateful ideologies. As T2I models become more sophisticated, minimizing safety risks is paramount. Since the launch of DALL·E 2, users have created an average of 34 million images daily, and the recently introduced DALL·E 3 is accessible to millions of users through API and ChatGPT interfaces. However, little is known about the specific design and implementation of its safety filters, as this information has not been publicly documented by the developers. Prior work on red teaming of safety guardrails has primarily focused on open-source models such as Stable Diffusion and concluded the black-box security-by-obscurity approach to be insufficient. Given the enterprise-grade hardware and model capabilities accessible to users who bypass safety mechanisms in frontier models such as DALL·E, the potential for harm is significantly amplified compared to open-source alternatives. Therefore, understanding and evaluating the effectiveness of DALL·E’s safety measures is crucial to mitigate the risks associated with its misuse and ensure the responsible deployment of this powerful technology.
+    In this paper, we present a novel approach to reverse-engineer and empirically map the cascading safety guardrails of DALL·E models using time-based side-channel analysis. Our methodology allows us to gain insights into the multi-stage filtering process, from user prompting to the final generated output. Through our analysis, we identify previously unknown filters and shed light on the differences in safety mechanisms between DALL·E 2 and DALL·E 3. Notably, we discover that DALL·E 3 incorporates a large language model (LLM)-based implicit filter to soften harmful prompts, while DALL·E 2 relies on conventional block-list and other more traditional filtering mechanics. Building upon our reverse-engineering of safety guardrails, we explore potential vulnerabilities and propose novel jailbreaking attacks specific to T2I models. Using low-resource-language and negation attacks, we exploit the limitations of the safety filters in handling less common languages and negated phrases. Finally, we draw upon our experimental findings to produce tangible countermeasure solutions that mitigate the timing side-channel and jailbreaking attacks.
+    In summary, our contributions in this work are:
+    <br>
+    1. We present the first reverse-engineering of the black-box cascading safety guardrails in DALL·E models using a novel time-based side-channel, providing insights into a multi-stage filtering process, identifying previously unknown blocking or modifying filters, and enabling a feedback channel that adaptive attacks may exploit.
+    <br>
+    2. We synthesize key takeaways for T2I system security by juxtaposing safety mechanisms present in DALL·E 2 and DALL·E 3, notably the incorporation of an LLM-based implicit filter in DALL·E 3 to soften harmful prompts, in contrast to the conventional blocklist and similarity-based filtering in DALL·E 2.
+    <br>
+    3. We introduce novel jailbreaking attacks specific to T2I models, namely T2I negation and low-resource-language attacks, which exploit the limitations of safety filters in handling negated phrases and less common languages.
+    <br>
+    4. We provide an actionable list of six countermeasure recommendations for T2I systems to prevent attacks and enumerate directions for future defense research.</p>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>red teaming</strong></td>
+<td>红队测试</td>
+</tr>
+<tr>
+<td><strong>enterprise-grade</strong></td>
+<td>企业级</td>
+</tr>
+<tr>
+<td><strong>feedback channel</strong></td>
+<td>反馈通道</td>
+</tr>
+<tr>
+<td><strong>adaptive attacks</strong></td>
+<td>自适应攻击</td>
+</tr>
+<tr>
+<td>depict</td>
+<td>描绘</td>
+</tr>
+<tr>
+<td>nudity</td>
+<td>裸露</td>
+</tr>
+<tr>
+<td>disturbing</td>
+<td>恐怖的，令人不安的</td>
+</tr>
+<tr>
+<td>synthetic</td>
+<td>合成的，人工的</td>
+</tr>
+<tr>
+<td>proliferate</td>
+<td>激增，蔓延</td>
+</tr>
+<tr>
+<td>fringe</td>
+<td>边缘的，极端的</td>
+</tr>
+<tr>
+<td>ideologies</td>
+<td>思想意识形态</td>
+</tr>
+<tr>
+<td>sophisticated</td>
+<td>复杂的，精密的</td>
+</tr>
+<tr>
+<td>paramount</td>
+<td>极为重要的</td>
+</tr>
+<tr>
+<td>frontier</td>
+<td>前沿，边疆</td>
+</tr>
+<tr>
+<td>mitigate</td>
+<td>减轻，缓解</td>
+</tr>
+<tr>
+<td>empirically</td>
+<td>经验证的，经验上</td>
+</tr>
+<tr>
+<td>incorporate</td>
+<td>纳入，包含</td>
+</tr>
+<tr>
+<td>implicit</td>
+<td>隐含的</td>
+</tr>
+<tr>
+<td>negated</td>
+<td>否定的</td>
+</tr>
+<tr>
+<td>phrase</td>
+<td>短语，措辞</td>
+</tr>
+<tr>
+<td>tangible</td>
+<td>具体的，切实的</td>
+</tr>
+<tr>
+<td>juxtaposing</td>
+<td>并置，比较</td>
+</tr>
+</tbody></table>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>We begin by providing contextual background on harmful content generation, the T2I (Text-to-Image) model architecture, and safety filters. The interpretation of harm in image-based content varies across cultures, regions, and countries, making it difficult to classify and categorize content. Previous work has highlighted the lack of research on the taxonomy of AI-generated harms in imagery. T2I models have traditionally been deployed in a typical architecture: input text (prompts) are delivered to a pre-trained model, which processes the text using models like CLIP or BERT. The input is then encoded into vector-based embedding representations. These embeddings serve as input for image generation models, including diffusion and autoregressive models, to generate the final output image. In this paradigm, numerous safety filters are integrated throughout the components of the T2I pipeline, as shown in Figure 1. These filters can be configured to either outright reject problematic inputs or trigger transformations to the provided prompt.
+    <br>
+    1. Text-based safety filters operate on the input prompt or its embedding representation (Filters 1-3 in Fig. 1). Simple filtering strategies work on a keyword basis, where certain words such as "bloody" or "naked" are always rejected. While easy to implement, these filters can be circumvented by using grammatical negations or finding similar uncensored words. More sophisticated strategies can use multidimensional vector embeddings of the input text and perform similarity checks with sensitive content. These similarity-based filtering mechanisms can be bypassed using strategies outlined by Rando et al.
+    <br>
+    2. Post-processing filters, the second type of safety filter commonly implemented in deployment models, operate on the output generated by the T2I model (Filter 4 in Fig. 1). These safety filters can be image classifiers designed to detect harmful content in generated images and prevent them from being delivered to the user. More sophisticated filtering strategies at this stage may also incorporate the input text alongside the output image to determine whether an image is harmful. This filter type attempts to mitigate attacks that bypass the textual filter and produce harmful results.
+    <br>
+    The introduction of the state-of-the-art DALL·E 3 model extends the previous deployment architecture by adding a language model into the image generation pipeline. This language model is instructed to expand the user prompt to make it more descriptive for the image model, and additional image descriptions have been shown to significantly improve the generation quality. These revised prompts are included in the response returned to the user, allowing for debugging and prompt engineering. A filtering characteristic introduced by the language model is its ability to directly refuse problematic prompts according to its own alignment. These LLM refusals can be detected (Filter 2 in Fig. 1) and result in an error message returned to the user. This refusal functionality is described in the DALL·E 3 System Card, which details the adversarial evaluation performed by OpenAI before releasing the model. Given the stochastic nature of large language models, this content refusal filter may cause non-deterministic variance between identical prompts when the model temperature is set to a high threshold.
+    </p>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>state-of-the-art</strong></td>
+<td>最先进的，最新的</td>
+</tr>
+<tr>
+<td>interpretations</td>
+<td>解释，诠释</td>
+</tr>
+<tr>
+<td>complicate</td>
+<td>使复杂化</td>
+</tr>
+<tr>
+<td>taxonomy</td>
+<td>分类法</td>
+</tr>
+<tr>
+<td>autoregressive</td>
+<td>自回归的</td>
+</tr>
+<tr>
+<td>outright</td>
+<td>彻底的，完全的</td>
+</tr>
+<tr>
+<td>bloody</td>
+<td>血腥的</td>
+</tr>
+<tr>
+<td>circumvent</td>
+<td>避开，规避</td>
+</tr>
+<tr>
+<td>uncensored</td>
+<td>未审查的</td>
+</tr>
+<tr>
+<td>presumably</td>
+<td>据推测，可能</td>
+</tr>
+<tr>
+<td>adversarial</td>
+<td>对抗性的，敌对的</td>
+</tr>
+<tr>
+<td>stochastic</td>
+<td>随机的</td>
+</tr>
+<tr>
+<td>non-deterministic</td>
+<td>非确定性的</td>
+</tr>
+</tbody></table>
+
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BF%9D%E7%A0%94/" rel="tag">保研</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+    <a href="/2025/07/26/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          【论文精读】SAGE:Software-based Attestation for GPU Execution
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/07/01/algorithm/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">算法题训练</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
