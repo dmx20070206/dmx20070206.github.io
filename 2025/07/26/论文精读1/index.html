@@ -80,7 +80,7 @@
     
   
     
-      <img class="article-cover-img lazyload" data-src="/images/others/%E9%93%B6%E7%8B%BC1.jpg" itemprop="image">
+      <img class="article-cover-img lazyload" data-src="/images/papers/1.png" itemprop="image">
     
   
 
@@ -114,6 +114,8 @@
 <span id="more"></span>
 
 <hr>
+<link rel="stylesheet" href="/css/GPU_TEE.css">
+
 <h2 id="Abstarct"><a href="#Abstarct" class="headerlink" title="Abstarct"></a>Abstarct</h2><p>作者聚焦于 <code>purely software-based</code> 的 <code>GPU TEE</code> 工作，纯软件的 TEE 有三大好处：</p>
 <ol>
 <li>作为硬件 TEE 的补充，弥补其漏洞</li>
@@ -121,6 +123,157 @@
 <li>不需要额外在 GPU 上嵌入硬件密钥</li>
 </ol>
 <p>作者提出了 <code>SAGE</code> 的设计，<code>a software-based attestation mechanism for GPU execution</code>。保证在 A100 上安全执行代码，在 CPU 和 GPU 上可能存在恶意代码的前提下，保障 <code>code integrity and secrecy</code>, <code>computation integrity</code>, <code>data integrity and secrecy</code>。</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p><code>公有云场景</code>下，越来越多的机密任务需要卸载到 GPU 上执行，亟需实现 <code>GPU TEE</code> 机制，但是 <code>硬件 GPU TEE</code>存在问题，硬件修改使得技术部署到广泛利用存在 lag time，且不利于各大厂商适配更优秀的后继产品。</p>
+<p>解决这个问题的一大途径就是 <code>software-based GPU TEE</code>，作者通过调研发现，<code>software-based CPU TEE</code> 部分通过 <code>verification function &amp; checksum</code> 机制实现。认证方发送 <code>VF</code> 给 <code>untrusted platform</code>，要求 <code>a correct checksum value that is returned before a threshold point in time</code>。</p>
+<p>作者发现，还没有研究在 GPU 上实现 <code>VF</code> 机制，可能是因为会面临额外的挑战：</p>
+<ol>
+<li>实现 <code>VF</code> 的原则：</li>
+</ol>
+<ul>
+<li>code secrecy and integrity</li>
+<li>data secrecy and integrity</li>
+<li>in the presence of a malicious OS</li>
+<li>malicious code on GPU</li>
+<li>a malicious CPU-GPU interconnect</li>
+</ul>
+<ol start="2">
+<li>实现 <code>VF</code> 的挑战：</li>
+</ol>
+<ul>
+<li>GPU 没有 <code>RNG Generator</code></li>
+<li>GPU 开发文档的匮乏</li>
+<li>没有相关工具链支持编写 <code>native GPU microcode</code></li>
+<li>很难对 GPU 执行进行优化</li>
+</ul>
+<p>作者在本文中实现了 <strong>SAGE</strong> 系统，支持在 A100 上建立 TEE。使用主机侧运行的 <code>Intel SGX enclave</code> 作为验证方，启动软件原语建立 <code>dynamic RoT</code>，并设立共享密钥用于建立安全会话通道。SAGE 的成功启动可以保证：用户内核未经修改地在 GPU 上执行，在执行过程中没有受到恶意地攻击。此外，作者还在 GPU 上实现了 <code>TRNG</code>。</p>
+<h2 id="Problem-Definition"><a href="#Problem-Definition" class="headerlink" title="Problem Definition"></a>Problem Definition</h2><h3 id="Design-Goals-And-Assumptions"><a href="#Design-Goals-And-Assumptions" class="headerlink" title="Design Goals And Assumptions"></a>Design Goals And Assumptions</h3><p>设计目标：</p>
+<ol>
+<li><code>Verifiable code execution on the GPU</code>: 建立无害的代码执行环境，保证代码执行的完整性和机密性</li>
+<li><code>Data integrity and confidentiality</code>: 数据的完整性和机密性</li>
+<li><code>Dynamic root of trust without hardware support</code>: 动态的在 GPU 上建立 TCB</li>
+</ol>
+<p>场景假设：</p>
+<ol>
+<li>被验证的 GPU 和验证方在一台机器上</li>
+<li>验证方了解 GPU 的硬件配置</li>
+</ol>
+<h3 id="Threat-Model"><a href="#Threat-Model" class="headerlink" title="Threat Model"></a>Threat Model</h3><ol>
+<li>TCB</li>
+</ol>
+<ul>
+<li>CPU, GPU 固件</li>
+<li>Intel SGX TCB</li>
+</ul>
+<ol start="2">
+<li>Attacker’s Capabilities</li>
+</ol>
+<ul>
+<li>remote adversary</li>
+<li>has full control over the software of the untrusted host system</li>
+</ul>
+<ol start="3">
+<li>Out Of Scope</li>
+</ol>
+<ul>
+<li>SGX 的攻击面</li>
+<li>system availability attacks</li>
+<li>未公开的攻击面</li>
+</ul>
+<h2 id="SAGE-Overview"><a href="#SAGE-Overview" class="headerlink" title="SAGE Overview"></a>SAGE Overview</h2><p><img src="/images/papers/1/F2.png" alt="alt text"></p>
+<p>如上图，SAGE 包含两个主要部分：<code>Verifier</code> 和 <code>VF</code>。远程用户可以验证 <code>Verifier</code>，<code>Verifier</code> 向 GPU 发送 <code>VF</code> 。</p>
+<p><img src="/images/papers/1/F3.png" alt="alt text"></p>
+<p>如上图，<code>Verifier</code> 首先发送 <code>VF</code> 给 GPU，验证返回结果和计算时间。验证通过会设立共享安全密钥，之后只有密钥加密的指令才能在 GPU 上执行。</p>
+<h2 id="Verification-Function-VF"><a href="#Verification-Function-VF" class="headerlink" title="Verification Function (VF)"></a>Verification Function (VF)</h2><p><code>VF</code> 的核心设计原则是，任何意料之外的干扰，都会导致可分辨的执行时间的延长和校验和的错误。</p>
+<blockquote>
+<p>if an attacker alters the verification function but wants to forge a correct checksum value, needs to do “more work”, causing a time overhead</p>
+</blockquote>
+<p><code>VF</code> 需要满足的特性：</p>
+<ol>
+<li><code>Time-optimal implementation</code>: 时间上最优，不存在相同的实现，能在更短的时间完成相同的功能。</li>
+<li><code>Maximize resource usage during checksum computation</code>：如果存在其他恶意内核在 GPU 上执行，其占用 SM 资源会导致 <code>VF</code> 的 SM 寄存器数据被迫转到内存中，导致校验和错误。</li>
+<li><code>Predictable execution time</code>: 执行时间可预测并且稳定，方便设置时间阈值。</li>
+<li><code>Challenge-dependent checksums</code>: 支持挑战-响应协议，防止重放攻击。</li>
+</ol>
+<h3 id="Self-Verifying-Checksum-Function"><a href="#Self-Verifying-Checksum-Function" class="headerlink" title="Self-Verifying Checksum Function"></a>Self-Verifying Checksum Function</h3><p><code>VF code</code> 可以被划分为三个部分：<code>VF Init &amp; VF Checksum Function &amp; Checksum epilogue</code>:</p>
+<ol>
+<li><code>VF Init</code>:</li>
+</ol>
+<ul>
+<li>根据外来 <code>Challenge</code>，给每个 thread 分配初始随机数</li>
+<li>在每个 thread 上启动 <code>VF Checksum Function</code></li>
+</ul>
+<ol start="2">
+<li><code>VF Checksum Function (per thread)</code>:</li>
+</ol>
+<ul>
+<li>伪随机访问 <code>VF code</code></li>
+<li>根据上条结果，更新 <code>Checksum</code></li>
+<li>根据上条结果，动态更新 <code>VF code</code></li>
+<li>循环</li>
+</ul>
+<ol start="3">
+<li><code>Checksum epilogue</code></li>
+</ol>
+<ul>
+<li><code>thread =&gt; warp =&gt; block =&gt; grip =&gt; checksum responce</code></li>
+</ul>
+<p><img src="/images/papers/1/O1.png" alt="alt text"></p>
+<p><code>checksum</code> 可以作为整个 <code>VF code</code> 的指纹，而 <code>VF Checksum Function</code> 也是 <code>VF code</code> 的一部分，故称为 <code>Self-Verifying Checksum Function</code>。</p>
+<p><code>checksum</code> 数值的验证：主机侧同步模拟。</p>
+<p><code>checksum</code> 时间的验证：在时间阈值内，时间阈值的确定方式如下图：</p>
+<p><img src="/images/papers/1/O2.png" alt="alt text"></p>
+<h3 id="Untampered-Execution-Environment"><a href="#Untampered-Execution-Environment" class="headerlink" title="Untampered Execution Environment"></a>Untampered Execution Environment</h3><h2 id="Security-Analysis"><a href="#Security-Analysis" class="headerlink" title="Security Analysis"></a>Security Analysis</h2><ol>
+<li><code>Pre-computation</code></li>
+</ol>
+<ul>
+<li>攻击方式：攻击者提前计算 <code>checksum</code> 中间值，节省计算时间</li>
+<li>防御：<code>checksum</code> 的值依赖于随机的挑战</li>
+</ul>
+<ol start="2">
+<li><code>Computation optimizations</code></li>
+</ol>
+<ul>
+<li>攻击方式：攻击者自行设计效率更高的 <code>VF&#39;</code>，节省计算时间</li>
+<li>防御：SAGE 保证 <code>VF</code> 的效率是最高的</li>
+</ul>
+<ol start="3">
+<li><code>Attacks on the host system</code></li>
+</ol>
+<ul>
+<li>攻击方式：攻击者在线提取若干挑战值对应的 <code>checksum</code>，发起重放攻击</li>
+<li>防御：SAGE 的挑战空间很大，不可能发生碰撞</li>
+</ul>
+<ol start="4">
+<li><code>Attacks on the device / Resource takeover</code></li>
+</ol>
+<ul>
+<li>攻击方式：提前占据 GPU，干扰 <code>VF code</code> 的执行</li>
+<li>防御：SAGE 占据所有的 GPU 资源，一旦有其他内核占用资源，会导致验证失败。同时将指令设置为强有序模式，只有在特定的指令顺序、特定的初始参数、特定的指令操作下才能得到正确的结果。</li>
+</ul>
+<ol start="5">
+<li><code>Memory copy attacks</code></li>
+</ol>
+<ul>
+<li>攻击方式：</li>
+</ul>
+<ol start="6">
+<li><code>Proxy attacks</code></li>
+</ol>
+<ul>
+<li>攻击方式：攻击者窃听主机侧发送的挑战，使用代理 GPU 运算后返回结果</li>
+<li>防御：对于同一机器的代理 GPU，SAGE 按照性能降序建立 RoT；对于网络上的代理 GPU，调整循环次数等参数确保网络延迟超出时间阈值</li>
+</ul>
+<ol start="7">
+<li><code>Time-of-check to time-of-use attacks / Execution environment takeover</code></li>
+</ol>
+<ul>
+<li>攻击方式：攻击者在启动用户内核前和用户内核结束后，趁机占据 GPU</li>
+<li>防御：SAGE 保证 <code>VF</code> 验证结束后立马启动用户内核，且当用户内核结束后，仍需运行内核必须重启整个认证过程</li>
+</ul>
+<ol start="8">
+<li><code>Replay attacks</code></li>
+</ol>
+<p>  - </p>
 
     </div>
     <footer class="article-footer">
