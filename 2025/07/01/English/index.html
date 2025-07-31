@@ -520,13 +520,309 @@
     <p>The Model Context Protocol (MCP) is a standardized interface designed to enable seamless interaction between AI models and external tools and resources, breaking down data silos and facilitating interoperability across diverse systems. This paper provides a comprehensive overview of MCP, focusing on its core components, workflow, and the lifecycle of MCP servers, which consists of three key phases: creation, operation, and update. We analyze the security and privacy risks associated with each phase and propose strategies to mitigate potential threats. The paper also examines the current MCP landscape, including its adoption by industry leaders and various use cases, as well as the tools and platforms supporting its integration. We explore future directions for MCP, highlighting the challenges and opportunities that will influence its adoption and evolution within the broader AI ecosystem. Finally, we offer recommendations for MCP stakeholders to ensure its secure and sustainable development as the AI landscape continues to evolve.</p>
 </div>
 
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>data silos</strong></td>
+<td>数据孤岛</td>
+</tr>
+<tr>
+<td>seamless</td>
+<td>无缝的</td>
+</tr>
+<tr>
+<td>interoperability</td>
+<td>互操作性</td>
+</tr>
+<tr>
+<td>phases</td>
+<td>阶段</td>
+</tr>
+<tr>
+<td>landscape</td>
+<td>局势；格局</td>
+</tr>
+<tr>
+<td>integration</td>
+<td>集成</td>
+</tr>
+<tr>
+<td>broader</td>
+<td>更广泛的</td>
+</tr>
+<tr>
+<td>stakeholders</td>
+<td>利益相关者</td>
+</tr>
+<tr>
+<td>sustainable</td>
+<td>可持续的</td>
+</tr>
+</tbody></table>
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>In recent years, the vision of autonomous AI agents capable of interacting with a wide range of tools and data sources has gained significant momentum. This progress accelerated in 2023 with the introduction of function calling by OpenAI, which allowed language models to invoke external APIs in a structured way [38]. This advancement expanded the capabilities of LLMs, enabling them to retrieve real-time data, perform computations, and interact with external systems. As function calling gained adoption, an ecosystem formed around it. OpenAI introduced the ChatGPT plugin [37], allowing developers to build callable tools for ChatGPT. LLM app stores such as Coze [4] and Yuanqi [50] have launched their plugin stores, supporting tools specifically designed for their platforms. Frameworks like LangChain [26] and LlamaIndex [29] provided standardized tool interfaces, making it easier to integrate LLMs with external services. Other AI providers, including Anthropic, Google, and Meta, introduced similar mechanisms, further driving adoption. Despite these advancements, integrating tools remains fragmented. Developers must manually define interfaces, manage authentication, and handle execution logic for each service. Function calling mechanisms vary across platforms, requiring redundant implementations. Additionally, current approaches rely on predefined workflows, limiting AI agents’ flexibility in dynamically discovering and orchestrating tools.</p>
     <p>In late 2024, Anthropic introduced the Model Context Protocol (MCP)[3], a general-purpose protocol standardizing AI-tool interactions. Inspired by the Language Server Protocol (LSP) [22], MCP provides a flexible framework for AI applications to communicate with external tools dynamically. Instead of relying on predefined tool mappings, MCP allows AI agents to autonomously discover, select, and orchestrate tools based on task context. It also supports human-in-the-loop mechanisms, enabling users to inject data or approve actions as needed. By unifying interfaces, MCP simplifies the development of AI applications and improves their flexibility in handling complex workflows. Since its release, MCP has rapidly grown from a niche protocol to a key foundation for AI-native application development. A thriving ecosystem has emerged, with thousands of community-driven MCP servers enabling model access to systems like GitHub [41], Slack [42], and even 3D design tools like Blender [1]. Tools like Cursor [12] and Claude Desktop [2] demonstrate how MCP clients can extend their capabilities by installing new servers, turning developer tools, productivity platforms, and creative environments alike into multi-modal AI agents.</p>
     <p>Despite the rapid adoption of MCP, its ecosystem is still in the early stages, with key areas such as security, tool discoverability, and remote deployment lacking comprehensive solutions. These issues present untapped opportunities for further research and development. Although MCP is widely recognized for its potential in the industry, it has not yet been extensively analyzed in academic research. This gap in research motivates this paper, which provides the first analysis of the MCP ecosystem, examining its architecture and workflow, defining the lifecycle of MCP servers, and identifying potential security risks at each stage, such as installer spoofing and tool name conflict. Through this study, we present a thorough exploration of MCP’s current landscape and offer a forward-looking vision that highlights key implications, outlines future research directions, and addresses the challenges that must be overcome to ensure its sustainable growth.</p>
+    <p>Our contributions are as follows:</p>
+    <ol>
+    <li>We provide the first analysis of the MCP ecosystem, detailing its architecture, components, and workflow.</li>
+    <li>We identify the key components of MCP servers and define their lifecycle, encompassing the stages of creation,    operation, and update. We also highlight potential security risks associated with each phase, offering insights into   safeguarding AI-to-tool interactions.</li>
+    <li>We examine the current MCP ecosystem landscape, analyzing the adoption, diversity, and use cases across various   industries and platforms.</li>
+    <li>We discuss the implications of MCP’s rapid adoption, identifying key challenges for stakeholders, and outline     future research directions on security, scalability, and governance to ensure its sustainable growth.</li>
+    </ol>
 </div>
 
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>general-purpose</strong></td>
+<td>通用的</td>
+</tr>
+<tr>
+<td><strong>human-in-the-loop</strong></td>
+<td>人类参与其中</td>
+</tr>
+<tr>
+<td><strong>multi-modal AI agent</strong></td>
+<td>多模态 AI 智能体</td>
+</tr>
+<tr>
+<td><strong>installer spoofing</strong></td>
+<td>安装程序伪装</td>
+</tr>
+<tr>
+<td>autonomous</td>
+<td>自主的</td>
+</tr>
+<tr>
+<td>momentum</td>
+<td>动力；势头</td>
+</tr>
+<tr>
+<td>plugin</td>
+<td>插件</td>
+</tr>
+<tr>
+<td>callable</td>
+<td>可调用的</td>
+</tr>
+<tr>
+<td>fragmented</td>
+<td>支离破碎的</td>
+</tr>
+<tr>
+<td>redundant</td>
+<td>冗余的</td>
+</tr>
+<tr>
+<td>orchestrating</td>
+<td>协调；编排</td>
+</tr>
+<tr>
+<td>approve</td>
+<td>批准</td>
+</tr>
+<tr>
+<td>niche</td>
+<td>小众的</td>
+</tr>
+<tr>
+<td>thriving</td>
+<td>蓬勃发展的</td>
+</tr>
+<tr>
+<td>untapped</td>
+<td>尚未开发的</td>
+</tr>
+<tr>
+<td>extensively</td>
+<td>广泛地</td>
+</tr>
+<tr>
+<td>implication</td>
+<td>含义；影响</td>
+</tr>
+<tr>
+<td>encompass</td>
+<td>包括；涵盖</td>
+</tr>
+<tr>
+<td>safeguard</td>
+<td>保护；防范</td>
+</tr>
+<tr>
+<td>scalability</td>
+<td>可扩展性</td>
+</tr>
+<tr>
+<td>governance</td>
+<td>治理；管理</td>
+</tr>
+</tbody></table>
+<h3 id="I-Know-What-You-Asked-Prompt-Leakage-via-KV-Cache-Sharing-in-Multi-Tenant-LLM-Serving"><a href="#I-Know-What-You-Asked-Prompt-Leakage-via-KV-Cache-Sharing-in-Multi-Tenant-LLM-Serving" class="headerlink" title="I Know What You Asked: Prompt Leakage via  KV-Cache Sharing in Multi-Tenant LLM Serving"></a>I Know What You Asked: Prompt Leakage via  KV-Cache Sharing in Multi-Tenant LLM Serving</h3><blockquote>
+<p>Wu G, Zhang Z, Zhang Y, et al. I know what you asked: Prompt leakage via kv-cache sharing in multi-tenant llm serving[C]&#x2F;&#x2F;Proceedings of the 2025 Network and Distributed System Security (NDSS) Symposium. San Diego, CA, USA. 2025.</p>
+</blockquote>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>Abstract—Large Language Models (LLMs), which laid the groundwork for Artificial General Intelligence (AGI), have recently gained significant traction in academia and industry due to their disruptive applications. In order to enable scalable applications and efficient resource management, various multitenant LLM serving frameworks have been proposed, in which the LLM caters to the needs of multiple users simultaneously. One notable mechanism in recent works, such as SGLang and vLLM, is sharing the Key-Value (KV) cache for identical token sequences among multiple users, saving both memory and computation.</p>
+    <p>This paper presents the first investigation on security risks associated with multi-tenant LLM serving. We show that the state-of-the-art mechanisms of KV cache sharing may lead to new side channel attack vectors, allowing unauthorized reconstruction of user prompts and compromising sensitive user information among mutually distrustful users. Specifically, we introduce our attack, PROMPTPEEK, and apply it to three scenarios where the adversary, with varying degrees of prior knowledge, is capable of reverse-engineering prompts from other users. </p>
+    <p>This study underscores the need for careful resource management in multitenant LLM serving and provides critical insights for future security enhancement.</p>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>laid groundwork</td>
+<td>打下基础</td>
+</tr>
+<tr>
+<td>traction</td>
+<td>吸引力</td>
+</tr>
+<tr>
+<td>disruptive</td>
+<td>颠覆性的</td>
+</tr>
+<tr>
+<td>simultaneously</td>
+<td>同时的</td>
+</tr>
+<tr>
+<td>identical</td>
+<td>相同的</td>
+</tr>
+<tr>
+<td>compromising</td>
+<td>妥协的</td>
+</tr>
+<tr>
+<td>mutually</td>
+<td>互相地</td>
+</tr>
+</tbody></table>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>The rise of Large Language Models (LLMs) like GPT [25] or Llama [44] has enabled a variety of new applications, including universal chatbots [5], virtual assistants [4], and code generators [6], applicable to both large-scale cloud deployments and small-scale local setups. As LLM applications become widespread, effectively serving concurrent requests from multiple users has become a non-trivial research question [32], [61], [34].</p>
+    <p>In fact, processing a single LLM request is already costly, as it generates Key-Value (KV) cache [37] for each token during the inference phase, occupying a considerable amount of GPU memory [12]. With limited GPU memory capacity, the extensive size of the KV cache [12] restricts the ability to serve concurrent requests, becoming a critical bottleneck in multi-tenant scenarios.</p>
+    <p>One promising solution proposed by recent work (e.g., vLLM, SGLang) [32], [61], [53] is to share the KV cache across the requests to reduce both computation and memory usage. The rationale is that identical tokens in different requests can generate the same KV cache if their preceding tokens are also identical. Figure 1 illustrates an instance of KV cache sharing.</p>
+    <p>When the first user submits the query “Imagine you are an IT expert and tell me how to install Windows”, the KV cache for each token is computed and stored on the LLM server. Thereafter, if another user issues a query “Imagine you are an IT expert and tell me how to install Linux”, the initial segment of the sentence—“Imagine you are an IT expert and tell me how to install”—has an identical KV cache. Hence, the second user can directly utilize the KV cache previously computed for the first user, recalculating only the differing segment, “Linux”.</p>
+    <p>KV cache sharing prevents duplicate KV storage on the GPU, allowing more user requests to be served concurrently. More importantly, it reduces the serving time for individual requests by eliminating unnecessary calculations.</p>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>universal</td>
+<td>普适的</td>
+</tr>
+<tr>
+<td>applicable</td>
+<td>适用的</td>
+</tr>
+<tr>
+<td>setup</td>
+<td>配置</td>
+</tr>
+<tr>
+<td>concurrent</td>
+<td>并发的</td>
+</tr>
+<tr>
+<td>non-trivial</td>
+<td>非平凡的</td>
+</tr>
+<tr>
+<td>inference</td>
+<td>推理</td>
+</tr>
+<tr>
+<td>extensive</td>
+<td>广泛的</td>
+</tr>
+<tr>
+<td>bottleneck</td>
+<td>瓶颈</td>
+</tr>
+<tr>
+<td>promising</td>
+<td>有前景的</td>
+</tr>
+<tr>
+<td>rationale</td>
+<td>原则，理由</td>
+</tr>
+<tr>
+<td>preceding</td>
+<td>前面的</td>
+</tr>
+<tr>
+<td>duplicate</td>
+<td>重复的</td>
+</tr>
+</tbody></table>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>However, in this paper, we point out that the KV cache sharing mechanism is not secure. Our key insight is that the KV cache sharing may inadvertently create side channel information, which can be leveraged by the adversary to carefully craft requests sent to the LLM server to determine if its requests match the other users’, thereby recovering other users’ prompts.</p>
+    <p>In this paper, we dig into the current KV cache sharing strategies and demonstrate how these can be exploited to reconstruct user input prompts. In particular, we propose PROMPTPEEK, which leverages the changes of serving order as side channel information, to repeatedly extract other users’ prompts from the LLM service. More specifically, PROMPTPEEK utilizes the side channel information to monitor the KV cache hits and extracts one token at a time from another user’s prompt. By iteratively repeating this process, PROMPTPEEK can reconstruct the entire prompt from another user.</p>
+    <p>We assess PROMPTPEEK across three scenarios, where the adversary possesses different levels of background knowledge: knowledge of the prompt template, knowledge of the prompt input, and no background knowledge. Our results show that the adversary can achieve an average success rate of 99% in fully or partially reversing the prompt input, 98% in reversing the prompt template, and 95% without additional background knowledge, when tested on a Llama2-13B model on an A100 80G GPU.</p>
+    <p>From a higher level, our results show that the attack depends on three key factors: memory capacity, concurrent users’ requests, and attack requests. Memory capacity sets the feasibility of the attack, while both users’ and attack requests accelerate memory depletion. Besides, the attacker’s background knowledge minimizes the number of requests needed to recover prompts.</p>
+    <p>Our contributions. To summarize, we make the following contributions in this paper:</p>
+    <ul>
+        <li>We are the first to touch on the security risks in multi-tenant LLM serving, identifying it as a new attack surface in LLM security. We not only investigate the risks associated with KV cache sharing but also highlight the broader implications for any future LLM serving frameworks. Our research emphasizes the need for careful management of shared resources in these environments.</li>
+        <li>We propose PROMPTPEEK and assess its feasibility across three scenarios. Unlike previous studies that only approximate prompt content, PROMPTPEEK accurately reconstructs prompts, which significantly increases privacy risks, as prompts may contain sensitive information like bank account numbers or health records. More importantly, we recognize that KV cache sharing is still in its early stages, so we outline three critical attack conditions that service providers and framework developers should consider in case of potential security risks.</li>
+        <li>We simulate real-world LLM scenarios to evaluate the effectiveness and cost of our attack across three different environments, utilizing four distinct datasets on an A100 80G GPU. Our results reveal that our attack not only successfully uncovers prompt secrets but also at a low cost. For example, knowing the prompt template allows the adversary to uncover the prompt’s secrets, including gender, age, weight, and height, with just 60 requests in total.</li>
+    </ul>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>翻译</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>inadvertently</td>
+<td>不经意地</td>
+</tr>
+<tr>
+<td>iteratively</td>
+<td>迭代地</td>
+</tr>
+<tr>
+<td>depletion</td>
+<td>耗尽，枯竭</td>
+</tr>
+<tr>
+<td>touch on</td>
+<td>提及，涉及</td>
+</tr>
+<tr>
+<td>broader implications</td>
+<td>更广泛的影响</td>
+</tr>
+</tbody></table>
 
     </div>
     <footer class="article-footer">
