@@ -823,6 +823,45 @@
 <td>更广泛的影响</td>
 </tr>
 </tbody></table>
+<h3 id="CuAsmRL-Optimizing-GPU-SASS-Schedules-via-Deep-Reinforcement-Learning"><a href="#CuAsmRL-Optimizing-GPU-SASS-Schedules-via-Deep-Reinforcement-Learning" class="headerlink" title="CuAsmRL: Optimizing GPU SASS Schedules via Deep  Reinforcement Learning"></a>CuAsmRL: Optimizing GPU SASS Schedules via Deep  Reinforcement Learning</h3><blockquote>
+<p>He G, Yoneki E. CuAsmRL: Optimizing GPU SASS Schedules via Deep Reinforcement Learning[C]&#x2F;&#x2F;Proceedings of the 23rd ACM&#x2F;IEEE International Symposium on Code Generation and Optimization. 2025: 493-506.</p>
+</blockquote>
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>Large language models (LLMs) are remarked by their substantial computational requirements. To mitigate the cost, researchers develop specialized CUDA kernels, which often fuse several tensor operations to maximize the utilization of GPUs as much as possible. However, those specialized kernels may still leave performance on the table as CUDA assembly experts show that manual optimization of GPU SASS schedules can lead to better performance, and trial-and-error is largely employed to manually find the best GPU SASS schedules.</p>
+    <p>In this work, we employ an automatic approach to optimize GPU SASS schedules, which thus can be integrated into existing compiler frameworks. The key to automatic optimization is training an RL agent to mimic how human experts perform manual scheduling. To this end, we formulate an assembly game, where RL agents can play to find the best GPU SASS schedules. The assembly game starts from a -O3 optimized SASS schedule, and the RL agents can iteratively apply actions to mutate the current schedules. Positive rewards are generated if the mutated schedules get higher throughput by executing on GPUs.</p>
+    <p>Experiments show that CuAsmRL can further improve the performance of existing specialized CUDA kernels transparently by up to 26%, and on average 9%. Moreover, it is used as a tool to reveal potential optimization moves learned automatically.</p>
+</div>
+
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>LLMs are transformer-based deep neural networks (DNNs) consisting of many layers of self-attention [43] and linear projections. Since their appearance, state-of-the-art performance has been achieved across various domains, such as image generation [29] and natural language processing [41]. To date, OpenAI [30, 31] announces more than 100 billion words are generated every day. As such, LLMs have become a significant workload in the deep learning community and have gathered much attention.</p>
+    <p>However, training and serving LLMs are computationally expensive because they typically consist of multiple layers of transformer backbone, which is of billions of parameters. As a result, researchers have developed specialized CUDA kernels to accelerate LLM computation, instead of relying on high-level language to generate CUDA kernels. For example, fused attention (flash-attention) [5] is developed such that the attention computation achieves better utilization of the shared memory of NVIDIA GPUs. Fused feed-forward is a kernel implementation that fuses multiple operators for LLAMA [41], and root-mean-square layer normalization is a popular layer normalization operator for transformers [46]. We observe that those works are typically implemented by handwritten hardware-efficient codes, i.e. CUDA kernels for NVIDIA GPUs, for the flexibility and efficiency of hardwarevendor-provided programming models.</p>
+    <p>In this work, we investigate the possibility of further improving the handwritten kernels by exploring optimization at a lower level, i.e. hardware native assembly. Specifically, we focus on NVIDIA CUDA kernels. Optimizing at a lower level allows us to further optimize existing specialized CUDA kernels and this approach has been employed by previous works [12, 45], which show that manual optimization of GPU-native assembly schedules can lead to better performance. However, trial-and-error is suggested to manually find the best GPU SASS schedules, which is a tedious process even for CUDA experts, and cannot keep up with the development of new deep learning operators. Moreover, manual optimization cannot be integrated into existing compilation pipelines.</p>
+</div>
+
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>We propose CuAsmRL, an automatic optimizer for optimizing NVIDIA GPU SASS schedules. The idea of automatic optimization is achieved by training an RL agent, which mimics how human experts perform manual scheduling, to learn to find the optimized SASS schedule. To the best of our knowledge, we are the first to formulate the optimization of SASS schedules as an assembly game.</p>
+    <p>Being able to automatically optimize the SASS schedules enables us to integrate CuAsmRL into OpenAI Triton [40], an MLIR-based compiler for writing GPU kernels. Therefore, it first uses an autotuner to find the optimal kernel configurations, and then reuses the compilation pipeline of Triton but intercepts the generated cubin, which is then disassembled to SASS instructions, performs optimization and finally assembles back to an optimized cubin.</p>
+    <p>By evaluating on characteristic LLMs kernels, we find CuAsmRL automatically discovered better schedules than the -O3 SASS schedule, which leads to 1.09x of geometric mean throughput improvement. As this optimization takes place at a lower level, it is transparent to CUDA kernel developers. Given LLM training and serving can easily consume millions of GPU hours, we expect this kernel-level improvement to be significant.</p>
+    <p>In summary, this paper makes the following contributions:</p>
+    <ul>
+        <li>We formulate optimizing SASS schedules as an assembly game, and we implement CuAsmRL, an automatic optimizer for optimizing NVIDIA GPU SASS schedules.</li>
+        <li>We integrate CuAsmRL into an existing compiler framework, OpenAI Triton, as a SASS-to-SASS optimizer, and it is transparent to CUDA kernel developers.</li>
+        <li>Our evaluation shows that representative specialized kernels for LLMs can be further accelerated by up to 26% and on average 9% on Ampere GPUs.</li>
+        <li>We demonstrate CuAsmRL can be used as a tool to reveal optimization moves learned automatically, which can bring new insights into the optimization of SASS instructions.</li>
+    </ul>
+</div>
+
+
+<div class="original-text">
+    <div class="content-title">原文内容</div>
+    <p>GPUs are hardware accelerators that can perform highly parallel computation and therefore tensor operations can be executed efficiently. To program GPUs, programmers must follow the programming model provided by CUDA [20]. Conceptually, a CUDA kernel consists of a grid of thread blocks running concurrently, and inside each thread block are multiple threads. Each thread block is mapped to a GPU steaming multiprocessor and is executed individually and in parallel.</p>
+    <p>CUDA kernel developers often program in a high-level programming language, such as C++ or Python, and then compilers compile the kernel code to device code. In the case of C++, the compilation is done by NVIDIA’s compiler (NVCC), while for Python, Triton [40] can be used. The compilation process has several stages: first, the code is compiled to PTX, which is an intermediate language that is GPU-architecture independent [27]. Note that one can also directly embed PTX when programming with a high-level programming language.</p>
+    <p>Then, the PTX codes are compiled to SASS, which is only possible through NVIDIA’s proprietary compiler ptxas [27]. SASS is a native assembly language to the target GPU. That is, the SASS is specific to the target GPU’s architecture. In this work, we limit our discussion to Ampere GPUs. While the corresponding SASS codes of a CUDA kernel are obtainable by utilizing the CUDA binary utilities [28], the instruction set is only vaguely documented. As a result, the lowering and optimization at this stage are unknown and inaccessible.</p>
+    <p>Finally, the SASS codes are assembled into binary code (cubin) that can be executed directly on the GPU. The overall compilation process is shown in Figure 1.</p>
+</div>
 
     </div>
     <footer class="article-footer">

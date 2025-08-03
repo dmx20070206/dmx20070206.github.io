@@ -1,0 +1,30 @@
+.vscode-card {
+    display: flex;
+    align-items: flex-start;
+    background: #e7f1fb;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(60, 90, 130, 0.08);
+    padding: 24px 28px;
+    margin: 20px;
+    max-width: 900px;
+    font-family: 'Segoe UI', '微软雅黑', Arial, sans-serif;
+}
+
+.vscode-logo {
+    width: 60px;
+    height: 60px;
+    margin-right: 18px !important;
+    flex-shrink: 0;
+}
+
+.vscode-content {
+    font-size: 1.25em;
+    color: #22334d;
+    line-height: 1.8;
+}
+
+.vscode-content em {
+    font-style: italic;
+    font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+    color: #222;
+}
