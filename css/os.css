@@ -1,3 +1,10 @@
+.all {
+    font-size: 20px;
+    color: #22334d;
+    line-height: 1.8;
+    font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
+}
+
 .vscode-card {
     display: flex;
     align-items: flex-start;
@@ -7,7 +14,7 @@
     padding: 24px 28px;
     margin: 20px;
     max-width: 900px;
-    font-family: 'Segoe UI', '微软雅黑', Arial, sans-serif;
+    font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
 }
 
 .vscode-logo {
@@ -17,14 +24,107 @@
     flex-shrink: 0;
 }
 
-.vscode-content {
-    font-size: 1.25em;
-    color: #22334d;
-    line-height: 1.8;
-}
-
 .vscode-content em {
     font-style: italic;
-    font-family: 'Fira Mono', 'Consolas', 'Courier New', monospace;
+    font-family: 'Comic Mono', 'Consolas', 'Courier New', monospace;
     color: #222;
+}
+
+.container-copy {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+}
+
+.memory-layout {
+    width: 300px;
+    border: 2px solid #333;
+    background-color: white;
+}
+
+.title {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.memory-segment {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    min-height: 40px;
+    align-items: center;
+}
+
+.address {
+    width: 120px;
+    padding: 8px;
+    background-color: #e8e8e8;
+    font-size: 10px;
+    border-right: 1px solid #ccc;
+}
+
+.segment-info {
+    flex: 1;
+    padding: 8px;
+    font-size: 12px;
+}
+
+.stack {
+    background-color: #ff9999;
+}
+
+.empty-space {
+    background-color: #f0f0f0;
+}
+
+.mmap-region {
+    background-color: #99ccff;
+    animation: highlight 2s ease-in-out;
+}
+
+.heap {
+    background-color: #99ff99;
+}
+
+.data-section {
+    background-color: #ffcc99;
+}
+
+.code-section {
+    background-color: #cc99ff;
+}
+
+@keyframes highlight {
+    0% { background-color: #ffff99; }
+    50% { background-color: #99ccff; }
+    100% { background-color: #99ccff; }
+}
+
+.legend {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #333;
+}
+
+.note {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffcc;
+    border-left: 4px solid #ffcc00;
 }

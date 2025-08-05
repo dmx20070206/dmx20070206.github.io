@@ -114,22 +114,20 @@
 <hr>
 <link rel="stylesheet" href = "/css/os.css" >
 
-<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><div class="vscode-content"> 
-    <ul>
-        <li>应用视角下的操作系统: 对象 + API</li>
-        <li>硬件视角下的操作系统: 程序</li>
-        <li>数学视角下的操作系统: 状态机</li>
-    </ul>
+
+<div class="all">
+
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><ul>
+    <li>应用视角下的操作系统: 对象 + API</li>
+    <li>硬件视角下的操作系统: 程序</li>
+    <li>数学视角下的操作系统: 状态机</li>
+</ul>
+
+<h2 id="程序与进程"><a href="#程序与进程" class="headerlink" title="程序与进程"></a>程序与进程</h2><div class="note">
+    程序是状态机的静态描述，进程是动态运行的状态机。
 </div>
 
-<h2 id="程序与进程"><a href="#程序与进程" class="headerlink" title="程序与进程"></a>程序与进程</h2><blockquote>
-<p>程序是状态机的静态描述，进程是动态运行的状态机。</p>
-</blockquote>
-<div class="vscode-content"> 
-    进程是动态运行的状态机，当然需要 os 实时保存一些状态信息。
-</div>
-
-
+<p>进程是动态运行的状态机，当然需要 os 实时保存一些状态信息。</p>
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
     <div class="vscode-content"> <em>proc.c: </em>
@@ -137,10 +135,7 @@
     </div>
 </div>
 
-<div class="vscode-content"> 
-    运行程序可以看到如下输出（可以通过 ``./proc | head -n 10`` 来指定显示的行数）：
-</div>
-
+<p>运行程序可以看到如下输出（可以通过 <code>./proc | head -n 10</code> 来指定显示的行数）：</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">pid:</span> <span class="number">1906250</span>                                    <span class="string">//</span> <span class="string">进程</span> <span class="string">id</span></span><br><span class="line"><span class="attr">ppid:</span> <span class="number">1904150</span>                                   <span class="string">//</span> <span class="string">父进程</span> <span class="string">id</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Additional</span> <span class="string">Process</span> <span class="string">Information</span> <span class="string">---</span></span><br><span class="line"><span class="attr">User ID:</span> <span class="number">1000</span>                                   <span class="string">//</span> <span class="string">进程所有者的用户</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Group ID:</span> <span class="number">1000</span>                                  <span class="string">//</span> <span class="string">进程所有者的组</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Effective User ID:</span> <span class="number">1000</span>                         <span class="string">//</span> <span class="string">用于权限检查的</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Effective Group ID:</span> <span class="number">1000</span>                        <span class="string">//</span> <span class="string">用于权限检查的</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Max open file descriptors:</span> <span class="number">1048576</span>              <span class="string">//</span> <span class="string">进程可以同时打开的最大文件数量</span></span><br><span class="line"><span class="attr">Process priority:</span> <span class="number">0</span>                             <span class="string">//</span> <span class="string">进程的优先级</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Process</span> <span class="string">Status</span> <span class="string">(/proc/self/status)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Name:</span>   <span class="string">proc</span>                                    <span class="string">//</span> <span class="string">进程名称</span></span><br><span class="line"><span class="attr">State:</span>  <span class="string">R</span> <span class="string">(running)</span>                             <span class="string">//</span> <span class="string">进程当前状态</span></span><br><span class="line"><span class="attr">PPid:</span>   <span class="number">1904150</span>                               </span><br><span class="line"><span class="attr">Uid:</span>    <span class="number">1000    </span><span class="number">1000    </span><span class="number">1000    </span><span class="number">1000</span>        </span><br><span class="line"><span class="attr">VmSize:</span>     <span class="number">2776 </span><span class="string">kB</span>                             <span class="string">//</span> <span class="string">虚拟内存大小</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Command</span> <span class="string">Line</span> <span class="string">(/proc/self/cmdline)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Command line:</span> <span class="string">./proc</span>                            <span class="string">//</span> <span class="string">程序执行时的完整命令行</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Current</span> <span class="string">Directory</span> <span class="string">(/proc/self/cwd)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Current directory:</span> <span class="string">/home/ubuntu/os/processes</span>    <span class="string">//</span> <span class="string">程序的工作目录</span></span><br></pre></td></tr></table></figure>
 
 <div class="vscode-card">
@@ -150,26 +145,17 @@
     </div>
 </div>
 
-<h2 id="进程（状态机）管理"><a href="#进程（状态机）管理" class="headerlink" title="进程（状态机）管理"></a>进程（状态机）管理</h2><div class="vscode-content"> 
-进程管理意味着进程状态机的管理，os 显然是进程状态机的管理者。
-
+<h2 id="进程（状态机）管理"><a href="#进程（状态机）管理" class="headerlink" title="进程（状态机）管理"></a>进程（状态机）管理</h2><p>进程管理意味着进程状态机的管理，os 显然是进程状态机的管理者。</p>
 <p>直观的想法是：<code>创建状态机 spawn(), 销毁状态机 _exit()</code></p>
 <p>UNIX 的做法是：<code>复制状态机 fork(), 复位状态机 execve()</code></p>
+<h3 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h3><div class="note">
+    man fork: 可以查看 fork 函数的签名和解释
 </div>
 
-<h3 id="fork"><a href="#fork" class="headerlink" title="fork()"></a>fork()</h3><blockquote>
-<p>man fork: 可以查看 fork 函数的签名和解释</p>
-</blockquote>
-<div class="vscode-content"> 
-    如何区分两个状态机？新创建的进程（子进程）返回 0。
-</div>
-
+<p>如何区分两个状态机？新创建的进程（子进程）返回 0。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pid_t</span> x = fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, x);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x == <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="string">&quot;I&#x27;m child !&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="string">&quot;I&#x27;m father !&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<div class="vscode-content"> 
-    当子进程销毁时，会向父进程发送信号。然而，当父进程提前因为某些原因销毁后，子进程会被托管到系统进程进行“托孤”。
-</div>
-
+<p>当子进程销毁时，会向父进程发送信号。然而，当父进程提前因为某些原因销毁后，子进程会被托管到系统进程进行“托孤”。</p>
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s3()">
     <div class="vscode-content"> 
@@ -183,10 +169,7 @@
 
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">PARENT PROCESS:</span></span><br><span class="line">    <span class="attr">PID:</span> <span class="number">1934705</span><span class="string">,</span> <span class="attr">PPID:</span> <span class="number">1912865</span></span><br><span class="line">    <span class="attr">fork() returned:</span> <span class="number">1934706</span> <span class="string">(child&#x27;s</span> <span class="string">PID)</span></span><br><span class="line">    <span class="attr">Child PID:</span> <span class="number">1934706</span></span><br><span class="line">    <span class="attr">Address of global_var:</span> <span class="number">0x559ced71d010</span></span><br><span class="line">    <span class="attr">Address of local_var:</span> <span class="number">0x7ffd58ed9770</span></span><br><span class="line"><span class="attr">CHILD PROCESS:</span></span><br><span class="line">    <span class="attr">PID:</span> <span class="number">1934706</span><span class="string">,</span> <span class="attr">PPID:</span> <span class="number">1934705</span></span><br><span class="line">    <span class="attr">fork() returned:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">Address of global_var:</span> <span class="number">0x559ced71d010</span></span><br><span class="line">    <span class="attr">Address of local_var:</span> <span class="number">0x7ffd58ed9770</span></span><br></pre></td></tr></table></figure>
 
-<div class="vscode-content"> 
-    阅读程序，判断一共创建了几个状态机：
-</div>
-
+<p>阅读程序，判断一共创建了几个状态机：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// program 1</span></span><br><span class="line"><span class="type">pid_t</span> x = fork();</span><br><span class="line"><span class="type">pid_t</span> y = fork();</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, x, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">// program 2</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">    fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <div style="display: flex; justify-content: center; align-items: center;">
@@ -201,12 +184,11 @@
     </div>
 </div>
 
-<h3 id="execve"><a href="#execve" class="headerlink" title="execve()"></a>execve()</h3><blockquote>
-<p>man execve: 可以查看 execve 函数的签名和解释</p>
-</blockquote>
-<div class="vscode-content"> 
-execve 可以将当前进程重置成一个可执行文件描述状态机的初始状态，而操作系统维护的状态不变（进程号、目录、打开的文件等等）。
+<h3 id="execve"><a href="#execve" class="headerlink" title="execve()"></a>execve()</h3><div class="note">
+    man execve: 可以查看 execve 函数的签名和解释
+</div>
 
+<p>execve 可以将当前进程重置成一个可执行文件描述状态机的初始状态，而操作系统维护的状态不变（进程号、目录、打开的文件等等）。</p>
 <p>execve 是唯一能够“执行程序”的系统调用，因此也是一切进程通过 <code>strace</code> 的第一个系统调用。例如，当你在 shell 中输入 <code>ls</code> 命令时，发生的过程是：</p>
 <ol>
 <li>Shell 解析命令：<code>bash</code> 识别 <code>ls</code> 命令</li>
@@ -214,8 +196,6 @@ execve 可以将当前进程重置成一个可执行文件描述状态机的初�
 <li>Execve 替换程序：子进程调用 <code>execve()</code> 将自己替换为 <code>ls</code> 程序</li>
 </ol>
 <p>UNIX 中，创建一个新进程的方式就是 <code>fork + execve</code>。</p>
-</div>
-
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s5()">
     <div class="vscode-content"> 
@@ -307,6 +287,7 @@ function s5() {
 }
 </script>
 
+</div>
     </div>
     <footer class="article-footer">
       
