@@ -107,12 +107,13 @@
     </header>
     
     <div class="article-entry" itemprop="articleBody">
-      <p>操作系统-第六讲-进程的地址空间</p>
+      <p>进程的地址空间</p>
 <p><a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/2025/lect6.md">jyy 老师的讲义</a></p>
 <span id="more"></span>
 
 <hr>
-<link rel="stylesheet" href = "/css/os.css" >
+<link rel="stylesheet" href="/css/os.css">
+<script src="/js/os.js"></script>
 
 <div class="all">
 
@@ -121,15 +122,40 @@
 </div>
 
 <h2 id="进程的初始状态"><a href="#进程的初始状态" class="headerlink" title="进程的初始状态"></a>进程的初始状态</h2><p>进程 <code>execve</code> 后的初始状态需要满足 ABI 中规定的 initial state (<a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/manuals/sysv-abi.pdf">System V ABI</a>)，里面只规定了部分寄存器和栈（<code>argv</code> 和 <code>envp</code> 中的字符串保存在栈中）。</p>
-<div class="vscode-card">
+<h2 id="进程的地址空间管理"><a href="#进程的地址空间管理" class="headerlink" title="进程的地址空间管理"></a>进程的地址空间管理</h2><div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
     <div class="vscode-content"> 
-        进程的地址空间: 配合 <em>gdb</em> 调试器，我们甚至可以 “随时查看程序的地址空间”。这一切代码都是人工智能生成的！因为 <em>AI</em> 知晓几乎所有的细节，它是帮助我们理解复杂细节的利器。
+        进程的地址空间: 配合 <em>gdb</em> 调试器，我们甚至可以 "随时查看程序的地址空间"。这一切代码都是人工智能生成的！因为 <em>AI</em> 知晓几乎所有的细节，它是帮助我们理解复杂细节的利器。
     </div>
 </div>
 
-<h2 style="text-align: center;">进程虚拟地址空间布局对比</h2>
-    
+<p>Memory Map 一系列系统调用可以改变进程的地址空间。</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">C</span>
+        <span class="code-filename">memory_mapping.h</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="comment">// 映射</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content"><span class="keyword">void</span> *<span class="function">mmap</span>(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot, <span class="keyword">int</span> flags,</span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content">           <span class="keyword">int</span> fd, <span class="keyword">off_t</span> offset);</span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content"><span class="keyword">int</span> <span class="function">munmap</span>(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> length);</span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content"><span class="comment">// 修改映射权限</span></span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content"><span class="keyword">int</span> <span class="function">mprotect</span>(<span class="keyword">void</span> *addr, <span class="keyword">size_t</span> length, <span class="keyword">int</span> prot);</span>
+</div></pre>
+    </div>
+</div>
+
+<p>例如，调用 mmap 分配 1GiB 内存前后的进程地址空间如下图：</p>
 <div class="container-copy">
     <!-- mmap前的内存布局 -->
     <div class="memory-layout">
@@ -259,90 +285,55 @@
     </div>
 </div>
 
-<div class="note">
-    <ul>
-        <li><strong>mmap前</strong>: 栈和堆之间有大量空白区域可供分配</li>
-        <li><strong>mmap后</strong>: 在空白区域中分配了1GiB的虚拟地址空间</li>
-        <li><strong>重要</strong>: mmap只是虚拟分配，实际物理内存在写入时才分配</li>
-        <li><strong>缺页机制</strong>: 访问mmap区域时触发缺页异常，然后分配物理页面</li>
-        <li><strong>写时分配</strong>: 循环写入时，每4KB页面会逐步分配物理内存</li>
-    </ul>
+<p>mmap 前栈和堆之间有大量空白区域可供分配，mmap 在空白区域中分配了 1GiB 的虚拟地址空间。mmap 只是虚拟分配，实际物理内存在写入时才分配，当进程访问 mmap 区域时触发缺页异常，然后分配物理页面。</p>
+<p>使用 mmap 系统调用可以申请大量内存，当 malloc 申请较大内存时，会调用一次 mmap 实现。或者将一个大文件直接搬到进程的地址空间中。</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">Python</span>
+        <span class="code-filename">mmap_example.py</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="keyword">with</span> <span class="function">open</span>(<span class="string">'/dev/sda'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> fp:</span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content">    mm = mmap.<span class="function">mmap</span>(fp.<span class="function">fileno</span>(),</span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content">                   prot=mmap.PROT_READ, length=<span class="number">128</span> &lt;&lt; <span class="number">30</span>)</span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content">    hexdump.<span class="function">hexdump</span>(mm[:<span class="number">512</span>])</span>
+</div></pre>
+    </div>
 </div>
 
+<h2 id="入侵进程的地址空间"><a href="#入侵进程的地址空间" class="headerlink" title="入侵进程的地址空间"></a>入侵进程的地址空间</h2><p>进程对应的状态机在”无情执行指令机器”上执行，状态机是一个封闭的世界，但是有些系统调用允许一个进程对其他进程的地址空间有访问权，可以任意改变另一个程序的行为。</p>
+<p>gdb 可以任意观测和修改程序的状态。</p>
+<p>但是并不是任意一个进程都可以访问和修改另一个进程的地址空间，如果进程 A 能访问和修改进程 B 的地址空间，需满足：</p>
+<ol>
+<li>A 是 <code>root</code> 用户</li>
+<li>A 和 B 是同用户且 <code>ptrace_scope = 0</code></li>
+<li>A 和 B 是父子进程且 <code>ptrace_scope &lt;= 1</code></li>
+<li>A 具有 <code>CAP_SYS_PTRACE</code> 能力</li>
+</ol>
+<p>其中，<code>ptrace_scope</code> 是 Linux 内核中 <code>Yama</code> 安全模块提供的一个安全特性，用来限制 <code>ptrace</code> 系统调用的使用，防止进程被恶意调试和内存访问。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s2()">
+    <div class="vscode-content"> 
+        <strong>金山游侠</strong>：通过操作系统赋予我们实现调试器的机制，我们可以窥探甚至修改任何进程的代码和数据。这个能力使我们可以绕过游戏为我们设置的 "人为障碍"，取得更多的金钱、经验，或是锁定生命值等。
+    </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="vscode-content">
+    <strong><em>Take-away Messages</em></strong> 操作系统通过虚拟内存为每个进程提供独立的地址空间，实现了进程间的隔离和保护。操作系统通过 <em>mmap/munmap</em> 实现地址空间的管理，并且还提供特定机制 (如 <em>procfs</em>、<em>ptrace</em>、<em>process_vm_writev</em>、共享内存等) 访问彼此的地址空间。
+</div>
 
 <script>
-function showCommandModal(cmd) {
-    if (document.getElementById('command-modal')) return;
-    const modal = document.createElement('div');
-    modal.id = 'command-modal';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100vw';
-    modal.style.height = '100vh';
-    modal.style.background = 'rgba(0,0,0,0.5)';
-    modal.style.display = 'flex';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
-    modal.style.zIndex = '9999';
-    
-    const box = document.createElement('div');
-    box.style.background = '#fff';
-    box.style.padding = '2em';
-    box.style.borderRadius = '8px';
-    box.style.boxShadow = '0 2px 16px rgba(0,0,0,0.2)';
-    box.style.maxWidth = '90vw';
-    box.style.wordBreak = 'break-all';
-    
-    // 创建标题元素
-    const title = document.createElement('div');
-    title.style.marginBottom = '1em';
-    title.style.fontWeight = 'bold';
-    title.textContent = '命令:';
-    box.appendChild(title);
-    
-    // 创建代码显示元素
-    const code = document.createElement('code');
-    code.style.background = '#f5f5f5';
-    code.style.padding = '0.5em 1em';
-    code.style.display = 'block';
-    code.textContent = cmd || '未提供命令';
-    box.appendChild(code);
-    
-    // 创建关闭按钮
-    const button = document.createElement('button');
-    button.style.marginTop = '1em';
-    button.style.padding = '0.5em 1.5em';
-    button.textContent = '关闭';
-    button.onclick = function() {
-        document.body.removeChild(document.getElementById('command-modal'));
-    };
-    box.appendChild(button);
-    
-    modal.appendChild(box);
-    document.body.appendChild(modal);
-}
 function s1() {
     const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/address-space/"';
+    showCommandModal(cmd);
+}
+function s2() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/knight/"';
     showCommandModal(cmd);
 }
 </script>

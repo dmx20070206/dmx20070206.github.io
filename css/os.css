@@ -128,3 +128,122 @@
     background-color: #ffffcc;
     border-left: 4px solid #ffcc00;
 }
+
+/* 代码块容器 */
+.code-block {
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(70, 130, 180, 0.15);
+    overflow: hidden;
+}
+
+/* 代码块头部 */
+.code-header {
+    background: linear-gradient(135deg, #ddeeff 0%, #cce7ff 100%);
+    border-bottom: 1px solid #b3d9ff;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* 语言标签 */
+.code-language {
+    background: #4a90e2;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+/* 文件名 */
+.code-filename {
+    color: #2c5282;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 14px;
+    flex-grow: 1;
+}
+
+/* 复制按钮 */
+.code-copy-btn {
+    background: #5ba3f5;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background 0.2s ease;
+}
+
+.code-copy-btn:hover {
+    background: #4a90e2;
+}
+
+/* 代码内容区域 */
+.code-content {
+    background: #fafcff;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+/* 代码文本 */
+.code-content pre {
+    margin: 0;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2d3748;
+}
+
+/* 行号 */
+.code-line {
+    display: flex;
+    align-items: flex-start;
+}
+
+.line-number {
+    color: #90cdf4;
+    min-width: 40px;
+    padding-right: 16px;
+    text-align: right;
+    user-select: none;
+    font-weight: 500;
+}
+
+.line-content {
+    flex: 1;
+    white-space: pre;
+}
+
+/* 语法高亮颜色 */
+.code-content .keyword {
+    color: #3182ce;
+    font-weight: 600;
+}
+
+.code-content .string {
+    color: #38a169;
+}
+
+.code-content .comment {
+    color: #718096;
+}
+
+.code-content .number {
+    color: #d69e2e;
+}
+
+.code-content .function {
+    color: #805ad5;
+}
+
+/* 输出值样式 - 橙色 */
+.code-content .output-value {
+    color: #d69e2e;
+    font-weight: 500;
+}

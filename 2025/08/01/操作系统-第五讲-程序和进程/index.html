@@ -107,13 +107,13 @@
     </header>
     
     <div class="article-entry" itemprop="articleBody">
-      <p>操作系统-第五讲-程序和进程</p>
+      <p>程序和进程</p>
 <p><a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/2025/lect5.md">jyy 老师的讲义</a></p>
 <span id="more"></span>
 
 <hr>
-<link rel="stylesheet" href = "/css/os.css" >
-
+<link rel="stylesheet" href="/css/os.css">
+<script src="/js/os.js"></script>
 
 <div class="all">
 
@@ -130,17 +130,73 @@
 <p>进程是动态运行的状态机，当然需要 os 实时保存一些状态信息。</p>
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
-    <div class="vscode-content"> <em>proc.c: </em>
-    这个示例展示了如何获取进程的基本信息：除了使用 <em> API </em>（例如 <em>getpid</em> 是一个系统调用），<em>Linux / proc </em> 文件系统允许我们使用文件 <em>API</em>（<em>"everything is a file"</em>）访问当前进程的 <em>ID</em>、状态信息、命令行参数和工作目录等元数据。
+    <div class="vscode-content">
+        <em>proc.c: </em>
+        这个示例展示了如何获取进程的基本信息：除了使用 <em> API </em>（例如 <em>getpid</em> 是一个系统调用），<em>Linux / proc </em> 文件系统允许我们使用文件 <em>API</em>（<em>"everything is a file"</em>）访问当前进程的 <em>ID</em>、状态信息、命令行参数和工作目录等元数据。
     </div>
 </div>
 
 <p>运行程序可以看到如下输出（可以通过 <code>./proc | head -n 10</code> 来指定显示的行数）：</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">pid:</span> <span class="number">1906250</span>                                    <span class="string">//</span> <span class="string">进程</span> <span class="string">id</span></span><br><span class="line"><span class="attr">ppid:</span> <span class="number">1904150</span>                                   <span class="string">//</span> <span class="string">父进程</span> <span class="string">id</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Additional</span> <span class="string">Process</span> <span class="string">Information</span> <span class="string">---</span></span><br><span class="line"><span class="attr">User ID:</span> <span class="number">1000</span>                                   <span class="string">//</span> <span class="string">进程所有者的用户</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Group ID:</span> <span class="number">1000</span>                                  <span class="string">//</span> <span class="string">进程所有者的组</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Effective User ID:</span> <span class="number">1000</span>                         <span class="string">//</span> <span class="string">用于权限检查的</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Effective Group ID:</span> <span class="number">1000</span>                        <span class="string">//</span> <span class="string">用于权限检查的</span> <span class="string">id</span></span><br><span class="line"><span class="attr">Max open file descriptors:</span> <span class="number">1048576</span>              <span class="string">//</span> <span class="string">进程可以同时打开的最大文件数量</span></span><br><span class="line"><span class="attr">Process priority:</span> <span class="number">0</span>                             <span class="string">//</span> <span class="string">进程的优先级</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Process</span> <span class="string">Status</span> <span class="string">(/proc/self/status)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Name:</span>   <span class="string">proc</span>                                    <span class="string">//</span> <span class="string">进程名称</span></span><br><span class="line"><span class="attr">State:</span>  <span class="string">R</span> <span class="string">(running)</span>                             <span class="string">//</span> <span class="string">进程当前状态</span></span><br><span class="line"><span class="attr">PPid:</span>   <span class="number">1904150</span>                               </span><br><span class="line"><span class="attr">Uid:</span>    <span class="number">1000    </span><span class="number">1000    </span><span class="number">1000    </span><span class="number">1000</span>        </span><br><span class="line"><span class="attr">VmSize:</span>     <span class="number">2776 </span><span class="string">kB</span>                             <span class="string">//</span> <span class="string">虚拟内存大小</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Command</span> <span class="string">Line</span> <span class="string">(/proc/self/cmdline)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Command line:</span> <span class="string">./proc</span>                            <span class="string">//</span> <span class="string">程序执行时的完整命令行</span></span><br><span class="line"></span><br><span class="line"><span class="string">---</span> <span class="string">Current</span> <span class="string">Directory</span> <span class="string">(/proc/self/cwd)</span> <span class="string">---</span></span><br><span class="line"><span class="attr">Current directory:</span> <span class="string">/home/ubuntu/os/processes</span>    <span class="string">//</span> <span class="string">程序的工作目录</span></span><br></pre></td></tr></table></figure>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">Output</span>
+        <span class="code-filename">proc 程序输出</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content">pid: <span class="output-value">1906250</span>                                    <span class="comment">// 进程 id</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content">ppid: <span class="output-value">1904150</span>                                   <span class="comment">// 父进程 id</span></span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content">--- Additional Process Information ---</span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content">User ID: <span class="output-value">1000</span>                                   <span class="comment">// 进程所有者的用户 id</span></span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content">Group ID: <span class="output-value">1000</span>                                  <span class="comment">// 进程所有者的组 id</span></span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content">Effective User ID: <span class="output-value">1000</span>                         <span class="comment">// 用于权限检查的 id</span></span>
+</div><div class="code-line">
+<span class="line-number">8</span><span class="line-content">Effective Group ID: <span class="output-value">1000</span>                        <span class="comment">// 用于权限检查的 id</span></span>
+</div><div class="code-line">
+<span class="line-number">9</span><span class="line-content">Max open file descriptors: <span class="output-value">1048576</span>              <span class="comment">// 进程可以同时打开的最大文件数量</span></span>
+</div><div class="code-line">
+<span class="line-number">10</span><span class="line-content">Process priority: <span class="output-value">0</span>                             <span class="comment">// 进程的优先级</span></span>
+</div><div class="code-line">
+<span class="line-number">11</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">12</span><span class="line-content">--- Process Status (/proc/self/status) ---</span>
+</div><div class="code-line">
+<span class="line-number">13</span><span class="line-content">Name:   <span class="output-value">proc</span>                                    <span class="comment">// 进程名称</span></span>
+</div><div class="code-line">
+<span class="line-number">14</span><span class="line-content">State:  <span class="output-value">R (running)</span>                             <span class="comment">// 进程当前状态</span></span>
+</div><div class="code-line">
+<span class="line-number">15</span><span class="line-content">PPid:   <span class="output-value">1904150</span></span>
+</div><div class="code-line">
+<span class="line-number">16</span><span class="line-content">Uid:    <span class="output-value">1000    1000    1000    1000</span></span>
+</div><div class="code-line">
+<span class="line-number">17</span><span class="line-content">VmSize:     <span class="output-value">2776 kB</span>                             <span class="comment">// 虚拟内存大小</span></span>
+</div><div class="code-line">
+<span class="line-number">18</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">19</span><span class="line-content">--- Command Line (/proc/self/cmdline) ---</span>
+</div><div class="code-line">
+<span class="line-number">20</span><span class="line-content">Command line: <span class="output-value">./proc</span>                            <span class="comment">// 程序执行时的完整命令行</span></span>
+</div><div class="code-line">
+<span class="line-number">21</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">22</span><span class="line-content">--- Current Directory (/proc/self/cwd) ---</span>
+</div><div class="code-line">
+<span class="line-number">23</span><span class="line-content">Current directory: <span class="output-value">/home/ubuntu/os/processes</span>    <span class="comment">// 程序的工作目录</span></span>
+</div></pre>
+    </div>
+</div>
 
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s2()">
-    <div class="vscode-content"> 
+    <div class="vscode-content">
         <em>testkit: Writing test cases fearlessly! </em>这是同学们的第一个测试框架：支持单元测试和系统测试，自动注册测试用例并在程序退出后运行。最重要的特点是它使用简单：你只需要包含 <em>testkit.h</em>，并且链接 <em>testkit.c</em> 即可。
     </div>
 </div>
@@ -153,24 +209,134 @@
 </div>
 
 <p>如何区分两个状态机？新创建的进程（子进程）返回 0。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pid_t</span> x = fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, x);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (x == <span class="number">0</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="string">&quot;I&#x27;m child !&quot;</span>);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, <span class="string">&quot;I&#x27;m father !&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">C</span>
+        <span class="code-filename">fork_example.c</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="keyword">#include</span> <span class="string">&lt;unistd.h&gt;</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content"><span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span></span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content"><span class="keyword">#include</span> <span class="string">&lt;sys/types.h&gt;</span></span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content"><span class="keyword">int</span> <span class="function">main</span>()</span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content">{</span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content">    <span class="keyword">pid_t</span> x = <span class="function">fork</span>();</span>
+</div><div class="code-line">
+<span class="line-number">8</span><span class="line-content">    <span class="function">printf</span>(<span class="string">"%d\n"</span>, x);</span>
+</div><div class="code-line">
+<span class="line-number">9</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">10</span><span class="line-content">    <span class="keyword">if</span> (x == <span class="number">0</span>)</span>
+</div><div class="code-line">
+<span class="line-number">11</span><span class="line-content">        <span class="function">printf</span>(<span class="string">"%s\n"</span>, <span class="string">"I'm child !"</span>);</span>
+</div><div class="code-line">
+<span class="line-number">12</span><span class="line-content">    <span class="keyword">else</span></span>
+</div><div class="code-line">
+<span class="line-number">13</span><span class="line-content">        <span class="function">printf</span>(<span class="string">"%s\n"</span>, <span class="string">"I'm father !"</span>);</span>
+</div><div class="code-line">
+<span class="line-number">14</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">15</span><span class="line-content">    <span class="keyword">return</span> <span class="number">0</span>;</span>
+</div><div class="code-line">
+<span class="line-number">16</span><span class="line-content">}</span>
+</div></pre>
+    </div>
+</div>
 
-<p>当子进程销毁时，会向父进程发送信号。然而，当父进程提前因为某些原因销毁后，子进程会被托管到系统进程进行“托孤”。</p>
+<p>当子进程销毁时，会向父进程发送信号。然而，当父进程提前因为某些原因销毁后，子进程会被托管到系统进程进行”托孤”。</p>
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s3()">
-    <div class="vscode-content"> 
+    <div class="vscode-content">
         <strong>创建一棵进程子树</strong>: 创建一棵 5 层的进程树，并随机退出其中的一些进程——我们可以观察进程退出前后父子进程的关系。
     </div>
 </div>
 
-<div class="vscode-content"> 
+<div class="vscode-content">
     fork 会完整复制状态机，包括寄存器和内存的值，子进程和父进程有完全相同的虚拟地址，但二者映射到的实际物理地址不同（Copy-On-Write 机制除外）。
 </div>
 
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">PARENT PROCESS:</span></span><br><span class="line">    <span class="attr">PID:</span> <span class="number">1934705</span><span class="string">,</span> <span class="attr">PPID:</span> <span class="number">1912865</span></span><br><span class="line">    <span class="attr">fork() returned:</span> <span class="number">1934706</span> <span class="string">(child&#x27;s</span> <span class="string">PID)</span></span><br><span class="line">    <span class="attr">Child PID:</span> <span class="number">1934706</span></span><br><span class="line">    <span class="attr">Address of global_var:</span> <span class="number">0x559ced71d010</span></span><br><span class="line">    <span class="attr">Address of local_var:</span> <span class="number">0x7ffd58ed9770</span></span><br><span class="line"><span class="attr">CHILD PROCESS:</span></span><br><span class="line">    <span class="attr">PID:</span> <span class="number">1934706</span><span class="string">,</span> <span class="attr">PPID:</span> <span class="number">1934705</span></span><br><span class="line">    <span class="attr">fork() returned:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">Address of global_var:</span> <span class="number">0x559ced71d010</span></span><br><span class="line">    <span class="attr">Address of local_var:</span> <span class="number">0x7ffd58ed9770</span></span><br></pre></td></tr></table></figure>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">Output</span>
+        <span class="code-filename">fork 程序输出</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content">PARENT PROCESS:</span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content">    PID: <span class="output-value">1934705</span>, PPID: <span class="output-value">1912865</span></span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content">    fork() returned: <span class="output-value">1934706 (child's PID)</span></span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content">    Child PID: <span class="output-value">1934706</span></span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content">    Address of global_var: <span class="output-value">0x559ced71d010</span></span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content">    Address of local_var: <span class="output-value">0x7ffd58ed9770</span></span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content">CHILD PROCESS:</span>
+</div><div class="code-line">
+<span class="line-number">8</span><span class="line-content">    PID: <span class="output-value">1934706</span>, PPID: <span class="output-value">1934705</span></span>
+</div><div class="code-line">
+<span class="line-number">9</span><span class="line-content">    fork() returned: <span class="output-value">0</span></span>
+</div><div class="code-line">
+<span class="line-number">10</span><span class="line-content">    Address of global_var: <span class="output-value">0x559ced71d010</span></span>
+</div><div class="code-line">
+<span class="line-number">11</span><span class="line-content">    Address of local_var: <span class="output-value">0x7ffd58ed9770</span></span>
+</div></pre>
+    </div>
+</div>
 
 <p>阅读程序，判断一共创建了几个状态机：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// program 1</span></span><br><span class="line"><span class="type">pid_t</span> x = fork();</span><br><span class="line"><span class="type">pid_t</span> y = fork();</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>, x, y);</span><br><span class="line"></span><br><span class="line"><span class="comment">// program 2</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) &#123;</span><br><span class="line">    fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Hello\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">C</span>
+        <span class="code-filename">program1.c</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="comment">// program 1</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content"><span class="keyword">pid_t</span> x = <span class="function">fork</span>();</span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content"><span class="keyword">pid_t</span> y = <span class="function">fork</span>();</span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content"><span class="function">printf</span>(<span class="string">"%d %d\n"</span>, x, y);</span>
+</div></pre>
+    </div>
+</div>
+
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">C</span>
+        <span class="code-filename">program2.c</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="comment">// program 2</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">2</span>; i++) {</span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content">    <span class="function">fork</span>();</span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content">    <span class="function">printf</span>(<span class="string">"Hello\n"</span>);</span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content">}</span>
+</div></pre>
+    </div>
+</div>
 
 <div style="display: flex; justify-content: center; align-items: center;">
     <img src="../../../../images/os/5-1.png" alt="" style="width: 45%; margin-right: 2%;">
@@ -179,7 +345,7 @@
 
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s4()">
-    <div class="vscode-content"> 
+    <div class="vscode-content">
         <strong>理解 <em>fork()</em></strong>: <em>fork()</em> 会完整复制状态机；新创建的状态机返回值为 <em>0</em>，执行 <em>fork()</em> 的进程会返回子进程的进程号。同时，操作系统中的进程是并行执行的。程序的精确行为并不显然——<em>model checker</em> 可以帮助我们理解它。
     </div>
 </div>
@@ -189,7 +355,7 @@
 </div>
 
 <p>execve 可以将当前进程重置成一个可执行文件描述状态机的初始状态，而操作系统维护的状态不变（进程号、目录、打开的文件等等）。</p>
-<p>execve 是唯一能够“执行程序”的系统调用，因此也是一切进程通过 <code>strace</code> 的第一个系统调用。例如，当你在 shell 中输入 <code>ls</code> 命令时，发生的过程是：</p>
+<p>execve 是唯一能够”执行程序”的系统调用，因此也是一切进程通过 <code>strace</code> 的第一个系统调用。例如，当你在 shell 中输入 <code>ls</code> 命令时，发生的过程是：</p>
 <ol>
 <li>Shell 解析命令：<code>bash</code> 识别 <code>ls</code> 命令</li>
 <li>Fork 创建子进程：<code>shell</code> 调用 <code>fork()</code> 创建子进程</li>
@@ -198,73 +364,16 @@
 <p>UNIX 中，创建一个新进程的方式就是 <code>fork + execve</code>。</p>
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s5()">
-    <div class="vscode-content"> 
-        <strong>理解 <em>execve</em></strong>: <em>execve</em> 有三个参数：<em>path, argv, envp</em>，分别是可执行文件的路径、传递给 <em>main</em> 函数的参数和环境变量。<em>execve</em> 是一个 “底层” 的系统调用，而 <em>POISX</em> 额外提供了 <em>execl</em> 等库函数便于我们使用。请搜索互联网或询问人工智能理解它们的区别，并阅读它们的手册。
+    <div class="vscode-content">
+        <strong>理解 <em>execve</em></strong>: <em>execve</em> 有三个参数：<em>path, argv, envp</em>，分别是可执行文件的路径、传递给 <em>main</em> 函数的参数和环境变量。<em>execve</em> 是一个 "底层" 的系统调用，而 <em>POISX</em> 额外提供了 <em>execl</em> 等库函数便于我们使用。请搜索互联网或询问人工智能理解它们的区别，并阅读它们的手册。
     </div>
 </div>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="vscode-content"> 
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="vscode-content">
     <strong><em>Take-away Messages</em></strong> 操作系统通过进程抽象为应用程序提供了独立的执行环境。进程是操作系统中最基本的资源分配单位，它包含程序本身的状态和操作系统内部的状态。操作系统提供了一系列系统调用 (如 <em>Linux</em> 中的 <em>fork、exec、wait</em> 和 <em>exit，Windows</em> 中的 <em>CreateProcess</em> 和 <em>TerminateProcess</em>) 来创建、管理和终止进程。
 </div>
 
-
-
-
-
-
-
 <script>
-function showCommandModal(cmd) {
-    if (document.getElementById('command-modal')) return;
-    const modal = document.createElement('div');
-    modal.id = 'command-modal';
-    modal.style.position = 'fixed';
-    modal.style.top = '0';
-    modal.style.left = '0';
-    modal.style.width = '100vw';
-    modal.style.height = '100vh';
-    modal.style.background = 'rgba(0,0,0,0.5)';
-    modal.style.display = 'flex';
-    modal.style.alignItems = 'center';
-    modal.style.justifyContent = 'center';
-    modal.style.zIndex = '9999';
-    
-    const box = document.createElement('div');
-    box.style.background = '#fff';
-    box.style.padding = '2em';
-    box.style.borderRadius = '8px';
-    box.style.boxShadow = '0 2px 16px rgba(0,0,0,0.2)';
-    box.style.maxWidth = '90vw';
-    box.style.wordBreak = 'break-all';
-    
-    // 创建标题元素
-    const title = document.createElement('div');
-    title.style.marginBottom = '1em';
-    title.style.fontWeight = 'bold';
-    title.textContent = '命令:';
-    box.appendChild(title);
-    
-    // 创建代码显示元素
-    const code = document.createElement('code');
-    code.style.background = '#f5f5f5';
-    code.style.padding = '0.5em 1em';
-    code.style.display = 'block';
-    code.textContent = cmd || '未提供命令';
-    box.appendChild(code);
-    
-    // 创建关闭按钮
-    const button = document.createElement('button');
-    button.style.marginTop = '1em';
-    button.style.padding = '0.5em 1.5em';
-    button.textContent = '关闭';
-    button.onclick = function() {
-        document.body.removeChild(document.getElementById('command-modal'));
-    };
-    box.appendChild(button);
-    
-    modal.appendChild(box);
-    document.body.appendChild(modal);
-}
 function s1() {
     const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/processes/"';
     showCommandModal(cmd);
