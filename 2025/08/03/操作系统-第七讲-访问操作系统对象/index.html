@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="访问操作系统对象">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>操作系统-第七讲-访问操作系统对象 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-操作系统-第七讲-访问操作系统对象" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E5%8E%BB%E6%9C%88%E7%90%831.png" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      操作系统-第七讲-访问操作系统对象
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-02T16:00:00.000Z" itemprop="datePublished">
+  2025-08-03
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>访问操作系统对象</p>
+<p><a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/2025/lect7.md">jyy 老师的讲义</a></p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/os.css">
+<script src="/js/os.js"></script>
+
+<div class="all">
+
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><p>目前提到的操作系统中的对象有：</p>
+<ol>
+<li>进程 - 状态机，通过进程管理 API 复制、重置、退出状态机</li>
+<li>连续的内存，可以在进程间共享，也可以映射文件，通过内存管理 API 来映射、解映射内存</li>
+</ol>
+<p>很明显，操作系统还有其他对象！</p>
+<h2 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h2><p>什么是文件：有“名字”的数据对象，分为字节流形式和字节序列形式。</p>
+<div class="file-types-comparison">
+    <h3>文件类型对比：字节流 vs 字节序列</h3>
+    <!-- 字节流文件 -->
+    <div class="file-type-section">
+        <div class="file-type-header stream">
+            <div class="file-icon">🌊</div>
+            <h4>字节流文件 (Stream)</h4>
+            <span class="file-desc">连续的数据流，只能顺序访问</span>
+        </div>
+        <div class="file-visual stream-visual">
+            <div class="stream-container">
+                <div class="stream-data">
+                    <span class="byte">A</span>
+                    <span class="byte">B</span>
+                    <span class="byte">C</span>
+                    <span class="byte">D</span>
+                    <span class="byte">E</span>
+                    <span class="byte">F</span>
+                    <span class="byte">G</span>
+                    <span class="byte">H</span>
+                </div>
+                <div class="stream-pointer">
+                    <div class="pointer">📍</div>
+                    <span class="pointer-label">当前读取位置</span>
+                </div>
+                <div class="stream-flow">
+                    <div class="flow-arrow">→</div>
+                    <span class="flow-label">只能向前流动</span>
+                </div>
+            </div>
+        </div>
+        <div class="characteristics">
+            <div class="char-item">
+                <span class="icon">📖</span>
+                <span>顺序读取</span>
+            </div>
+            <div class="char-item">
+                <span class="icon">🚫</span>
+                <span>无法回退</span>
+            </div>
+            <div class="char-item">
+                <span class="icon">⏱️</span>
+                <span>实时数据</span>
+            </div>
+        </div>
+        <div class="examples">
+            <strong>典型例子：</strong>
+            <div class="example-tags">
+                <span class="tag">键盘输入</span>
+                <span class="tag">网络数据</span>
+                <span class="tag">麦克风</span>
+                <span class="tag">管道</span>
+            </div>
+        </div>
+    </div>
+    <!-- 字节序列文件 -->
+    <div class="file-type-section">
+        <div class="file-type-header sequence">
+            <div class="file-icon">📄</div>
+            <h4>字节序列文件 (Sequence)</h4>
+            <span class="file-desc">固定大小的数据块，支持随机访问</span>
+        </div>
+        <div class="file-visual sequence-visual">
+            <div class="sequence-container">
+                <div class="sequence-grid">
+                    <div class="sequence-byte" data-pos="0">A</div>
+                    <div class="sequence-byte" data-pos="1">B</div>
+                    <div class="sequence-byte" data-pos="2">C</div>
+                    <div class="sequence-byte" data-pos="3">D</div>
+                    <div class="sequence-byte" data-pos="4">E</div>
+                    <div class="sequence-byte" data-pos="5">F</div>
+                    <div class="sequence-byte" data-pos="6">G</div>
+                    <div class="sequence-byte" data-pos="7">H</div>
+                </div>
+                <div class="sequence-pointers">
+                    <div class="random-pointer" style="left: 12.5%;">
+                        <div class="pointer-arrow">↓</div>
+                        <span class="pointer-text">位置1</span>
+                    </div>
+                    <div class="random-pointer" style="left: 62.5%;">
+                        <div class="pointer-arrow">↓</div>
+                        <span class="pointer-text">位置5</span>
+                    </div>
+                </div>
+                <div class="seek-demo">
+                    <span class="seek-label">可以跳转到任意位置</span>
+                </div>
+            </div>
+        </div>
+        <div class="characteristics">
+            <div class="char-item">
+                <span class="icon">🎯</span>
+                <span>随机访问</span>
+            </div>
+            <div class="char-item">
+                <span class="icon">🔄</span>
+                <span>可以回退</span>
+            </div>
+            <div class="char-item">
+                <span class="icon">💾</span>
+                <span>持久存储</span>
+            </div>
+        </div>
+        <div class="examples">
+            <strong>典型例子：</strong>
+            <div class="example-tags">
+                <span class="tag">普通文件</span>
+                <span class="tag">数据库文件</span>
+                <span class="tag">图片视频</span>
+                <span class="tag">硬盘文件</span>
+            </div>
+        </div>
+    </div>
+    <!-- 对比表格 -->
+    <div class="comparison-table">
+        <h4>详细对比</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>特性</th>
+                    <th>字节流文件</th>
+                    <th>字节序列文件</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>访问方式</td>
+                    <td class="stream-cell">只能顺序访问</td>
+                    <td class="sequence-cell">支持随机访问</td>
+                </tr>
+                <tr>
+                    <td>lseek() 支持</td>
+                    <td class="stream-cell">❌ 不支持</td>
+                    <td class="sequence-cell">✅ 支持</td>
+                </tr>
+                <tr>
+                    <td>文件大小</td>
+                    <td class="stream-cell">动态/未知</td>
+                    <td class="sequence-cell">固定/已知</td>
+                </tr>
+                <tr>
+                    <td>数据特性</td>
+                    <td class="stream-cell">实时生成</td>
+                    <td class="sequence-cell">预存储</td>
+                </tr>
+                <tr>
+                    <td>缓冲需求</td>
+                    <td class="stream-cell">必须缓冲</td>
+                    <td class="sequence-cell">可选缓冲</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<p><strong>文件描述符</strong> 是指向操作系统对象的“指针”，UNIX 设计中秉承着 <code>Everything is a file</code> 理念，任何对象的访问都需要指针，通过相关 API 来分配、销毁、修改指针 <code>(open, close, read/write, lseek(指针内赋值), dup(指针间赋值))</code>。</p>
+<p>每个进程有自己的一系列文件描述符，os 总是分配最小未使用的描述符，例如描述符 0, 1, 2 是标准输入、输出和错误。新打开的文件从 3 开始分配。文件描述符是进程文件描述符表的索引，是一个无符号整数。关闭文件后，该描述符号可以被重新分配。</p>
+<p>一个进程可以打开文件的最大值是有限制的，可以通过 <code>ulimit -n</code> 和 <code>sysctl fs.file-max</code> 来查看进程&#x2F;系统限制。</p>
+<p>文件描述符自带一个 offset，当通过文件描述符进行文件读写操作时，会自动从 offset 处开始，并在结束时使 offset 自动移动到结束位置。UNIX 中，通过 <code>fork()</code> 或 <code>dup()</code> 后，offset 是共享的。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
+    <div class="vscode-content">
+        文件描述符：文件描述符是指向操作系统对象的 “指针”——系统调用通过这个指针 (<em>fd</em>) 确定进程希望访问操作系统中的哪个对象。我们有 <em>open, close, read/write, lseek, dup</em> 管理文件描述符。
+    </div>
+</div>
+
+<h2 id="访问操作系统中的对象"><a href="#访问操作系统中的对象" class="headerlink" title="访问操作系统中的对象"></a>访问操作系统中的对象</h2><script>
+function s1() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/fd/""';
+    showCommandModal(cmd);
+}
+</script>
+
+
+</div>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/02/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC%E5%85%AD%E8%AE%B2-%E8%BF%9B%E7%A8%8B%E7%9A%84%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">操作系统-第六讲-进程的地址空间</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>

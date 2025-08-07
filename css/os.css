@@ -1,9 +1,24 @@
+/* ========================================
+   基础样式和全局设置
+   ======================================== */
+
 .all {
     font-size: 20px;
     color: #22334d;
     line-height: 1.8;
     font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
 }
+
+.note {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #ffffcc;
+    border-left: 4px solid #ffcc00;
+}
+
+/* ========================================
+   VSCode 卡片组件
+   ======================================== */
 
 .vscode-card {
     display: flex;
@@ -29,6 +44,10 @@
     font-family: 'Comic Mono', 'Consolas', 'Courier New', monospace;
     color: #222;
 }
+
+/* ========================================
+   内存布局可视化组件
+   ======================================== */
 
 .container-copy {
     display: flex;
@@ -71,6 +90,7 @@
     font-size: 12px;
 }
 
+/* 内存段颜色样式 */
 .stack {
     background-color: #ff9999;
 }
@@ -96,12 +116,14 @@
     background-color: #cc99ff;
 }
 
+/* 内存布局动画 */
 @keyframes highlight {
     0% { background-color: #ffff99; }
     50% { background-color: #99ccff; }
     100% { background-color: #99ccff; }
 }
 
+/* 图例组件 */
 .legend {
     margin-top: 20px;
     display: flex;
@@ -122,12 +144,9 @@
     border: 1px solid #333;
 }
 
-.note {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #ffffcc;
-    border-left: 4px solid #ffcc00;
-}
+/* ========================================
+   代码块组件
+   ======================================== */
 
 /* 代码块容器 */
 .code-block {
@@ -149,7 +168,6 @@
     gap: 12px;
 }
 
-/* 语言标签 */
 .code-language {
     background: #4a90e2;
     color: white;
@@ -160,7 +178,6 @@
     text-transform: uppercase;
 }
 
-/* 文件名 */
 .code-filename {
     color: #2c5282;
     font-family: 'Consolas', 'Monaco', monospace;
@@ -168,7 +185,6 @@
     flex-grow: 1;
 }
 
-/* 复制按钮 */
 .code-copy-btn {
     background: #5ba3f5;
     border: none;
@@ -191,7 +207,6 @@
     overflow-x: auto;
 }
 
-/* 代码文本 */
 .code-content pre {
     margin: 0;
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -200,7 +215,7 @@
     color: #2d3748;
 }
 
-/* 行号 */
+/* 代码行样式 */
 .code-line {
     display: flex;
     align-items: flex-start;
@@ -220,7 +235,7 @@
     white-space: pre;
 }
 
-/* 语法高亮颜色 */
+/* 语法高亮样式 */
 .code-content .keyword {
     color: #3182ce;
     font-weight: 600;
@@ -242,8 +257,340 @@
     color: #805ad5;
 }
 
-/* 输出值样式 - 橙色 */
 .code-content .output-value {
     color: #d69e2e;
     font-weight: 500;
+}
+
+/* ========================================
+   文件类型对比组件
+   ======================================== */
+
+.file-types-comparison {
+    max-width: 1000px;
+    margin: 30px auto;
+    font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
+}
+
+.file-types-comparison h3 {
+    text-align: center;
+    color: #2c5282;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.file-type-section {
+    margin-bottom: 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 25px;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* 文件类型头部 */
+.file-type-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.file-type-header.stream {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-left: 4px solid #3b82f6;
+}
+
+.file-type-header.sequence {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border-left: 4px solid #10b981;
+}
+
+.file-icon {
+    font-size: 32px;
+    margin-right: 15px;
+}
+
+.file-type-header h4 {
+    margin: 0 10px 0 0;
+    color: #1e293b;
+    font-size: 20px;
+}
+
+.file-desc {
+    color: #64748b;
+    font-style: italic;
+}
+
+/* ========================================
+   字节流可视化
+   ======================================== */
+
+.stream-visual {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #93c5fd;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.stream-container {
+    position: relative;
+}
+
+.stream-data {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.stream-data .byte {
+    background: #3b82f6;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-weight: bold;
+    animation: streamFlow 2s infinite;
+}
+
+.stream-pointer {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.stream-pointer .pointer {
+    font-size: 20px;
+    margin-right: 10px;
+    animation: pulse 1.5s infinite;
+}
+
+.stream-flow {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.flow-arrow {
+    font-size: 24px;
+    color: #3b82f6;
+    margin-right: 10px;
+    animation: moveRight 2s infinite;
+}
+
+/* 字节流动画 */
+@keyframes streamFlow {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes moveRight {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(10px); }
+}
+
+/* ========================================
+   字节序列可视化
+   ======================================== */
+
+.sequence-visual {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #86efac;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.sequence-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.sequence-byte {
+    background: #10b981;
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.sequence-byte:hover {
+    background: #059669;
+    transform: scale(1.1);
+}
+
+.sequence-byte:hover::after {
+    content: attr(data-pos);
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #374151;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.sequence-pointers {
+    position: relative;
+    height: 30px;
+}
+
+.random-pointer {
+    position: absolute;
+    text-align: center;
+}
+
+.pointer-arrow {
+    font-size: 20px;
+    color: #dc2626;
+}
+
+.pointer-text {
+    display: block;
+    font-size: 12px;
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.seek-demo {
+    text-align: center;
+    margin-top: 10px;
+    color: #059669;
+    font-weight: 500;
+}
+
+/* ========================================
+   特性展示组件
+   ======================================== */
+
+.characteristics {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.char-item {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.char-item .icon {
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+.examples {
+    margin-top: 20px;
+}
+
+.example-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.tag {
+    background: #6366f1;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* ========================================
+   对比表格组件
+   ======================================== */
+
+.comparison-table {
+    margin-top: 30px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.comparison-table h4 {
+    background: #374151;
+    color: white;
+    margin: 0;
+    padding: 15px 20px;
+    font-size: 18px;
+}
+
+.comparison-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.comparison-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+}
+
+.stream-cell {
+    background: #fef3f2;
+    color: #dc2626;
+}
+
+.sequence-cell {
+    background: #f0fdf4;
+    color: #059669;
+}
+
+/* ========================================
+   响应式设计
+   ======================================== */
+
+@media (max-width: 768px) {
+    .characteristics {
+        flex-direction: column;
+    }
+    
+    .file-type-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .sequence-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .comparison-table {
+        overflow-x: auto;
+    }
 }
