@@ -111,72 +111,33 @@
 <span id="more"></span>
 
 <hr>
-<link rel="stylesheet" href="/css/GPU_TEE.css">
+<!--
 
-<h3 id="Exposing-the-Guardrails-Reverse-Engineering-and-Jailbreaking-Safety-Filters-in-DALL·E-Text-to-Image-Pipelines"><a href="#Exposing-the-Guardrails-Reverse-Engineering-and-Jailbreaking-Safety-Filters-in-DALL·E-Text-to-Image-Pipelines" class="headerlink" title="Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL·E Text-to-Image Pipelines"></a>Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL·E Text-to-Image Pipelines</h3><blockquote>
-<p>Villa C, Mirza S, Pöpper C. Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL· E Text-to-Image Pipelines[J].</p>
-</blockquote>
+### Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL·E Text-to-Image Pipelines
+
+> Villa C, Mirza S, Pöpper C. Exposing the Guardrails: Reverse-Engineering and Jailbreaking Safety Filters in DALL· E Text-to-Image Pipelines[J].
+
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>We investigate the specific design and implementation of safety guardrails in black-box text-to-image (T2I) models, sucas DALL·E, which are implemented to prevent potential misuse from generating harmful image content. Specifically, wintroduce a novel timing-based side-channel analysis approach to reverse engineer the safety mechanisms of DALL·E models. Bmeasuring and analyzing the differential response times of these systems, we reverse-engineer the architecture of previouslunknown cascading safety filters at various stages of the T2I pipeline. Our analysis reveals key takeaways by contrastinsafety mechanisms in DALL·E 2 and DALL·E 3: DALL·E 2 uses blocklist-based filtering, whereas DALL·E 3 employs an LLM-baseprompt revision stage to improve image quality and filter harmful content. We find discrepancies between the LLM’s languagunderstanding and the CLIP embedding used for image generation, which we exploit to develop a negation-based jailbreakinattack. We further uncover gaps in the multilingual coverage of safety measures, which render DALL·E 3 vulnerable to a neclass of low-resource language attacks for T2I systems. Lastly, we outline six distinct countermeasures techniques anresearch directions to address our findings. This work emphasizes the challenges of aligning the diverse components of thessystems and underscores the need to improve the consistency and robustness of guardrails across the entire T2I pipeline.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>black box</strong></td>
-<td>黑盒</td>
-</tr>
-<tr>
-<td><strong>reverse engineer</strong></td>
-<td>逆向工程</td>
-</tr>
-<tr>
-<td><strong>cascading safety filters</strong></td>
-<td>级联安全过滤器</td>
-</tr>
-<tr>
-<td><strong>blocklist-based filtering</strong></td>
-<td>黑名单过滤</td>
-</tr>
-<tr>
-<td><strong>negation-based jailbreaking attack</strong></td>
-<td>基于否定的越狱攻击</td>
-</tr>
-<tr>
-<td><strong>low-resource language attacks</strong></td>
-<td>低资源语言攻击</td>
-</tr>
-<tr>
-<td>discrepancies</td>
-<td>差异</td>
-</tr>
-<tr>
-<td>contrast</td>
-<td>对比</td>
-</tr>
-<tr>
-<td>countermeasures</td>
-<td>对策</td>
-</tr>
-<tr>
-<td>multilingual</td>
-<td>多语言的</td>
-</tr>
-<tr>
-<td>render</td>
-<td>呈现</td>
-</tr>
-<tr>
-<td>guardrails</td>
-<td>防护栏</td>
-</tr>
-</tbody></table>
+| 术语                                      | 翻译             |
+|---|---|
+| **black box**                             | 黑盒             |
+| **reverse engineer**                      | 逆向工程         |
+| **cascading safety filters**              | 级联安全过滤器   |
+| **blocklist-based filtering**             | 黑名单过滤       |
+| **negation-based jailbreaking attack**    | 基于否定的越狱攻击 |
+| **low-resource language attacks**         | 低资源语言攻击    |
+| discrepancies                             | 差异             |
+| contrast                                  | 对比             |
+| countermeasures                           | 对策             |
+| multilingual                              | 多语言的         |
+| render                                    | 呈现             |
+| guardrails                                | 防护栏           |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>Text-to-image (T2I) models, such as DALL-E, Stable Diffusion, and Midjourney, have gained immense popularity by enabling users to generate realistic images from textual descriptions. These AI platforms have seen rapid adoption in real-world products, including Microsoft Designer and ad platforms from Google and Meta, revolutionizing the way users create and interact with visual content. However, the widespread use of T2I models has also raised concerns about their potential for generating harmful content. These models can produce sensitive Not-Safe-for-Work (NSFW) images, such as depicting violence, nudity, and child-inappropriate material, as well as disturbing, hateful, and politically charged images. Despite efforts by developers to implement safety guardrails, unsafe synthetic images continue to proliferate across both mainstream and fringe social networks. Communities such as Unstable Diffusion, which focus on generating sexual content, have attracted tens of thousands of members. Moreover, AI-generated variants of notorious memes are being used to spread hateful ideologies. As T2I models become more sophisticated, minimizing safety risks is paramount. Since the launch of DALL·E 2, users have created an average of 34 million images daily, and the recently introduced DALL·E 3 is accessible to millions of users through API and ChatGPT interfaces. However, little is known about the specific design and implementation of its safety filters, as this information has not been publicly documented by the developers. Prior work on red teaming of safety guardrails has primarily focused on open-source models such as Stable Diffusion and concluded the black-box security-by-obscurity approach to be insufficient. Given the enterprise-grade hardware and model capabilities accessible to users who bypass safety mechanisms in frontier models such as DALL·E, the potential for harm is significantly amplified compared to open-source alternatives. Therefore, understanding and evaluating the effectiveness of DALL·E’s safety measures is crucial to mitigate the risks associated with its misuse and ensure the responsible deployment of this powerful technology.
@@ -192,102 +153,31 @@
     4. We provide an actionable list of six countermeasure recommendations for T2I systems to prevent attacks and enumerate directions for future defense research.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>red teaming</strong></td>
-<td>红队测试</td>
-</tr>
-<tr>
-<td><strong>enterprise-grade</strong></td>
-<td>企业级</td>
-</tr>
-<tr>
-<td><strong>feedback channel</strong></td>
-<td>反馈通道</td>
-</tr>
-<tr>
-<td><strong>adaptive attacks</strong></td>
-<td>自适应攻击</td>
-</tr>
-<tr>
-<td>depict</td>
-<td>描绘</td>
-</tr>
-<tr>
-<td>nudity</td>
-<td>裸露</td>
-</tr>
-<tr>
-<td>disturbing</td>
-<td>恐怖的，令人不安的</td>
-</tr>
-<tr>
-<td>synthetic</td>
-<td>合成的，人工的</td>
-</tr>
-<tr>
-<td>proliferate</td>
-<td>激增，蔓延</td>
-</tr>
-<tr>
-<td>fringe</td>
-<td>边缘的，极端的</td>
-</tr>
-<tr>
-<td>ideologies</td>
-<td>思想意识形态</td>
-</tr>
-<tr>
-<td>sophisticated</td>
-<td>复杂的，精密的</td>
-</tr>
-<tr>
-<td>paramount</td>
-<td>极为重要的</td>
-</tr>
-<tr>
-<td>frontier</td>
-<td>前沿，边疆</td>
-</tr>
-<tr>
-<td>mitigate</td>
-<td>减轻，缓解</td>
-</tr>
-<tr>
-<td>empirically</td>
-<td>经验证的，经验上</td>
-</tr>
-<tr>
-<td>incorporate</td>
-<td>纳入，包含</td>
-</tr>
-<tr>
-<td>implicit</td>
-<td>隐含的</td>
-</tr>
-<tr>
-<td>negated</td>
-<td>否定的</td>
-</tr>
-<tr>
-<td>phrase</td>
-<td>短语，措辞</td>
-</tr>
-<tr>
-<td>tangible</td>
-<td>具体的，切实的</td>
-</tr>
-<tr>
-<td>juxtaposing</td>
-<td>并置，比较</td>
-</tr>
-</tbody></table>
+| 术语              | 翻译            |
+|----------------------|---------------------|
+| **red teaming**           | 红队测试            |
+| **enterprise-grade**      | 企业级              |
+| **feedback channel**      | 反馈通道            |
+| **adaptive attacks**      | 自适应攻击          |
+| depict               | 描绘                 |
+| nudity                | 裸露                 |
+| disturbing            | 恐怖的，令人不安的  |
+| synthetic             | 合成的，人工的      |
+| proliferate           | 激增，蔓延          |
+| fringe                | 边缘的，极端的      |
+| ideologies            | 思想意识形态        |
+| sophisticated         | 复杂的，精密的      |
+| paramount             | 极为重要的          |
+| frontier              | 前沿，边疆          |
+| mitigate              | 减轻，缓解          |
+| empirically           | 经验证的，经验上    |
+| incorporate           | 纳入，包含          |
+| implicit              | 隐含的              |
+| negated               | 否定的              |
+| phrase                | 短语，措辞          |
+| tangible              | 具体的，切实的      |
+| juxtaposing           | 并置，比较          |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>We begin by providing contextual background on harmful content generation, the T2I (Text-to-Image) model architecture, and safety filters. The interpretation of harm in image-based content varies across cultures, regions, and countries, making it difficult to classify and categorize content. Previous work has highlighted the lack of research on the taxonomy of AI-generated harms in imagery. T2I models have traditionally been deployed in a typical architecture: input text (prompts) are delivered to a pre-trained model, which processes the text using models like CLIP or BERT. The input is then encoded into vector-based embedding representations. These embeddings serve as input for image generation models, including diffusion and autoregressive models, to generate the final output image. In this paradigm, numerous safety filters are integrated throughout the components of the T2I pipeline, as shown in Figure 1. These filters can be configured to either outright reject problematic inputs or trigger transformations to the provided prompt.
@@ -300,187 +190,66 @@
     </p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>state-of-the-art</strong></td>
-<td>最先进的，最新的</td>
-</tr>
-<tr>
-<td>interpretations</td>
-<td>解释，诠释</td>
-</tr>
-<tr>
-<td>complicate</td>
-<td>使复杂化</td>
-</tr>
-<tr>
-<td>taxonomy</td>
-<td>分类法</td>
-</tr>
-<tr>
-<td>autoregressive</td>
-<td>自回归的</td>
-</tr>
-<tr>
-<td>outright</td>
-<td>彻底的，完全的</td>
-</tr>
-<tr>
-<td>bloody</td>
-<td>血腥的</td>
-</tr>
-<tr>
-<td>circumvent</td>
-<td>避开，规避</td>
-</tr>
-<tr>
-<td>uncensored</td>
-<td>未审查的</td>
-</tr>
-<tr>
-<td>presumably</td>
-<td>据推测，可能</td>
-</tr>
-<tr>
-<td>adversarial</td>
-<td>对抗性的，敌对的</td>
-</tr>
-<tr>
-<td>stochastic</td>
-<td>随机的</td>
-</tr>
-<tr>
-<td>non-deterministic</td>
-<td>非确定性的</td>
-</tr>
-</tbody></table>
-<h3 id="Rosetta-Enabling-Robust-TLS-Encrypted-Traffic-Classification-in-Diverse-Network-Environments-with-TCP-Aware-Traffic-Augmentation"><a href="#Rosetta-Enabling-Robust-TLS-Encrypted-Traffic-Classification-in-Diverse-Network-Environments-with-TCP-Aware-Traffic-Augmentation" class="headerlink" title="Rosetta: Enabling Robust TLS Encrypted Traffic Classification in Diverse Network  Environments with TCP-Aware Traffic Augmentation"></a>Rosetta: Enabling Robust TLS Encrypted Traffic Classification in Diverse Network  Environments with TCP-Aware Traffic Augmentation</h3><blockquote>
-<p>Xie R, Wang Y, Cao J, et al. Rosetta: Enabling robust tls encrypted traffic classification in diverse network environments with tcp-aware traffic augmentation[C]&#x2F;&#x2F;Proceedings of the ACM turing award celebration conference-China 2023. 2023: 131-132.</p>
-</blockquote>
+| 术语             | 翻译            |
+|----------------------|---------------------|
+| **state-of-the-art**      | 最先进的，最新的    |
+| interpretations       | 解释，诠释          |
+| complicate            | 使复杂化            |
+| taxonomy              | 分类法              |
+| autoregressive        | 自回归的            |
+| outright              | 彻底的，完全的      |
+| bloody                | 血腥的              |
+| circumvent            | 避开，规避          |
+| uncensored            | 未审查的            |
+| presumably            | 据推测，可能        |
+| adversarial           | 对抗性的，敌对的    |
+| stochastic            | 随机的              |
+| non-deterministic     | 非确定性的          |
+
+
+### Rosetta: Enabling Robust TLS Encrypted Traffic Classification in Diverse Network  Environments with TCP-Aware Traffic Augmentation
+
+> Xie R, Wang Y, Cao J, et al. Rosetta: Enabling robust tls encrypted traffic classification in diverse network environments with tcp-aware traffic augmentation[C]//Proceedings of the ACM turing award celebration conference-China 2023. 2023: 131-132.
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>The majority of Internet traffic is encrypted using the Transport Layer Security (TLS) protocol. Recent advancements have leveraged Deep Learning (DL) models to classify encrypted traffic by automatically extracting complex and informative features from the packet length sequences of TLS flows. While existing DL models have demonstrated excellent classification results on encrypted traffic, our comprehensive study reveals that they experience significant performance degradation in real-world, diverse network environments. Upon systematically investigating the causes, we discovered that the packet length sequences of flows can change drastically due to various TCP mechanisms used for reliable transmission in different network conditions. To address this, we propose Rosetta, a solution that enhances the robustness of TLS encrypted traffic classification for existing DL models. Rosetta utilizes TCP-aware traffic augmentation mechanisms and self-supervised learning to capture implicit TCP semantics, allowing it to extract more robust features from TLS flows. Extensive experiments show that Rosetta significantly improves the classification performance of existing DL models on TLS traffic in diverse network environments.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Transport Layer Security</strong></td>
-<td>TLS</td>
-</tr>
-<tr>
-<td><strong>packet length sequences</strong></td>
-<td>数据包长度序列</td>
-</tr>
-<tr>
-<td><strong>TCP-aware traffic augmentation mechanism</strong></td>
-<td>基于TCP的流量增强机制</td>
-</tr>
-<tr>
-<td>degradation</td>
-<td>降级</td>
-</tr>
-<tr>
-<td>augmentation</td>
-<td>增强</td>
-</tr>
-<tr>
-<td>semantics</td>
-<td>语义</td>
-</tr>
-</tbody></table>
+| 术语                               | 翻译                               |
+|----------------------------------------|----------------------------------------|
+| **Transport Layer Security**               | TLS                     |
+| **packet length sequences**                | 数据包长度序列                         |
+| **TCP-aware traffic augmentation mechanism** | 基于TCP的流量增强机制                  |
+| degradation                            | 降级                                  |
+| augmentation                           | 增强                                  |
+| semantics                              | 语义                                  |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>Network traffic classification aims to organize various traffic into different categories, which is fundamental and vital for network management and security. A number of network security tasks have been built on top of it, such as application identification [53, 56, 65], website fingerprinting [46, 49, 51, 52], malicious flow detection [33, 37, 38], and user profiling [16, 23]. <br> With the fast-growing need of user privacy protection and the wide usage of the Transport Layer Security (TLS) protocol, a majority of the Internet traffic has been encrypted [12]. Traditional rule-based methods that examine packet payloads are becoming increasingly ineffective in classifying encrypted network traffic [6, 34]. <br> Recent advances [16, 33, 38, 49, 51, 52] are leveraging deep learning (DL) techniques to conduct generic traffic classification. Particularly, as the packet payloads are converted into pseudorandom values after TLS encryption [36], a number of studies [7, 35, 46, 49–51] design various deep learning models to automatically extract complicated and high-level features from packet length sequences, which possess rich and discriminating implicit information of the encrypted flows. <br> Besides, it is convenient and low-cost to measure and derive packet length sequences in real-world large-scale networks, even supporting real-time traffic classification tasks [5, 6]. Though these DL models have been reported to achieve excellent classification results on encrypted traffic [3, 7, 13, 14, 41, 49], e.g., 98% classification accuracy [49], the performance of these models for various traffic classification tasks in the real-world diverse network environments is still not clear. <br> We should note that when they are deployed in a real network for TLS traffic classification, they will face diverse network environments that are time-varying and unpredictable. For example, the packet loss rate and network delay may suddenly arise due to the burst of network traffic [48, 63]. Actually, the environment of one network can be changed complexly due to the joint effect of multiple factors, such as traffic burst [48, 63], traffic engineering [22, 54], partial network failures [2, 64], and network updates [11, 45]. <br> In this paper, we conduct a systematic study to check if existing deep learning models can effectively classify TLS encrypted traffic in diverse network environments. We study six different DL models including Deep Fingerprinting (DF) [51], FS-Net [35], Transformer [57], SDAE [4, 7, 46, 51], CNN [7, 46, 49, 51, 59], and LSTM [7, 46, 51, 59] that rely on packet length sequences to classify encrypted traffic. <br> We conduct experiments not only with the replayed traffic from two typical TLS traffic datasets [19, 39] in diverse network environments, but also with real TLS traffic that is generated by visiting popular websites and running online network applications in diverse Internet environments. <br> Our experiments confirm that all these DL models can achieve excellent results with the offline TLS traffic dataset for various classification tasks, including website fingerprinting, malicious flow identification, VPN traffic identification, and application fingerprinting. However, the performance of all models drops remarkably when they are tested in different network environments, e.g., about 53% accuracy drop at worst.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>application identification</strong></td>
-<td>应用识别</td>
-</tr>
-<tr>
-<td><strong>website fingerprinting</strong></td>
-<td>网站指纹识别</td>
-</tr>
-<tr>
-<td><strong>malicious flow detection</strong></td>
-<td>恶意流量检测</td>
-</tr>
-<tr>
-<td><strong>user profiling</strong></td>
-<td>用户画像</td>
-</tr>
-<tr>
-<td><strong>real-time traffic classification tasks</strong></td>
-<td>实时流量分类任务</td>
-</tr>
-<tr>
-<td><strong>malicious flow identification</strong></td>
-<td>恶意流量识别</td>
-</tr>
-<tr>
-<td><strong>VPN traffic identification</strong></td>
-<td>VPN 流量识别</td>
-</tr>
-<tr>
-<td><strong>application fingerprinting</strong></td>
-<td>应用指纹识别</td>
-</tr>
-<tr>
-<td><strong>traffic engineering</strong></td>
-<td>流量工程</td>
-</tr>
-<tr>
-<td><strong>partial network failures</strong></td>
-<td>部分网络故障</td>
-</tr>
-<tr>
-<td><strong>network updates</strong></td>
-<td>网络更新</td>
-</tr>
-<tr>
-<td><strong>traffic burst</strong></td>
-<td>流量突发</td>
-</tr>
-<tr>
-<td>burst</td>
-<td>爆发</td>
-</tr>
-<tr>
-<td>payloads</td>
-<td>数据负载</td>
-</tr>
-<tr>
-<td>discriminating</td>
-<td>区分性的</td>
-</tr>
-<tr>
-<td>implicit</td>
-<td>隐含的</td>
-</tr>
-<tr>
-<td>replayed</td>
-<td>重放的</td>
-</tr>
-</tbody></table>
+| 术语                                   | 翻译                               |
+|--------------------------------------------|----------------------------------------|
+| **application identification**         | 应用识别                               |
+| **website fingerprinting**             | 网站指纹识别                           |
+| **malicious flow detection**           | 恶意流量检测                           |
+| **user profiling**                     | 用户画像                               |
+| **real-time traffic classification tasks** | 实时流量分类任务                       |
+| **malicious flow identification**      | 恶意流量识别                           |
+| **VPN traffic identification**         | VPN 流量识别                            |
+| **application fingerprinting**         | 应用指纹识别                           |
+| **traffic engineering**                | 流量工程                               |
+| **partial network failures**           | 部分网络故障                           |
+| **network updates**                    | 网络更新                               |
+| **traffic burst**                      | 流量突发                               |
+| burst                             | 爆发                                   |
+| payloads                           | 数据负载                               |
+| discriminating                    | 区分性的                               |
+| implicit                           | 隐含的                                 |
+| replayed                           | 重放的                                 |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>We find that the remarkable performance degradation results from the dramatic change of packet length sequences of the same flow in different network environments. For example, a TLS encrypted flow with the packet length sequence [q1, q2, q3, q4] may change to [q3, q2, q1, q4] due to high packet loss in another network environment. However, existing DL models fail to understand that the two different packet length sequences in different network environments actually originate from the same flow. Furthermore, we notice that the changes of packet length sequences follow the TCP specifications in different network environments, since TLS connections are built on the TCP protocol. Consequently, different TCP mechanisms ensuring reliable transmission in diverse network environments cause three major changes of packet length sequences, i.e., packet subsequence shift, packet subsequence duplication, and packet size variation. Thus, if a model can be aware of these regular packet sequence changes with TCP semantics, robust TLS encrypted traffic classification in diverse network environments may be achieved.</p>
@@ -488,82 +257,34 @@
     <p>We conduct extensive experiments to evaluate the effectiveness of Rosetta. The results show that Rosetta significantly improves the performance of existing deep learning models on traffic classification in diverse network environments with both replayed and real TLS flows. We further evaluate its classification robustness under different packet loss rates and different delays. Without enabling Rosetta, the classification accuracy of existing models drops remarkably when packet loss rates and delays increase. For example, the accuracy drops from 99% to 55% when the delay is increased from 0 to 50 ms. When Rosetta is enabled, the accuracy can always maintain above 86%. Moreover, we compare our TCP-aware traffic augmentation algorithms with classical data augmentation methods, including Random Mask (RM) [17] and Random Swap (RS) [60] that have been widely used in the domains of Natural Language Processing (NLP) and Computer Version (CV). With RM and RS, the average F1-score is less than 47% in six different network environments. With our TCP-aware traffic augmentation, the average F1-score is 87%. The results demonstrate that TCP-aware traffic augmentation is more effective on extracting robust features of TLS flows in different network environments.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>Natural Language Processing</strong></td>
-<td>自然语言处理</td>
-</tr>
-<tr>
-<td><strong>Computer Vision</strong></td>
-<td>计算机视觉</td>
-</tr>
-<tr>
-<td>crafted</td>
-<td>精心制作</td>
-</tr>
-<tr>
-<td>massive</td>
-<td>大量的</td>
-</tr>
-</tbody></table>
-<h3 id="Model-Context-Protocol-MCP-Landscape-Security-Threats-and-Future-Research-Directions"><a href="#Model-Context-Protocol-MCP-Landscape-Security-Threats-and-Future-Research-Directions" class="headerlink" title="Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions"></a>Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions</h3><blockquote>
-<p>Hou X, Zhao Y, Wang S, et al. Model context protocol (mcp): Landscape, security threats, and future research directions[J]. arXiv preprint arXiv:2503.23278, 2025.</p>
-</blockquote>
+| 术语                        | 翻译     |
+|---------------------------------|--------------|
+| **Natural Language Processing**     | 自然语言处理 |
+| **Computer Vision**                 | 计算机视觉   |
+| crafted                         | 精心制作     |
+| massive                         | 大量的       |
+
+### Model Context Protocol (MCP): Landscape, Security Threats, and Future Research Directions
+
+> Hou X, Zhao Y, Wang S, et al. Model context protocol (mcp): Landscape, security threats, and future research directions[J]. arXiv preprint arXiv:2503.23278, 2025.
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>The Model Context Protocol (MCP) is a standardized interface designed to enable seamless interaction between AI models and external tools and resources, breaking down data silos and facilitating interoperability across diverse systems. This paper provides a comprehensive overview of MCP, focusing on its core components, workflow, and the lifecycle of MCP servers, which consists of three key phases: creation, operation, and update. We analyze the security and privacy risks associated with each phase and propose strategies to mitigate potential threats. The paper also examines the current MCP landscape, including its adoption by industry leaders and various use cases, as well as the tools and platforms supporting its integration. We explore future directions for MCP, highlighting the challenges and opportunities that will influence its adoption and evolution within the broader AI ecosystem. Finally, we offer recommendations for MCP stakeholders to ensure its secure and sustainable development as the AI landscape continues to evolve.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>data silos</strong></td>
-<td>数据孤岛</td>
-</tr>
-<tr>
-<td>seamless</td>
-<td>无缝的</td>
-</tr>
-<tr>
-<td>interoperability</td>
-<td>互操作性</td>
-</tr>
-<tr>
-<td>phases</td>
-<td>阶段</td>
-</tr>
-<tr>
-<td>landscape</td>
-<td>局势；格局</td>
-</tr>
-<tr>
-<td>integration</td>
-<td>集成</td>
-</tr>
-<tr>
-<td>broader</td>
-<td>更广泛的</td>
-</tr>
-<tr>
-<td>stakeholders</td>
-<td>利益相关者</td>
-</tr>
-<tr>
-<td>sustainable</td>
-<td>可持续的</td>
-</tr>
-</tbody></table>
+| 术语             | 翻译         |
+|----------------------|------------------|
+| **data silos**           | 数据孤岛         |
+| seamless             | 无缝的           |
+| interoperability     | 互操作性         |
+| phases               | 阶段             |
+| landscape            | 局势；格局       |
+| integration          | 集成             |
+| broader              | 更广泛的         |
+| stakeholders         | 利益相关者       |
+| sustainable          | 可持续的         |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>In recent years, the vision of autonomous AI agents capable of interacting with a wide range of tools and data sources has gained significant momentum. This progress accelerated in 2023 with the introduction of function calling by OpenAI, which allowed language models to invoke external APIs in a structured way [38]. This advancement expanded the capabilities of LLMs, enabling them to retrieve real-time data, perform computations, and interact with external systems. As function calling gained adoption, an ecosystem formed around it. OpenAI introduced the ChatGPT plugin [37], allowing developers to build callable tools for ChatGPT. LLM app stores such as Coze [4] and Yuanqi [50] have launched their plugin stores, supporting tools specifically designed for their platforms. Frameworks like LangChain [26] and LlamaIndex [29] provided standardized tool interfaces, making it easier to integrate LLMs with external services. Other AI providers, including Anthropic, Google, and Meta, introduced similar mechanisms, further driving adoption. Despite these advancements, integrating tools remains fragmented. Developers must manually define interfaces, manage authentication, and handle execution logic for each service. Function calling mechanisms vary across platforms, requiring redundant implementations. Additionally, current approaches rely on predefined workflows, limiting AI agents’ flexibility in dynamically discovering and orchestrating tools.</p>
@@ -578,101 +299,34 @@
     </ol>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>general-purpose</strong></td>
-<td>通用的</td>
-</tr>
-<tr>
-<td><strong>human-in-the-loop</strong></td>
-<td>人类参与其中</td>
-</tr>
-<tr>
-<td><strong>multi-modal AI agent</strong></td>
-<td>多模态 AI 智能体</td>
-</tr>
-<tr>
-<td><strong>installer spoofing</strong></td>
-<td>安装程序伪装</td>
-</tr>
-<tr>
-<td>autonomous</td>
-<td>自主的</td>
-</tr>
-<tr>
-<td>momentum</td>
-<td>动力；势头</td>
-</tr>
-<tr>
-<td>plugin</td>
-<td>插件</td>
-</tr>
-<tr>
-<td>callable</td>
-<td>可调用的</td>
-</tr>
-<tr>
-<td>fragmented</td>
-<td>支离破碎的</td>
-</tr>
-<tr>
-<td>redundant</td>
-<td>冗余的</td>
-</tr>
-<tr>
-<td>orchestrating</td>
-<td>协调；编排</td>
-</tr>
-<tr>
-<td>approve</td>
-<td>批准</td>
-</tr>
-<tr>
-<td>niche</td>
-<td>小众的</td>
-</tr>
-<tr>
-<td>thriving</td>
-<td>蓬勃发展的</td>
-</tr>
-<tr>
-<td>untapped</td>
-<td>尚未开发的</td>
-</tr>
-<tr>
-<td>extensively</td>
-<td>广泛地</td>
-</tr>
-<tr>
-<td>implication</td>
-<td>含义；影响</td>
-</tr>
-<tr>
-<td>encompass</td>
-<td>包括；涵盖</td>
-</tr>
-<tr>
-<td>safeguard</td>
-<td>保护；防范</td>
-</tr>
-<tr>
-<td>scalability</td>
-<td>可扩展性</td>
-</tr>
-<tr>
-<td>governance</td>
-<td>治理；管理</td>
-</tr>
-</tbody></table>
-<h3 id="I-Know-What-You-Asked-Prompt-Leakage-via-KV-Cache-Sharing-in-Multi-Tenant-LLM-Serving"><a href="#I-Know-What-You-Asked-Prompt-Leakage-via-KV-Cache-Sharing-in-Multi-Tenant-LLM-Serving" class="headerlink" title="I Know What You Asked: Prompt Leakage via  KV-Cache Sharing in Multi-Tenant LLM Serving"></a>I Know What You Asked: Prompt Leakage via  KV-Cache Sharing in Multi-Tenant LLM Serving</h3><blockquote>
-<p>Wu G, Zhang Z, Zhang Y, et al. I know what you asked: Prompt leakage via kv-cache sharing in multi-tenant llm serving[C]&#x2F;&#x2F;Proceedings of the 2025 Network and Distributed System Security (NDSS) Symposium. San Diego, CA, USA. 2025.</p>
-</blockquote>
+| 术语             | 翻译         |
+|----------------------|------------------|
+| **general-purpose**       | 通用的              |
+| **human-in-the-loop**     | 人类参与其中        |
+| **multi-modal AI agent**  | 多模态 AI 智能体        |
+| **installer spoofing**    | 安装程序伪装        |
+| autonomous           | 自主的           |
+| momentum             | 动力；势头       |
+| plugin               | 插件             |
+| callable             | 可调用的         |
+| fragmented           | 支离破碎的       |
+| redundant            | 冗余的           |
+| orchestrating        | 协调；编排       |
+| approve               | 批准                |
+| niche                 | 小众的              |
+| thriving              | 蓬勃发展的          |
+| untapped              | 尚未开发的          |
+| extensively           | 广泛地              |
+| implication           | 含义；影响          |
+| encompass          | 包括；涵盖           |
+| safeguard          | 保护；防范           |
+| scalability        | 可扩展性             |
+| governance         | 治理；管理           |
+
+### I Know What You Asked: Prompt Leakage via  KV-Cache Sharing in Multi-Tenant LLM Serving
+
+> Wu G, Zhang Z, Zhang Y, et al. I know what you asked: Prompt leakage via kv-cache sharing in multi-tenant llm serving[C]//Proceedings of the 2025 Network and Distributed System Security (NDSS) Symposium. San Diego, CA, USA. 2025.
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>Abstract—Large Language Models (LLMs), which laid the groundwork for Artificial General Intelligence (AGI), have recently gained significant traction in academia and industry due to their disruptive applications. In order to enable scalable applications and efficient resource management, various multitenant LLM serving frameworks have been proposed, in which the LLM caters to the needs of multiple users simultaneously. One notable mechanism in recent works, such as SGLang and vLLM, is sharing the Key-Value (KV) cache for identical token sequences among multiple users, saving both memory and computation.</p>
@@ -680,42 +334,17 @@
     <p>This study underscores the need for careful resource management in multitenant LLM serving and provides critical insights for future security enhancement.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>laid groundwork</td>
-<td>打下基础</td>
-</tr>
-<tr>
-<td>traction</td>
-<td>吸引力</td>
-</tr>
-<tr>
-<td>disruptive</td>
-<td>颠覆性的</td>
-</tr>
-<tr>
-<td>simultaneously</td>
-<td>同时的</td>
-</tr>
-<tr>
-<td>identical</td>
-<td>相同的</td>
-</tr>
-<tr>
-<td>compromising</td>
-<td>妥协的</td>
-</tr>
-<tr>
-<td>mutually</td>
-<td>互相地</td>
-</tr>
-</tbody></table>
+| 术语             | 翻译   |
+|------------------|---------------|
+| laid groundwork  | 打下基础      |
+| traction         | 吸引力        |
+| disruptive       | 颠覆性的      |
+| simultaneously   | 同时的        |
+| identical        | 相同的        |
+| compromising     | 妥协的        |
+| mutually         | 互相地        |
+
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>The rise of Large Language Models (LLMs) like GPT [25] or Llama [44] has enabled a variety of new applications, including universal chatbots [5], virtual assistants [4], and code generators [6], applicable to both large-scale cloud deployments and small-scale local setups. As LLM applications become widespread, effectively serving concurrent requests from multiple users has become a non-trivial research question [32], [61], [34].</p>
@@ -725,62 +354,21 @@
     <p>KV cache sharing prevents duplicate KV storage on the GPU, allowing more user requests to be served concurrently. More importantly, it reduces the serving time for individual requests by eliminating unnecessary calculations.</p>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>universal</td>
-<td>普适的</td>
-</tr>
-<tr>
-<td>applicable</td>
-<td>适用的</td>
-</tr>
-<tr>
-<td>setup</td>
-<td>配置</td>
-</tr>
-<tr>
-<td>concurrent</td>
-<td>并发的</td>
-</tr>
-<tr>
-<td>non-trivial</td>
-<td>非平凡的</td>
-</tr>
-<tr>
-<td>inference</td>
-<td>推理</td>
-</tr>
-<tr>
-<td>extensive</td>
-<td>广泛的</td>
-</tr>
-<tr>
-<td>bottleneck</td>
-<td>瓶颈</td>
-</tr>
-<tr>
-<td>promising</td>
-<td>有前景的</td>
-</tr>
-<tr>
-<td>rationale</td>
-<td>原则，理由</td>
-</tr>
-<tr>
-<td>preceding</td>
-<td>前面的</td>
-</tr>
-<tr>
-<td>duplicate</td>
-<td>重复的</td>
-</tr>
-</tbody></table>
+| 术语             | 翻译   |
+|------------------|---------------|
+| universal        | 普适的        |
+| applicable       | 适用的        |
+| setup            | 配置          |
+| concurrent       | 并发的        |
+| non-trivial      | 非平凡的      |
+| inference        | 推理          |
+| extensive        | 广泛的        |
+| bottleneck       | 瓶颈          |
+| promising        | 有前景的      |
+| rationale        | 原则，理由    |
+| preceding        | 前面的        |
+| duplicate        | 重复的        |
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>However, in this paper, we point out that the KV cache sharing mechanism is not secure. Our key insight is that the KV cache sharing may inadvertently create side channel information, which can be leveraged by the adversary to carefully craft requests sent to the LLM server to determine if its requests match the other users’, thereby recovering other users’ prompts.</p>
@@ -795,37 +383,18 @@
     </ul>
 </div>
 
-<table>
-<thead>
-<tr>
-<th>术语</th>
-<th>翻译</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>inadvertently</td>
-<td>不经意地</td>
-</tr>
-<tr>
-<td>iteratively</td>
-<td>迭代地</td>
-</tr>
-<tr>
-<td>depletion</td>
-<td>耗尽，枯竭</td>
-</tr>
-<tr>
-<td>touch on</td>
-<td>提及，涉及</td>
-</tr>
-<tr>
-<td>broader implications</td>
-<td>更广泛的影响</td>
-</tr>
-</tbody></table>
-<h3 id="CuAsmRL-Optimizing-GPU-SASS-Schedules-via-Deep-Reinforcement-Learning"><a href="#CuAsmRL-Optimizing-GPU-SASS-Schedules-via-Deep-Reinforcement-Learning" class="headerlink" title="CuAsmRL: Optimizing GPU SASS Schedules via Deep  Reinforcement Learning"></a>CuAsmRL: Optimizing GPU SASS Schedules via Deep  Reinforcement Learning</h3><blockquote>
-<p>He G, Yoneki E. CuAsmRL: Optimizing GPU SASS Schedules via Deep Reinforcement Learning[C]&#x2F;&#x2F;Proceedings of the 23rd ACM&#x2F;IEEE International Symposium on Code Generation and Optimization. 2025: 493-506.</p>
-</blockquote>
+| 术语                | 翻译   |
+|---------------------|---------------|
+| inadvertently        | 不经意地      |
+| iteratively         | 迭代地        |
+| depletion           | 耗尽，枯竭    |
+| touch on            | 提及，涉及    |
+| broader implications| 更广泛的影响  |
+
+### CuAsmRL: Optimizing GPU SASS Schedules via Deep  Reinforcement Learning
+
+> He G, Yoneki E. CuAsmRL: Optimizing GPU SASS Schedules via Deep Reinforcement Learning[C]//Proceedings of the 23rd ACM/IEEE International Symposium on Code Generation and Optimization. 2025: 493-506.
+
 <div class="original-text">
     <div class="content-title">原文内容</div>
     <p>Large language models (LLMs) are remarked by their substantial computational requirements. To mitigate the cost, researchers develop specialized CUDA kernels, which often fuse several tensor operations to maximize the utilization of GPUs as much as possible. However, those specialized kernels may still leave performance on the table as CUDA assembly experts show that manual optimization of GPU SASS schedules can lead to better performance, and trial-and-error is largely employed to manually find the best GPU SASS schedules.</p>
@@ -863,6 +432,156 @@
     <p>Finally, the SASS codes are assembled into binary code (cubin) that can be executed directly on the GPU. The overall compilation process is shown in Figure 1.</p>
 </div>
 
+-->
+
+<link rel="stylesheet" href="/css/English.css">
+<div class="english-learning">
+
+
+<div class="english-learning">
+
+<div class="article-section">
+    <h3 class="section-title">🔬 A fork() in the road</h3>
+    <div class="original-content">
+        <p><span class="vocab-highlight">The received wisdom</span> suggests that Unix's unusual combination of fork() and exec() for process creation was an <span class="vocab-highlight">inspired</span> design. In this paper, we argue that fork was a clever hack for machines and programs of the 1970s that has long <span class="vocab-highlight">outlived</span> its usefulness and is now a <span class="vocab-highlight">liability</span>. We <span class="vocab-highlight">catalog</span> the ways in which fork is a terrible abstraction for the modern programmer to use, describe how it compromises OS implementations, and propose alternatives.</p>
+        <p>As the designers and implementers of operating systems, we should acknowledge that fork's continued existence as a first-class OS primitive <span class="vocab-highlight">holds back</span> systems research, and <span class="vocab-highlight">deprecate</span> it. As educators, we should teach fork as a historical <span class="vocab-highlight">artifact</span>, and not the first process creation mechanism students encounter.</p>
+        <p>When the designers of Unix needed a mechanism to create processes, they added a <span class="vocab-highlight">peculiar</span> new system call: fork(). As every undergraduate now learns, fork creates a new process identical to its parent (the caller of fork), <span class="vocab-highlight">with the exception of</span> the system call's return value. The Unix <span class="vocab-highlight">idiom</span> of fork() followed by exec() to execute a different program in the child is now well understood, but still <span class="vocab-highlight">stands in stark contrast</span> to process creation in systems developed independently of Unix [e.g., 1, 30, 33, 54].</p>
+        <p>50 years later, fork remains the default process creation API on POSIX: Atlidakis et al. [8] found 1304 Ubuntu packages (7.2% of the total) calling fork, compared to only 41 uses of the more modern posix_spawn(). Fork is used by almost every Unix shell, major web and database servers (e.g., Apache, PostgreSQL, and Oracle), Google Chrome, the Redis key-value store, and even Node.js. <span class="vocab-highlight">The received wisdom</span> appears to hold that fork is a good design. Every OS textbook we reviewed [4, 7, 9, 35, 75, 78] covered fork in <span class="vocab-highlight">uncritical</span> or positive terms, often noting its "<span class="vocab-highlight">simplicity</span>" compared to alternatives. Students today are taught that "the fork system call is one of Unix's great ideas" [46] and "there are lots of ways to design APIs for process creation; however, the combination of fork() and exec() are simple and <span class="vocab-highlight">immensely</span> powerful . . . the Unix designers simply got it right" [7].</p>
+        <p>Our goal is to <span class="vocab-highlight">set the record straight</span>. Fork is an <span class="vocab-highlight">anachronism</span>: a <span class="vocab-highlight">relic</span> from another era that is out of place in modern systems where it has a <span class="vocab-highlight">pernicious</span> and <span class="vocab-highlight">detrimental</span> impact. As a community, our <span class="vocab-highlight">familiarity</span> with fork can blind us to its faults (§4). Generally acknowledged problems with fork include that it is not thread-safe, it is inefficient and unscalable, and it introduces security concerns. Beyond these limitations, fork has lost its classic <span class="vocab-highlight">simplicity</span>; it today impacts all the other operating system abstractions with which it was once <span class="vocab-highlight">orthogonal</span>. Moreover, a fundamental challenge with fork is that, since it <span class="vocab-highlight">conflates</span> the process and the address space in which it runs, fork is <span class="vocab-highlight">hostile</span> to user-mode implementation of OS <span class="vocab-highlight">functionality</span>, breaking everything from buffered IO to kernel-bypass networking. Perhaps most problematically, fork doesn't compose—every layer of a system from the kernel to the smallest user-mode library must support it.</p>
+        <p>We illustrate the <span class="vocab-highlight">havoc</span> fork <span class="vocab-highlight">wreaks</span> on OS implementations using our experiences with prior research systems (§5). Fork limits the ability of OS researchers and developers to innovate because any new abstraction must be <span class="vocab-highlight">special-cased</span> for it. Systems that support fork and exec efficiently are forced to duplicate per-process state lazily. This encourages the <span class="vocab-highlight">centralisation</span> of state, a major problem for systems not structured using <span class="vocab-highlight">monolithic</span> kernels. On the other hand, research systems that avoid implementing fork are unable to run the enormous body of software that uses it.</p>
+        <p>We end with a discussion of alternatives (§6) and a call to action (§7): fork should be removed as a first-class primitive of our systems, and replaced with good-enough emulation for <span class="vocab-highlight">legacy</span> applications. It is not enough to add new primitives to the OS—fork must be removed from the kernel.</p>
+    </div>
+    <div class="vocabulary-section">
+        <div class="vocab-section-title">📖 核心词汇</div>
+        <div class="vocab-grid">
+            <div class="vocab-item">
+                <div class="vocab-term">The received wisdom</div>
+                <p class="vocab-translation">公认的观点；传统观念<br><em>conventional or widely accepted opinion or belief</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">inspired</div>
+                <p class="vocab-translation">有灵感的；巧妙的<br><em>showing creativity or having a brilliant idea</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">outlived</div>
+                <p class="vocab-translation">比...活得久；过时了<br><em>to continue to exist longer than something else</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">liability</div>
+                <p class="vocab-translation">负担；累赘<br><em>something that causes problems or disadvantages</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">catalog</div>
+                <p class="vocab-translation">编目；列举<br><em>to make a systematic list of items</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">holds back</div>
+                <p class="vocab-translation">阻碍；妨碍<br><em>to prevent progress or development</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">deprecate</div>
+                <p class="vocab-translation">反对；不赞成<br><em>to disapprove of or express criticism</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">artifact</div>
+                <p class="vocab-translation">人工制品；遗迹<br><em>an object made by humans, typically of historical interest</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">peculiar</div>
+                <p class="vocab-translation">奇特的；独特的<br><em>strange or odd; distinctive</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">with the exception of</div>
+                <p class="vocab-translation">除了...之外<br><em>apart from; excluding</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">idiom</div>
+                <p class="vocab-translation">惯用法；习语<br><em>a characteristic mode of expression</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">stand in stark contrast</div>
+                <p class="vocab-translation">形成鲜明对比<br><em>to be very different from something else</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">uncritical</div>
+                <p class="vocab-translation">不加批判的；盲从的<br><em>not expressing criticism or careful judgment</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">simplicity</div>
+                <p class="vocab-translation">简单性；简洁<br><em>the quality of being easy to understand or do</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">immensely</div>
+                <p class="vocab-translation">极其；非常<br><em>to a great extent; extremely</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">set the record straight</div>
+                <p class="vocab-translation">澄清事实；纠正误解<br><em>to correct misinformation or misconceptions</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">anachronism</div>
+                <p class="vocab-translation">时代错误；过时的事物<br><em>something that is out of its proper time</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">relic</div>
+                <p class="vocab-translation">遗物；残留物<br><em>an object surviving from an earlier time</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">pernicious</div>
+                <p class="vocab-translation">有害的；恶性的<br><em>having a harmful effect in a gradual way</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">detrimental</div>
+                <p class="vocab-translation">有害的；不利的<br><em>tending to cause harm</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">familiarity</div>
+                <p class="vocab-translation">熟悉；亲近<br><em>close acquaintance with or knowledge of something</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">orthogonal</div>
+                <p class="vocab-translation">正交的；独立的<br><em>independent; not affecting each other</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">conflate</div>
+                <p class="vocab-translation">合并；混合<br><em>to combine two or more things into one</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">hostile</div>
+                <p class="vocab-translation">敌对的；不利的<br><em>unfriendly; opposed</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">functionality</div>
+                <p class="vocab-translation">功能性；实用性<br><em>the quality of being suited to serve a purpose well</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">havoc</div>
+                <p class="vocab-translation">大破坏；混乱<br><em>widespread destruction or chaos</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">wreak</div>
+                <p class="vocab-translation">造成；引起<br><em>to cause something bad to happen</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">special-cased</div>
+                <p class="vocab-translation">特殊处理<br><em>to handle as an exception or special situation</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">centralisation</div>
+                <p class="vocab-translation">集中化<br><em>the process of concentrating control in a central authority</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">monolithic</div>
+                <p class="vocab-translation">单体的；整体的<br><em>formed of a single large block; unified</em></p>
+            </div>
+            <div class="vocab-item">
+                <div class="vocab-term">legacy</div>
+                <p class="vocab-translation">遗留的；传统的<br><em>relating to old or outdated computer systems</em></p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
     </div>
     <footer class="article-footer">
       
@@ -875,19 +594,19 @@
     
 <nav class="article-nav pt-4 mt-3" id="article-nav">
   
-    <a href="/2025/07/01/%E4%BF%9D%E7%A0%94%E8%AE%B0%E5%BD%95/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2025/07/26/%E8%AE%BA%E6%96%87%E7%B2%BE%E8%AF%BB1/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          保研记录
+          【论文精读】SAGE:Software-based Attestation for GPU Execution
         
       </div>
     </a>
   
   
-    <a href="/2025/07/01/algorithm/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/07/01/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">算法题训练</div>
+      <div class="article-nav-title">博客搭建记录</div>
     </a>
   
 </nav>

@@ -238,7 +238,7 @@
         </div>
     </div>
     <!-- 对比表格 -->
-    <div class="comparison-table">
+    <!-- <div class="comparison-table">
         <h4>详细对比</h4>
         <table>
             <thead>
@@ -276,7 +276,7 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div>-->
 </div>
 
 <p><strong>文件描述符</strong> 是指向操作系统对象的“指针”，UNIX 设计中秉承着 <code>Everything is a file</code> 理念，任何对象的访问都需要指针，通过相关 API 来分配、销毁、修改指针 <code>(open, close, read/write, lseek(指针内赋值), dup(指针间赋值))</code>。</p>
@@ -286,13 +286,30 @@
 <div class="vscode-card">
     <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
     <div class="vscode-content">
-        文件描述符：文件描述符是指向操作系统对象的 “指针”——系统调用通过这个指针 (<em>fd</em>) 确定进程希望访问操作系统中的哪个对象。我们有 <em>open, close, read/write, lseek, dup</em> 管理文件描述符。
+        <strong>文件描述符</strong>：文件描述符是指向操作系统对象的 “指针”——系统调用通过这个指针 (<em>fd</em>) 确定进程希望访问操作系统中的哪个对象。我们有 <em>open, close, read/write, lseek, dup</em> 管理文件描述符。
     </div>
 </div>
 
-<h2 id="访问操作系统中的对象"><a href="#访问操作系统中的对象" class="headerlink" title="访问操作系统中的对象"></a>访问操作系统中的对象</h2><script>
+<h2 id="访问操作系统中的对象"><a href="#访问操作系统中的对象" class="headerlink" title="访问操作系统中的对象"></a>访问操作系统中的对象</h2><p>任何“可读写”的东西都可以是文件，例如真实的设备 <code>/dev/sda, /dev/tty</code>，虚拟的设备 <code>dev/urandom, /dev/null</code>。</p>
+<p>管道是一个特殊的“文件流”，由读者和写者共享，一个读口负责 read，一个写口负责 write。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s2()">
+    <div class="vscode-content">
+        <strong><em>UNIX</em> 管道</strong>：<em>UNIX</em> 管道 (<em>pipe</em>) 是一种典型的进程间通信机制，允许数据在不同的进程之间单向流动。管道可以被视为一种特殊的文件，其中一个进程将数据写入管道的一端，而另一个进程从另一端读取数据。
+    </div>
+</div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="vscode-content">
+    <strong><em>Take-away Messages</em></strong> 操作系统必需提供机制供应用程序访问操作系统对象。对于 <em>UNIX</em> 系统，文件描述符是操作系统中表示打开文件 (操作系统对象) 的指针；而 <em>Windows</em> 则更直接地提供了 <em>handle</em> 机制。
+</div>
+
+<script>
 function s1() {
     const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/fd/""';
+    showCommandModal(cmd);
+}
+function s2() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/pipe/"';
     showCommandModal(cmd);
 }
 </script>
