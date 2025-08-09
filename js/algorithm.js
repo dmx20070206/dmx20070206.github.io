@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
             subsections: [
                 { title: "DFS", difficulties: [0, 2, 0, 0, 0] },
                 { title: "BFS", difficulties: [0, 2, 0, 0, 0] },
+                { title: "树和图的遍历", difficulties: [0, 2, 0, 0, 0]},
                 { title: "拓扑排序", difficulties: [0, 1, 0, 0, 0] },
                 { title: "最短路径", difficulties: [0, 2, 0, 0, 0] },
                 { title: "最小生成树", difficulties: [0, 1, 0, 0, 0] }
@@ -53,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             title: "动态规划",
             subsections: [
-                { title: "线性DP", difficulties: [0, 6, 3, 0, 0] },
+                { title: "线性DP", difficulties: [0, 7, 4, 0, 0] },
                 { title: "状态压缩 DP", difficulties: [0, 0, 1, 0, 0] },
                 { title: "树形 DP", difficulties: [0, 0, 1, 0, 0] },
                 { title: "记忆化搜索", difficulties: [0, 0, 1, 0, 0] }
@@ -105,7 +106,7 @@ document.addEventListener("DOMContentLoaded", function() {
             
             // 计算每个难度的数量
             const difficultyStats = subsection.difficulties.map((count, index) => {
-                if (count === 0) return '';
+                // if (count === 0) return '';
                 return `<span class="difficulty-stat"><span class="difficulty-icon ${difficultyClasses[index]}">${difficultyIcons[index]}</span>${count}</span>`;
             }).filter(stat => stat !== '').join(' ');
             

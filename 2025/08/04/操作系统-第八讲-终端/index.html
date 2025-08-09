@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="终端">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>操作系统-第八讲-终端 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-操作系统-第八讲-终端" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E5%8E%BB%E6%9C%88%E7%90%831.png" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      操作系统-第八讲-终端
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-03T16:00:00.000Z" itemprop="datePublished">
+  2025-08-04
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>终端</p>
+<p><a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/2025/lect8.md">jyy 老师的讲义</a></p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/os.css">
+<link rel="stylesheet" href="/css/os-8.css">
+<script src="/js/os.js"></script>
+
+<div class="all">
+
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><p>我们已经知道如何用 “文件描述符” 相关的系统调用访问操作系统中的对象：<code>open, read, write, lseek, close</code>。操作系统也提供了 <code>mount, pipe, mkfifo</code> 这些系统调用能 “创建” 操作系统中的对象。当然，我们也知道操作系统中的对象远不止于此，还有很多有趣的对象我们还没有深入了解过——终端就让人细思恐极。</p>
+<h2 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h2><p>终端的前身可以追溯到打字机 <code>Typewriter</code>，打字机时代遗留了一些遗产，例如:</p>
+<ol>
+<li><code>Shift</code>: 使字锤或字模向上移动一段距离，切换字符集</li>
+<li><code>CR/LF</code>: <code>CR</code> 指 <code>\r</code>，将打印头移回行首；<code>LF</code> 指 <code>\n</code>，将纸张向上移动一行。正常来说一次换行需要 <code>\r\n</code>，UNIX 中的 <code>\n</code> 同时包含 <code>CR/LF</code></li>
+<li><code>Tab/Backspace</code>: 向前移动&#x2F;向后移动</li>
+</ol>
+<p>终端的演进历程: <code>Typewriter -&gt; Teletypewriter -&gt; Video Teletypewriter -&gt; Pseudo Terminal</code></p>
+<p>终端作为输出设备，接受 UART 信号并显示；作为输入设备，把按键的 ASCII 码输出到 UART</p>
+<p>目前大多使用伪终端，伪终端使用一对管道提供双向通信通道，由主设备 <code>PTY Master</code> 和从设备 <code>PTY Slave</code> 组成: </p>
+<!-- 伪终端工作原理示意图 -->
+<div class="pty-diagram">
+  <div class="pty-row">
+    <div class="pty-box">
+      <div class="pty-title">终端模拟器<br><span class="pty-desc">(如 VS Code Terminal)</span></div>
+      <div class="pty-label">用户输入命令</div>
+    </div>
+    <div class="pty-arrow">→</div>
+    <div class="pty-box">
+      <div class="pty-title">PTY Master</div>
+      <div class="pty-label">接收输入</div>
+    </div>
+    <div class="pty-arrow">→</div>
+    <div class="pty-box">
+      <div class="pty-title">内核 PTY 驱动</div>
+      <div class="pty-label">转发数据</div>
+    </div>
+    <div class="pty-arrow">→</div>
+    <div class="pty-box">
+      <div class="pty-title">PTY Slave</div>
+      <div class="pty-label">Shell 标准输入</div>
+    </div>
+    <div class="pty-arrow">→</div>
+    <div class="pty-box">
+      <div class="pty-title">Shell 进程<br><span class="pty-desc">(如 bash/zsh)</span></div>
+      <div class="pty-label">读取并执行</div>
+    </div>
+  </div>
+  <div class="pty-row pty-row-reverse">
+    <div class="pty-box">
+      <div class="pty-title">Shell 进程</div>
+      <div class="pty-label">输出结果</div>
+    </div>
+    <div class="pty-arrow">←</div>
+    <div class="pty-box">
+      <div class="pty-title">PTY Slave</div>
+      <div class="pty-label">标准输出/错误</div>
+    </div>
+    <div class="pty-arrow">←</div>
+    <div class="pty-box">
+      <div class="pty-title">内核 PTY 驱动</div>
+      <div class="pty-label">转发数据</div>
+    </div>
+    <div class="pty-arrow">←</div>
+    <div class="pty-box">
+      <div class="pty-title">PTY Master</div>
+      <div class="pty-label">输出到终端</div>
+    </div>
+    <div class="pty-arrow">←</div>
+    <div class="pty-box">
+      <div class="pty-title">终端模拟器</div>
+      <div class="pty-label">渲染显示</div>
+    </div>
+  </div>
+</div>
+
+<p>简单来说，流程如下:</p>
+<ol>
+<li><strong>用户输入</strong>:<ul>
+<li>用户在 <strong>终端模拟器</strong> 中键入命令 (如 <code>ls</code>)。</li>
+<li>终端模拟器将这些按键数据写入 <strong>PTY Master</strong> 端。</li>
+<li>内核中的 PTY 驱动程序将数据转发到配对的 <strong>PTY Slave</strong> 端。</li>
+<li><strong>Shell</strong> 进程的标准输入连接到 PTY Slave，因此它会读取到用户输入的数据并执行命令。</li>
+</ul>
+</li>
+<li><strong>程序输出</strong>:<ul>
+<li>Shell (或其子进程 <code>ls</code>) 执行后，将结果 (文件列表) 写入其标准输出或标准错误。</li>
+<li>由于标准输出&#x2F;错误连接到了 <strong>PTY Slave</strong>，数据被 PTY 驱动程序捕获并转发到 <strong>PTY Master</strong> 端。</li>
+<li><strong>终端模拟器</strong> 从 PTY Master 端读取到输出数据，并将其渲染显示在窗口中。</li>
+</ul>
+</li>
+</ol>
+<p>通过这种方式，Shell 进程会认为自己正在与一个真实的物理终端交互，而终端模拟器则通过 PTY Master&#x2F;Slave 对来管理和显示这个交互过程。伪终端经常被创建，可以通过系统调用 <code>openpty()</code> 通过 <code>/dev/ptmx</code> 申请一个新终端，返回两个文件描述符 (master&#x2F;slave)。</p>
+<p>终端分为两种模式：按行处理或按字符处理 (Canonical Mode&#x2F;Non-canonical Mode)。也可以控制终端的各种行为，例如回显、信号处理、特殊字符等。</p>
+<h2 id="终端和操作系统"><a href="#终端和操作系统" class="headerlink" title="终端和操作系统"></a>终端和操作系统</h2><p>当系统启动时，内核创建第一个用户空间进程 <code>init</code> (PID 1)，<code>init</code> 进程会读取配置文件，为每个终端 (<code>tty1, tty2, ...</code>) 启动 <code>getty</code> 进程。<code>getty</code> 进程会打开物理终端设备，将自己的 <code>stdin/stdout/stderr</code> 都指向该终端，显示登录提示符并等待用户输入用户名。<code>getty</code> 读取用户名后，<code>execve</code> 成 <code>login</code> 程序，验证用户密码。</p>
+<p>当在终端上输入 <code>Ctrl+C</code> 时，终端如何知道应该停止哪些进程呢？</p>
+<p>每个进程都属于一个<strong>进程组</strong> (Process Group)，进程组有一个<strong>进程组ID</strong> (PGID)。多个进程组可以组成一个<strong>会话</strong> (Session)。</p>
+<ul>
+<li><strong>会话领导者</strong>: 创建会话的进程</li>
+<li><strong>进程组领导者</strong>: 进程组中第一个进程，通常其 PID 等于 PGID</li>
+<li><strong>前台进程组</strong>: 当前可以接收终端信号的进程组</li>
+</ul>
+<p>当终端驱动程序检测到 <code>Ctrl+C</code> (ASCII 码 0x03) 时，终端驱动生成 <code>SIGINT</code> 信号，将其发送给<strong>当前前台进程组</strong>的所有进程。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
+    <div class="vscode-content">
+        <strong>信号处理</strong>：我们可以通过 <em>signal (sigaction)</em> 注册信号处理程序——这也解释了为什么有些程序不能用 <em>Ctrl-C</em> 退出。即便是终止信号，我们也可以执行清理代码退出。
+    </div>
+</div>
+
+<h2 id="UNIX-Shell"><a href="#UNIX-Shell" class="headerlink" title="UNIX Shell"></a>UNIX Shell</h2><p>UNIX Shell 是基于文本替换的极简编程语言，有一些独特的语言机制:</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">bash</span>
+        <span class="code-filename">shell_mechanisms.sh</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content"><span class="comment"># 命令替换 - 将命令输出作为参数</span></span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content"><span class="keyword">echo</span> <span class="string">"文件数量: $(ls | wc -l)"</span></span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content"><span class="comment"># 进程替换 - 将命令输出作为临时文件</span></span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content"><span class="keyword">diff</span> <span class="operator">&lt;</span>(<span class="keyword">ls</span> dir1) <span class="operator">&lt;</span>(<span class="keyword">ls</span> dir2)</span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content"><span class="comment"># 错误重定向 - 丢弃错误输出</span></span>
+</div><div class="code-line">
+<span class="line-number">8</span><span class="line-content"><span class="keyword">cmd</span> <span class="operator">2&gt;</span> <span class="string">/dev/null</span></span>
+</div><div class="code-line">
+<span class="line-number">9</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">10</span><span class="line-content"><span class="comment"># 顺序执行 - 无条件执行</span></span>
+</div><div class="code-line">
+<span class="line-number">11</span><span class="line-content"><span class="keyword">cmd1</span><span class="operator">;</span> <span class="keyword">cmd2</span></span>
+</div><div class="code-line">
+<span class="line-number">12</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">13</span><span class="line-content"><span class="comment"># 条件执行 - cmd1 成功才执行 cmd2</span></span>
+</div><div class="code-line">
+<span class="line-number">14</span><span class="line-content"><span class="keyword">cmd1</span> <span class="operator">&amp;&amp;</span> <span class="keyword">cmd2</span></span>
+</div><div class="code-line">
+<span class="line-number">15</span><span class="line-content"></span>
+</div><div class="code-line">
+<span class="line-number">16</span><span class="line-content"><span class="comment"># 管道链 - 多级数据流处理</span></span>
+</div><div class="code-line">
+<span class="line-number">17</span><span class="line-content"><span class="keyword">ps</span> aux <span class="operator">|</span> <span class="keyword">grep</span> firefox <span class="operator">|</span> <span class="keyword">wc</span> -l</span>
+</div></pre>
+</div>
+</div>
+
+<p>这些命令会被翻译成系统调用序列，Shell 是 Kernel 之外的壳。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s2()">
+    <div class="vscode-content">
+        <strong><em>Freestanding Shell</em></strong> 这个 <em>Shell</em> 没有引用任何库文件——它只通过系统调用访问操作系统中的对象。为了便于调试，我们编写了 <em>Python</em> 脚本，打印出当前所有被调试进程打开的文件，包括读写权限和文件。没错——进程的任何瞬间都能表示成状态机的状态，包括指向操作系统对象的指针 (文件描述符)。
+    </div>
+</div>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div class="vscode-content">
+    <strong><em>Take-away Messages</em></strong>: 通过 <em>freestanding</em> 的 <em>shell</em>，我们阐释了 “可以在系统调用上创建整个操作系统应用世界” 的真正含义：操作系统的 <em>API</em> 和应用程序是互相成就、螺旋生长的：有了新的应用需求，就有了新的操作系统功能。而 <em>UNIX</em> 为我们提供了一个非常精简、稳定的接口 <em>(fork, execve, exit, pipe ,...)</em>，纵然有沉重的历史负担，它在今天依然工作得很好。
+</div>
+
+
+
+
+
+<script>
+function s1() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/signal/"';
+    showCommandModal(cmd);
+}
+function s2() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/sh/"';
+    showCommandModal(cmd);
+}
+</script>
+
+</div>
+
+
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/03/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC%E4%B8%83%E8%AE%B2-%E8%AE%BF%E9%97%AE%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AF%B9%E8%B1%A1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">操作系统-第七讲-访问操作系统对象</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>

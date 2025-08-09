@@ -1,0 +1,60 @@
+.pty-diagram {
+  font-size: 14px;
+  background: #fafbfc;
+  border: 1px solid #e3e4e8;
+  border-radius: 6px;
+  padding: 16px 12px 8px 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.pty-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.pty-row-reverse {
+  margin-top: 4px;
+  flex-direction: row-reverse;
+}
+.pty-box {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px 10px;
+  margin: 0 4px;
+  min-width: 90px;
+  text-align: center;
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+.pty-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.pty-desc {
+  font-weight: normal;
+  font-size: 12px;
+  color: #888;
+}
+.pty-label {
+  font-size: 12px;
+  color: #4b5563;
+  margin-top: 2px;
+}
+.pty-arrow {
+  font-size: 18px;
+  color: #bdbdbd;
+  margin: 0 2px;
+  user-select: none;
+}
+.pty-steps {
+  margin: 12px 0 0 18px;
+  padding: 0;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.pty-steps li {
+  margin-bottom: 2px;
+}
