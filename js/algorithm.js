@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             title: "搜索与图论",
             subsections: [
-                { title: "DFS", difficulties: [0, 2, 0, 0, 0] },
-                { title: "BFS", difficulties: [0, 2, 0, 0, 0] },
-                { title: "树和图的遍历", difficulties: [0, 2, 0, 0, 0]},
+                { title: "DFS", difficulties: [0, 3, 0, 0, 0] },
+                { title: "BFS", difficulties: [0, 3, 0, 0, 0] },
+                { title: "树和图的遍历", difficulties: [0, 3, 0, 0, 0]},
                 { title: "拓扑排序", difficulties: [0, 1, 0, 0, 0] },
                 { title: "最短路径", difficulties: [0, 2, 0, 0, 0] },
                 { title: "最小生成树", difficulties: [0, 1, 0, 0, 0] }
@@ -54,8 +54,9 @@ document.addEventListener("DOMContentLoaded", function() {
         {
             title: "动态规划",
             subsections: [
-                { title: "线性DP", difficulties: [0, 7, 4, 0, 0] },
+                { title: "线性DP", difficulties: [0, 8, 4, 0, 0] },
                 { title: "状态压缩 DP", difficulties: [0, 0, 1, 0, 0] },
+                { title: "区间 DP", difficulties: [0, 1, 1, 0, 0] },
                 { title: "树形 DP", difficulties: [0, 0, 1, 0, 0] },
                 { title: "记忆化搜索", difficulties: [0, 0, 1, 0, 0] }
             ]
