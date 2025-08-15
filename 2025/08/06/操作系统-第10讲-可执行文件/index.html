@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="可执行文件">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>操作系统-第十讲-可执行文件 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-操作系统-第10讲-可执行文件" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E5%8E%BB%E6%9C%88%E7%90%831.png" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      操作系统-第十讲-可执行文件
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-05T16:00:00.000Z" itemprop="datePublished">
+  2025-08-06
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>可执行文件</p>
+<p><a target="_blank" rel="noopener" href="https://jyywiki.cn/OS/2025/lect10.md">jyy 老师的讲义</a></p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/os.css">
+<link rel="stylesheet" href="/css/os-10.css">
+<script src="/js/os.js"></script>
+
+<div class="all">
+
+<h2 id="内容回顾"><a href="#内容回顾" class="headerlink" title="内容回顾"></a>内容回顾</h2><p>有了系统调用和 libc，我们就真的可以实现 “任何程序” 了——例如，你可以想一想，如果要实现一个 MicroPython 解释器，我们需要实现什么，又需要借助哪些系统调用？当然，我们需要编译器帮我们编译 python.c 到可执行文件——我们一直以来都 “默认” 了编译器工具链可以帮助我们实现高级语言到可执行文件的翻译。今天是时候 “打开” 这部分内容了。</p>
+<h2 id="可执行文件"><a href="#可执行文件" class="headerlink" title="可执行文件"></a>可执行文件</h2><p>什么是可执行文件？一个操作系统的对象、一个字节序列、一个描述了状态机初始状态的数据结构。</p>
+<div class="vscode-card">
+    <img class="vscode-logo" src="../../../../images/webclip/vscode.svg" alt="VSCode Logo" style="cursor:pointer;" onclick="s1()">
+    <div class="vscode-content">
+    <strong><em>ELF</em> 可执行文件</strong>：<em>ELF</em> 是 <em>Executable and Linkable Format</em> 的缩写，是 <em>Linux</em> 系统上的一种可执行文件格式。我们可以试着去构造、理解、可视化 <em>ELF</em> 文件的结构。
+    </div>
+</div>
+
+<p>ELF, E &#x3D; Executable, L &#x3D; Linkable, 是一种标准。</p>
+<p>从 C 程序到可执行文件一般经历下述几个过程:</p>
+<div class="compilation-flow">
+    <!-- Stage 1 -->
+    <div class="stage">
+        <div class="input-file">main.c</div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <div class="process-title">Pre-processor</div>
+            <div class="process-tool">(cpp)</div>
+        </div>
+        <div class="stage-label">Stage 1</div>
+        <div class="stage-name">预处理</div>
+    </div>
+    <!-- Stage 2 -->
+    <div class="stage">
+        <div class="input-file">main.i</div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <div class="process-title">Compiler</div>
+            <div class="process-tool">(cc1)</div>
+        </div>
+        <div class="stage-label">Stage 2</div>
+        <div class="stage-name">编译</div>
+    </div>
+    <!-- Stage 3 -->
+    <div class="stage">
+        <div class="input-file">main.s</div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <div class="process-title">Assembler</div>
+            <div class="process-tool">(as)</div>
+        </div>
+        <div class="stage-label">Stage 3</div>
+        <div class="stage-name">汇编</div>
+    </div>
+    <!-- Stage 4 -->
+    <div class="stage">
+        <div class="input-file">main.o</div>
+        <div class="arrow">→</div>
+        <div class="process-box">
+            <div class="process-title">Linker</div>
+            <div class="process-tool">(ld)</div>
+        </div>
+        <div class="output-file">prog</div>
+        <div class="stage-label">Stage 4</div>
+        <div class="stage-name">链接</div>
+    </div>
+</div>
+
+<p>通过 <code>readelf -h main.o</code> 可以看到 elf 头的内容:</p>
+<div class="code-block">
+    <div class="code-header">
+        <span class="code-language">Output</span>
+        <span class="code-filename">readelf -h main.o 输出</span>
+        <button class="code-copy-btn" onclick="copyCode(this)">复制</button>
+    </div>
+    <div class="code-content">
+        <pre><div class="code-line">
+<span class="line-number">1</span><span class="line-content">ELF Header:</span>
+</div><div class="code-line">
+<span class="line-number">2</span><span class="line-content">  Magic:   <span class="output-value">7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00</span>  <span class="comment">// ELF 魔数标识</span></span>
+</div><div class="code-line">
+<span class="line-number">3</span><span class="line-content">  Class:                             <span class="output-value">ELF64</span>              <span class="comment">// 64位 ELF 文件</span></span>
+</div><div class="code-line">
+<span class="line-number">4</span><span class="line-content">  Data:                              <span class="output-value">2's complement, little endian</span>  <span class="comment">// 小端序</span></span>
+</div><div class="code-line">
+<span class="line-number">5</span><span class="line-content">  Version:                           <span class="output-value">1 (current)</span>       <span class="comment">// ELF 版本</span></span>
+</div><div class="code-line">
+<span class="line-number">6</span><span class="line-content">  OS/ABI:                            <span class="output-value">UNIX - System V</span>   <span class="comment">// 操作系统/ABI 标识</span></span>
+</div><div class="code-line">
+<span class="line-number">7</span><span class="line-content">  ABI Version:                       <span class="output-value">0</span>                <span class="comment">// ABI 版本</span></span>
+</div><div class="code-line">
+<span class="line-number">8</span><span class="line-content">  Type:                              <span class="output-value">REL (Relocatable file)</span>  <span class="comment">// 可重定位文件类型</span></span>
+</div><div class="code-line">
+<span class="line-number">9</span><span class="line-content">  Machine:                           <span class="output-value">Advanced Micro Devices X86-64</span>  <span class="comment">// 目标架构</span></span>
+</div><div class="code-line">
+<span class="line-number">10</span><span class="line-content">  Version:                           <span class="output-value">0x1</span>              <span class="comment">// 目标版本</span></span>
+</div><div class="code-line">
+<span class="line-number">11</span><span class="line-content">  Entry point address:               <span class="output-value">0x0</span>              <span class="comment">// 入口地址(可重定位文件为0)</span></span>
+</div><div class="code-line">
+<span class="line-number">12</span><span class="line-content">  Start of program headers:          <span class="output-value">0 (bytes into file)</span>  <span class="comment">// 程序头表偏移</span></span>
+</div><div class="code-line">
+<span class="line-number">13</span><span class="line-content">  Start of section headers:          <span class="output-value">448 (bytes into file)</span>  <span class="comment">// 节头表偏移</span></span>
+</div><div class="code-line">
+<span class="line-number">14</span><span class="line-content">  Flags:                             <span class="output-value">0x0</span>              <span class="comment">// 处理器特定标志</span></span>
+</div><div class="code-line">
+<span class="line-number">15</span><span class="line-content">  Size of this header:               <span class="output-value">64 (bytes)</span>       <span class="comment">// ELF 头大小</span></span>
+</div><div class="code-line">
+<span class="line-number">16</span><span class="line-content">  Size of program headers:           <span class="output-value">0 (bytes)</span>        <span class="comment">// 程序头表项大小</span></span>
+</div><div class="code-line">
+<span class="line-number">17</span><span class="line-content">  Number of program headers:         <span class="output-value">0</span>                <span class="comment">// 程序头表项数量</span></span>
+</div><div class="code-line">
+<span class="line-number">18</span><span class="line-content">  Size of section headers:           <span class="output-value">64 (bytes)</span>       <span class="comment">// 节头表项大小</span></span>
+</div><div class="code-line">
+<span class="line-number">19</span><span class="line-content">  Number of section headers:         <span class="output-value">12</span>               <span class="comment">// 节头表项数量</span></span>
+</div><div class="code-line">
+<span class="line-number">20</span><span class="line-content">  Section header string table index: <span class="output-value">11</span>               <span class="comment">// 字符串表索引</span></span>
+</div></pre>
+    </div>
+</div>
+
+<p>可以看到 elf 头的长度是 64 字节，所以 <code>Sections</code> 部分开始于地址 <code>0x40</code>。</p>
+<p>同时我们可以看到 <code>Program Header</code> 和 <code>Section Hearder</code> 的信息：由于 <code>main.o</code> 是一个可重定位文件，本身并不能直接执行，故没有需要加载到内存的程序头，程序头表通常用于描述可执行文件中如何将程序映射到内存；同时可以看到，该 ELF 文件中包含 12 个节头表项，每个节头表项的大小是 64 字节，节头表一般用于链接阶段，或者给调试提供文件结构信息。 </p>
+<p>因此，整个 ELF 文件的组成就很清晰了。</p>
+<script>
+function s1() {
+    const cmd = 'wget -r -np -nH --cut-dirs=2 -R "index.html*" "https://jyywiki.cn/os-demos/virtualization/elf-play/"';
+    showCommandModal(cmd);
+}
+</script>
+
+</div>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/05/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC9%E8%AE%B2-C%E6%A0%87%E5%87%86%E5%BA%93%E5%92%8C%E5%AE%9E%E7%8E%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">操作系统-第九讲-C标准库和实现</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
