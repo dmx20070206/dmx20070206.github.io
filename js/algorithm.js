@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 { title: "BFS", difficulties: [0, 4, 1, 0, 0] },
                 { title: "树和图的遍历", difficulties: [0, 3, 0, 1, 0] },
                 { title: "拓扑排序", difficulties: [0, 1, 0, 0, 0] },
-                { title: "最短路径", difficulties: [0, 2, 0, 0, 0] },
+                { title: "最短路径", difficulties: [0, 3, 0, 0, 0] },
                 { title: "最小生成树", difficulties: [0, 1, 0, 0, 0] }
             ]
         },
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             title: "贪心",
             subsections: [
-                { title: "惊人的注意力", difficulties: [0, 1, 0, 0, 0] },
+                { title: "惊人的注意力", difficulties: [0, 2, 0, 0, 0] },
                 { title: "Huffman树", difficulties: [0, 1, 0, 0, 0] },
                 { title: "不等式问题", difficulties: [1, 1, 0, 0, 0] },
                 { title: "推公式", difficulties: [0, 1, 0, 0, 0] }
@@ -73,8 +73,8 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             title: "模拟",
             subsections: [
-                { title: "小模拟", difficulties: [5, 0, 0, 0, 0] },
-                { title: "中模拟", difficulties: [0, 0, 1, 0, 0] },
+                { title: "小模拟", difficulties: [7, 0, 0, 0, 0] },
+                { title: "中模拟", difficulties: [0, 1, 1, 0, 0] },
                 { title: "大模拟", difficulties: [0, 0, 0, 0, 0] },
             ]
         },
