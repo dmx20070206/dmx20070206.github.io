@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 { title: "快速排序", difficulties: [1, 0, 0, 0, 0] }, // [🌕, 🌖, 🌗, 🌘, 🌚]
                 { title: "归并排序", difficulties: [1, 0, 1, 0, 0] },
                 { title: "二分", difficulties: [0, 1, 0, 0, 0] },
-                { title: "高精度", difficulties: [4, 0, 0, 0, 0] },
+                { title: "高精度", difficulties: [5, 0, 0, 0, 0] },
                 { title: "前缀和和差分", difficulties: [0, 3, 0, 0, 0] },
                 { title: "双指针算法", difficulties: [0, 3, 0, 0, 0] },
                 { title: "位运算", difficulties: [1, 0, 0, 0, 0] },
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             title: "数学知识",
             subsections: [
                 { title: "质数", difficulties: [1, 1, 0, 0, 0] },
-                { title: "约数", difficulties: [0, 3, 0, 0, 0] },
+                { title: "约数", difficulties: [0, 4, 0, 0, 0] },
                 { title: "欧拉函数", difficulties: [0, 1, 0, 0, 0] },
                 { title: "快速幂", difficulties: [0, 1, 0, 0, 0] },
                 { title: "扩展欧几里得算法", difficulties: [0, 2, 0, 0, 0] },
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             title: "动态规划",
             subsections: [
-                { title: "线性DP", difficulties: [0, 8, 5, 0, 0] },
+                { title: "线性DP", difficulties: [0, 8, 6, 0, 0] },
                 { title: "状态压缩 DP", difficulties: [0, 0, 1, 0, 0] },
                 { title: "区间 DP", difficulties: [0, 1, 1, 0, 0] },
                 { title: "树形 DP", difficulties: [0, 0, 1, 0, 0] },
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             title: "模拟",
             subsections: [
-                { title: "小模拟", difficulties: [7, 0, 0, 0, 0] },
+                { title: "小模拟", difficulties: [9, 0, 0, 0, 0] },
                 { title: "中模拟", difficulties: [0, 1, 1, 0, 0] },
                 { title: "大模拟", difficulties: [0, 0, 0, 0, 0] },
             ]
