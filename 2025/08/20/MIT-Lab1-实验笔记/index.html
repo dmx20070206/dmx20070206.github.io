@@ -616,6 +616,25 @@
     </div>
 </div>
 
+<h3 id="II"><a href="#II" class="headerlink" title="II."></a>II.</h3><h2 id="0x05-Part-4-Fixing-buffer-overflows-and-other-bugs"><a href="#0x05-Part-4-Fixing-buffer-overflows-and-other-bugs" class="headerlink" title="0x05 Part 4: Fixing buffer overflows and other bugs"></a>0x05 Part 4: Fixing buffer overflows and other bugs</h2><blockquote>
+<p>Finally, you will fix the vulnerabilities that you have exploited in this lab assignment.</p>
+</blockquote>
+<p>首先，让我们来发现一些之前没有利用到的漏洞。</p>
+<p>第一个漏洞位于函数 <code>process_client</code> 中，<code>reqpath</code> 只分配了 4096 个字节，但是 <code>http_request_line</code> 最多可以读取 8192 个字节。故可能会出现漏洞，当请求路径过长时，<code>reqpath</code> 会溢出覆盖掉 <code>char* errmsg</code>，导致其访问未定义的内存发生错误。</p>
+<p>简单的构造恶意 HTTP 请求代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_exploit</span>(<span class="params">shellcode: <span class="built_in">bytes</span></span>) -&gt; <span class="built_in">bytes</span>:</span><br><span class="line">    <span class="comment">## Things that you might find useful in constructing your exploit:</span></span><br><span class="line">    <span class="comment">##</span></span><br><span class="line">    <span class="comment">##   urllib.parse.quote_from_bytes(s).encode(&#x27;ascii&#x27;)</span></span><br><span class="line">    <span class="comment">##     returns string s with &quot;special&quot; characters percent-encoded</span></span><br><span class="line">    <span class="comment">##   struct.pack(&quot;&lt;Q&quot;, x)</span></span><br><span class="line">    <span class="comment">##     returns the 8-byte binary encoding of the 64-bit integer x</span></span><br><span class="line"></span><br><span class="line">    payload = <span class="string">b&quot;GET /&quot;</span> + <span class="string">b&quot;A&quot;</span> * <span class="number">8185</span> + <span class="string">b&quot; HTTP/1.0\r\n&quot;</span></span><br><span class="line">    payload += <span class="string">b&quot;\r\n&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> payload</span><br></pre></td></tr></table></figure>
+
+<p>第二个漏洞是在 <code>http_serve</code> 中存在目录穿越的问题，由于没有对路径做过滤及判断，这可以让我们访问到服务器根目录外的文件。</p>
+<p>例如如下非法 HTTP 请求可以获取到用户的 ssh 密钥:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">build_exploit</span>(<span class="params">shellcode: <span class="built_in">bytes</span></span>) -&gt; <span class="built_in">bytes</span>:</span><br><span class="line">    <span class="comment">## Things that you might find useful in constructing your exploit:</span></span><br><span class="line">    <span class="comment">##</span></span><br><span class="line">    <span class="comment">##   urllib.parse.quote_from_bytes(s).encode(&#x27;ascii&#x27;)</span></span><br><span class="line">    <span class="comment">##     returns string s with &quot;special&quot; characters percent-encoded</span></span><br><span class="line">    <span class="comment">##   struct.pack(&quot;&lt;Q&quot;, x)</span></span><br><span class="line">    <span class="comment">##     returns the 8-byte binary encoding of the 64-bit integer x</span></span><br><span class="line"></span><br><span class="line">    payload = <span class="string">b&quot;GET /../.ssh/id_rsa&quot;</span> + <span class="string">b&quot; HTTP/1.0\r\n&quot;</span></span><br><span class="line">    payload += <span class="string">b&quot;\r\n&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> payload</span><br></pre></td></tr></table></figure>
+
+<p>接下来就是修复发现的 bug，主要有两处:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">const</span> <span class="type">char</span> *<span class="title">http_request_headers</span><span class="params">(<span class="type">int</span> fd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="type">char</span> value[<span class="number">8192</span>];</span><br><span class="line">    <span class="type">char</span> envvar[<span class="number">8192</span>];</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">static</span> <span class="type">void</span> <span class="title">process_client</span><span class="params">(<span class="type">int</span> fd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="type">char</span> reqpath[<span class="number">8192</span>];</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>make check-fixed</code> 命令进行检查，攻击全部失败代表成功。</p>
+<br>
+<div style="font-size:25px;"> 至此，Lab1 全部完成。 </div>
+
 </div>
     </div>
     <footer class="article-footer">
@@ -630,9 +649,9 @@
 <nav class="article-nav pt-4 mt-3" id="article-nav">
   
   
-    <a href="/2025/08/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC10%E8%AE%B2-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2025/08/20/MIT-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">操作系统-第十讲-可执行文件</div>
+      <div class="article-nav-title">MIT 6.858 Computer Systems Security - Lec 1</div>
     </a>
   
 </nav>
