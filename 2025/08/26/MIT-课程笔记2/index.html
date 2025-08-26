@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="Lecture 2">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>MIT 6.858 Computer Systems Security - Lec 2 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-MIT-课程笔记2" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/others/%E4%B9%9D%E6%97%A51.jpg" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      MIT 6.858 Computer Systems Security - Lec 2
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-25T16:00:00.000Z" itemprop="datePublished">
+  2025-08-26
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>Lecture 2 - OS and VM isolation</p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/MIT.css">
+
+
+<div class="all">
+
+<h2 id="0x00-Preparation"><a href="#0x00-Preparation" class="headerlink" title="0x00 Preparation"></a>0x00 Preparation</h2><h3 id="Firecracker"><a href="#Firecracker" class="headerlink" title="Firecracker"></a>Firecracker</h3><blockquote>
+<p>Read sections 1-3 of the <a target="_blank" rel="noopener" href="https://css.csail.mit.edu/6.858/2024/readings/firecracker.pdf">Firecracker paper</a>, published in 2020. Firecracker was developed by Amazon to be a small, highly secure virtual machine monitor, building on top of the KVM machinery provided by the Linux kernel. The later sections of the Firecracker paper talk about how Amazon uses Firecracker for their Lambda service, which you can skip.</p>
+</blockquote>
+<div class="qa-section">Q: What's the background of Firecracker ?</div>
+
+<p>A: This introduces difficult tradeoffs: implementors of serverless and container services can choose between hypervisor-based virtualization (and the potentially unacceptable overhead related to it), and Linux containers (and the related compatibility vs. security tradeoffs). We built Firecracker because we didn’t want to choose.</p>
+<div class="qa-section">Q: What is Firecracker ?</div>
+
+<p>A: A Virtual Machine Monitor (VMM) designed for Serverless and container workloads.</p>
+<div class="qa-section">Q: What properties are required for Firecracker ?</div>
+
+<p>A: Six key features are required</p>
+<ol>
+<li><strong>Isolation</strong>: It must be safe for multiple functions to run on the same hardware, protected against privilege escalation, information disclosure, covert channels, and other risks. </li>
+<li><strong>Overhead and Density</strong>: It must be possible to run thousands of functions on a single machine, with minimal waste. </li>
+<li><strong>Performance</strong>: Functions must perform similarly to running natively. Performance must also be consistent, and isolated from the behavior of neighbors on the same hardware. </li>
+<li><strong>Compatibility</strong>: Lambda allows functions to contain arbitrary Linux binaries and libraries. These must be supported without code changes or recompilation.</li>
+<li><strong>Fast Switching</strong>: It must be possible to start new functions and clean up old functions quickly. </li>
+<li><strong>Soft Allocation</strong>: It must be possible to over commit CPU, memory and other resources, with each function consuming only the resources it needs, not the resources it is entitled to.</li>
+</ol>
+<div class="qa-section">Q: What are the advantages/disadvantages of the three mainstream solutions ?</div>
+
+<p>A: This is shown in the following table</p>
+<table>
+<thead>
+<tr>
+<th>Solution Type</th>
+<th>Advantages</th>
+<th>Disadvantages</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Linux Containers</strong> (e.g., Docker and LXC, using cgroups, namespaces, seccomp-bpf)</td>
+<td>- Low overhead and high density<br>- Operational simplicity</td>
+<td>- Security vs. compatibility tradeoff<br>- Shared kernel vulnerabilities</td>
+</tr>
+<tr>
+<td><strong>Language-Specific Isolation</strong> (e.g., JVM or V8, using VM isolates or process per trust domain)</td>
+<td>- Efficient integration<br>- Low overhead</td>
+<td>- Poor compatibility<br>- Security risks</td>
+</tr>
+<tr>
+<td><strong>Virtualization</strong> (e.g., QEMU&#x2F;KVM or Xen, using hardware virtualization)</td>
+<td>- Strong isolation<br>- Flexibility and compatibility</td>
+<td>- High overhead and low density<br>- Slow startup and complexity</td>
+</tr>
+</tbody></table>
+<div class="qa-section">Q: What was Firecracker's final choice ?</div>
+
+<p>A: Firecracker’s approach to these problems is to use KVM (for reasons we discuss in section 3), but replace the VMM with a minimal implementation written in a safe language. Minimizing the feature set of the VMM helps reduce surface area, and controls the size of the TCB. Firecracker contains approximately 50k lines of Rust code (96% fewer lines than QEMU), including multiple levels of automated tests, and auto-generated bindings. Intel Cloud Hypervisor [25] takes a similar approach, (and indeed shares much code with Firecracker), while NEMU [24] aims to address these problems by cutting down QEMU.</p>
+<h2 id="0x01-Core-Concepts-of-Security"><a href="#0x01-Core-Concepts-of-Security" class="headerlink" title="0x01. Core Concepts of Security"></a>0x01. Core Concepts of Security</h2></div>
+
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MIT-Lecture/" rel="tag">MIT Lecture</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/25/MIT-%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MIT 6.858 Computer Systems Security - Lec 1</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
