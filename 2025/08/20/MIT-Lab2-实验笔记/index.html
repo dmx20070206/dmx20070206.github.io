@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="Lab 2：Privilege separation and server-side sandboxing">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>MIT 6.858 Computer Systems Security - Lab 2 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-MIT-Lab2-实验笔记" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  
+    
+      <img class="article-cover-img lazyload" data-src="/images/MIT/banner.png" itemprop="image">
+    
+  
+
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      MIT 6.858 Computer Systems Security - Lab 2
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2025-08-19T16:00:00.000Z" itemprop="datePublished">
+  2025-08-20
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>Lab 2: Privilege separation and server-side sandboxing</p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/MIT.css">
+
+<div class="all">
+
+<h2 id="0x01-Environment-Setup"><a href="#0x01-Environment-Setup" class="headerlink" title="0x01. Environment Setup"></a>0x01. Environment Setup</h2><h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>使用 git 提交 Lab1 的解决方案，并切换到分支 Lab2:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> lab</span><br><span class="line">git status</span><br><span class="line">git add .</span><br><span class="line">git commit -am <span class="string">&#x27;my solution to lab1&#x27;</span></span><br><span class="line">git fetch</span><br><span class="line">git checkout -b lab2 origin/lab2</span><br></pre></td></tr></table></figure>
+
+<p>本实验将以一个名为 <code>zoobar</code> 的简单 Python Web 应用为例，向你介绍权限分离和服务器端沙箱。在 <code>zoobar</code> 应用中，用户可以相互转账“zoobar”（积分）。权限分离的主要目标是：即使攻击者攻陷了应用的某一部分，也不能影响到其他部分。</p>
+<p>为了帮助你实现权限分离，zookws Web 服务器（你在上一个实验中已经见过）被设计为运行由多个组件组成的 Web 应用。如果你感兴趣，这种设计借鉴了 OKWS Web 服务器（相关论文中有介绍，okcupid.com 也曾使用）。在现代大规模系统中，通常会有更多的组件，比如用 Kubernetes 管理所有应用组件、用 gRPC 进行组件间通信等，但 zookws 将这些内容简化到了一个相对简单的系统中。</p>
+<p>在本实验中，你将搭建一个权限分离的 Web 服务器，分析潜在的漏洞，并将应用代码拆分为低权限组件，以最小化单点漏洞的影响。实验将使用 Linux 容器来实现现代的权限分离。（原始的 OKWS 设计使用的是用户 ID 和 chroot，因为当时还没有 Linux 容器和命名空间。）</p>
+<p>你还将扩展 Zoobar Web 应用，支持可执行的用户主页（executable profiles）：允许用户将 Python 代码作为自己的主页内容。当其他用户访问该主页时，服务器会执行主页中的 Python 代码来生成展示内容。例如：</p>
+<ol>
+<li>一个主页可以向访问者打招呼；</li>
+<li>一个主页可以记录最近几位访问者；</li>
+<li>一个主页可以给每位访问者赠送一个 zoobar（每分钟限一次）。</li>
+</ol>
+<p>要安全地支持这些功能，必须在服务器端对可执行代码进行沙箱隔离，防止其执行任意操作或访问任意文件。另一方面，这些代码又需要能够访问某些持久化数据文件或 <code>zoobar</code> 数据库。你将使用我们提供的远程过程调用库和一些 shim 代码，在服务器端用 WebAssembly 安全地沙箱化可执行主页。</p>
+<h3 id="What’s-a-zoobar"><a href="#What’s-a-zoobar" class="headerlink" title="What’s a zoobar?"></a>What’s a zoobar?</h3><p>为了理解 <code>zoobar</code> 应用本身，我们首先来看看 zoobar Web 应用的代码。</p>
+<p><code>zoobar</code> 应用的一个核心功能是用户之间可以相互转账积分（zoobar）。这个功能由脚本 transfer.py 实现。</p>
+<p>你可以用以下命令操作容器：</p>
+<ol>
+<li>zookld.py：启动 zook.conf 里列出的容器</li>
+<li>zookps.py：列出 zook.conf 里容器的状态和它们运行的进程</li>
+<li>zookstop.py：停止 zook.conf 里列出的容器</li>
+<li>zookclean.py：删除 ~&#x2F;.local&#x2F;share&#x2F;lxc 下的所有容器（如果你想从头再来一次）</li>
+</ol>
+<p>登录网站并注册两个账号，进入 tranfer 页面，可以看到如下的界面:</p>
+<img src="../../../../images/MIT/LAB2_01.png" alt="" style="width: 70%; margin-top: 20px;">
+
+<p>在两个表单中可以填写转账的目标名称和钱数。让我们从找到代码的对应位置。</p>
+<p><strong>tranfer.html</strong></p>
+<p>里面定义了前端样式，其中当前账户拥有的钱数会根据 zoobar.js 中的 <code>myZoobars</code> 渲染，两个表单会获取 <code>zoobars</code> 和 <code>recipient</code> 属性。</p>
+<p><strong>init.py</strong></p>
+<p><strong>init</strong>.py 文件是 zoobar Web 应用的主入口，负责初始化 Flask 应用、注册路由、加载各个功能模块，并做了一些安全和兼容性处理。</p>
+<ol>
+<li>创建 Flask 应用实例</li>
+<li>把不同的 URL 路径映射到对应的处理函数（视图函数）</li>
+<li>每次请求后，给响应头加上 X-XSS-Protection: 0，关闭浏览器的 XSS 保护（方便调试和测试 XSS 漏洞）</li>
+<li>定义一个 WSGI 中间件类 HTTPSFix，用于修正 HTTPS 相关的环境变量</li>
+</ol>
+<p><strong>tranfer.py</strong></p>
+<p>实现转账功能:</p>
+<ol>
+<li><code>@catch_err</code>：捕获并处理函数中的异常，防止服务器崩溃，并输出调试信息</li>
+<li><code>@requirelogin</code>：要求用户必须登录，否则会被重定向到登录页面</li>
+<li>如果表单中有 <code>recipient</code> 字段（即用户提交了转账表单）：<ul>
+<li>读取 <code>zoobars</code> 字段（要转账的数量），用 <code>eval</code> 转成数字</li>
+<li>调用 <code>bank.transfer</code>，把当前登录用户（g.user.person.username）的 zoobar 转给表单中的 <code>recipient</code> 用户，数量为 <code>zoobars</code></li>
+<li>如果成功，设置 warning 为 “Sent X zoobars”</li>
+</ul>
+</li>
+<li>如果在转账过程中出现 <code>KeyError, ValueError, AttributeError</code>，设置错误信息</li>
+<li>最后渲染 <code>transfer.html</code> 模板</li>
+</ol>
+<h2 id="0x02-Part-1-Privilege-separate-the-web-server-setup-using-containers"><a href="#0x02-Part-1-Privilege-separate-the-web-server-setup-using-containers" class="headerlink" title="0x02 Part 1: Privilege-separate the web server setup using containers"></a>0x02 Part 1: Privilege-separate the web server setup using containers</h2><blockquote>
+<p>We will start to further privilege-separate the zookfs service that handles both static files and dynamic scripts. We would like to control with whom dynamic and static can communicate.</p>
+</blockquote>
+<p>在 Lab1 中，<code>zookws</code> 其实只有一个进程：zookd。从安全角度看，这种结构并不理想：比如你发现的任何缓冲区溢出漏洞，都可以用来完全控制 <code>zookws</code>。</p>
+<p>本实验将 zookd 按照 OKWS 的设计进行重构。</p>
+<ol>
+<li>一个启动器程序 zookld.py, 它根据 zook.conf 文件启动各个服务</li>
+<li>一个 zookd，只负责把请求路由到对应的服务</li>
+<li>多个服务进程</li>
+</ol>
+<p>我们会把每个组件都放在独立的 Linux 容器里。容器本质上是受限的 Linux 进程，提供了类似虚拟机的隔离效果（但不是虚拟机）。容器内的进程对内核命名空间、系统调用、文件系统的访问都有限制。每个容器有自己的 IP、文件系统等。你可以给容器分配 IP，把需要的文件拷进去，并安排它们之间的远程过程调用（RPC）。</p>
+<p>我们用的是非特权容器，即使容器内的进程是 root，容器本身也只是普通用户权限。这样即使容器被攻破，攻击者也很难影响主机系统。</p>
+<p>在 zook.conf 中可以配置每个容器的启动方式，例如:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[main]</span><br><span class="line">    cmd = zookd2          # 运行的命令</span><br><span class="line">    dir = /app            # 工作目录</span><br><span class="line">    lxcbr = 0             # 连接的虚拟网路编号</span><br><span class="line">    port = 8080           # 监听端口</span><br><span class="line">    http_svcs = zookfs    # HTTP 服务名</span><br></pre></td></tr></table></figure>
+
+<p>每个虚拟网络（lxcbr0~9）对应一个子网（如 10.1.0.*），每个容器分配 .4 结尾的 IP（如 lxcbr&#x3D;7 时 IP 为 10.1.7.4）。这样可以实现容器间的网络隔离：同一虚拟网络的容器可以互相通信，不同虚拟网络的容器通信必须经过主机内核，主机会阻止 IP 欺骗。</p>
+<p>实验要求我们对 HTTP 服务进行拆分，一个部分负责静态文件，一个部分负责动态文件:</p>
+<ol>
+<li>dynamic：只执行 &#x2F;zoobar&#x2F;index.cgi（即所有 Python 脚本），不提供静态文件</li>
+<li>static：只提供静态文件，不执行任何脚本</li>
+</ol>
+<p>这两个服务都用 cmd &#x3D; zookfs，但通过 url 正则表达式过滤请求类型。比如 dynamic 只处理 &#x2F;zoobar&#x2F;index.cgi，static 只处理静态文件请求。</p>
+<p>我们修改 zook.conf 就可以实现该功能:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[main]</span><br><span class="line">    cmd = zookd2</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 0</span><br><span class="line">    port = 8080</span><br><span class="line">    http_svcs = dynamic, static</span><br><span class="line"></span><br><span class="line">[dynamic]</span><br><span class="line">    cmd = zookfs</span><br><span class="line">    url = /zoobar/.*\.(php|cgi|pl|py).*</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 1</span><br><span class="line">    port = 8081</span><br><span class="line"></span><br><span class="line">[static]</span><br><span class="line">    cmd = zookfs</span><br><span class="line">    url = /zoobar/.*\.(html|css|js|png|jpg|gif|ico)</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 2</span><br><span class="line">    port = 8082</span><br></pre></td></tr></table></figure>
+
+<p>同时，还需要设置防火墙规则，用 iptables 控制哪些容器可以访问本容器: </p>
+<ol>
+<li>static 只接受来自 main 的数据包</li>
+<li>dynamic 只接受来自 main 的数据包</li>
+<li>static 和 dynamic 之间不能直接通信</li>
+</ol>
+<p>在 zook.conf 加上防火墙过滤功能:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[dynamic]</span><br><span class="line">    cmd = zookfs</span><br><span class="line">    url = /zoobar/.*\.(php|cgi|pl|py).*</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 1</span><br><span class="line">    port = 8081</span><br><span class="line"></span><br><span class="line">    # main √ static x echo ×</span><br><span class="line">    fwrule = -s main -j ACCEPT</span><br><span class="line">    fwrule = -j REJECT</span><br><span class="line"></span><br><span class="line">[static]</span><br><span class="line">    cmd = zookfs</span><br><span class="line">    url = /zoobar/.*\.(html|css|js|png|jpg|gif|ico)</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 2</span><br><span class="line">    port = 8082</span><br><span class="line"></span><br><span class="line">    # main √ dynamic x echo x </span><br><span class="line">    fwrule = -s main -j ACCEPT</span><br><span class="line">    fwrule = -j REJECT</span><br></pre></td></tr></table></figure>
+
+<p>将 zoobar 应用拆分到多个容器的一个挑战是：容器内的进程必须有办法相互通信。为此，需要一个远程过程调用（RPC）库，它允许进程之间进行通信。随后，你将用这个库把 zoobar 拆分成多个进程，每个进程在自己的容器中，通过 RPC 进行通信。</p>
+<p>简单阅读 RPC 相关的代码（rpcsrv.py），</p>
+<h2 id="0x03-Part-2-Privilege-separating-the-login-service-in-Zoobar"><a href="#0x03-Part-2-Privilege-separating-the-login-service-in-Zoobar" class="headerlink" title="0x03 Part 2: Privilege-separating the login service in Zoobar"></a>0x03 Part 2: Privilege-separating the login service in Zoobar</h2><h3 id="First-Separate-the-authentication-code"><a href="#First-Separate-the-authentication-code" class="headerlink" title="First. Separate the authentication code"></a>First. Separate the authentication code</h3><p>保护密码的第一步是创建一个专门处理用户密码和 cookies 的服务，这样只有该服务能直接访问这些信息，Zoobar 应用的其他部分不能直接访问。具体来说，我们想要将处理用户身份验证（即密码和令牌）的代码与应用的其他代码分离。</p>
+<p>当前的 zoobar 应用将用户的所有信息（个人资料、zoobar 余额和身份验证信息）都存储在 Person 表中（见 zoodb.py）。我们想要将身份验证信息从 Person 表中移出，放入一个单独的 Cred 表（Cred 代表 Credentials，凭据），并将访问这些身份验证信息的代码（即 auth.py）移到一个单独的服务中。</p>
+<p>实验要求实现用户身份验证的权限分离，可以拆分为 4 个步骤:</p>
+<p><strong>第一步：分析现有代码</strong></p>
+<p>我们需要将 password 和 token 相关的所有函数单独移动到认证服务中，故 auth.py 中的函数需要移动到认证服务里，login.py 调用 auto.py 中函数的函数需要改成 RPC 调用。</p>
+<p><strong>第二步：拆分数据库表结构</strong></p>
+<ol>
+<li>创建新的 <code>Cred</code> 表，存储用户认证信息（用户名、密码、token）</li>
+<li>从原有的 <code>Person</code> 表中移除密码和 token 字段</li>
+<li>修改 zoodb.py，添加 <code>Cred</code> 模型和相应的 <code>setup</code> 函数</li>
+<li>修改 auth.py，将原来对 <code>Person</code> 表的调用改成对 <code>Cred</code> 表的调用。<strong>注意</strong>，对于注册功能，要向 <code>Person</code> 表和 <code>Cred</code> 表都插入条目，而且不同容器的数据库是相互独立的！</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Cred</span>(<span class="title class_ inherited__">CredBase</span>):</span><br><span class="line">    __tablename__ = <span class="string">&quot;cred&quot;</span></span><br><span class="line">    username = Column(String(<span class="number">128</span>), primary_key=<span class="literal">True</span>)</span><br><span class="line">    password = Column(String(<span class="number">128</span>))</span><br><span class="line">    token = Column(String(<span class="number">128</span>))</span><br></pre></td></tr></table></figure>
+
+<p><strong>第三步：创建函数调用抽象层，修改客户端调用</strong></p>
+<p>首先实现 auth-server.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AuthRpcServer</span>(rpcsrv.RpcServer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_login</span>(<span class="params">self, username, password</span>):</span><br><span class="line">        <span class="keyword">return</span> auth.login(username, password)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_register</span>(<span class="params">self, username, password</span>):</span><br><span class="line">        <span class="keyword">return</span> auth.register(username, password)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_check_token</span>(<span class="params">self, username, token</span>):</span><br><span class="line">        <span class="keyword">return</span> auth.check_token(username, token)</span><br></pre></td></tr></table></figure>
+
+<p>login.py 原本调用 auth.py 的功能，此处更换为借助 auth_client.py 向认证服务发起 RPC 通信，进而调用其内部 auth-server.py 的函数进行处理。</p>
+<p><strong>第四步：配置容器和网络</strong></p>
+<p>将认证服务置于 auth 容器中，并配置网络访问权限:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[auth]</span><br><span class="line">    cmd = zoobar/auth-server.py</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 3</span><br><span class="line">    port = 8083</span><br><span class="line"></span><br><span class="line">    # main √ dynamic √ echo x </span><br><span class="line">    fwrule = -s dynamic -j ACCEPT</span><br><span class="line">    fwrule = -j REJECT</span><br></pre></td></tr></table></figure>
+
+<h3 id="Second-Password-hashing-and-salting"><a href="#Second-Password-hashing-and-salting" class="headerlink" title="Second. Password hashing and salting"></a>Second. Password hashing and salting</h3><p>当前的身份验证代码在数据库中存储了用户密码的精确副本。因此，如果敌手以某种方式获得对crede .db文件的访问权，所有用户密码将立即被泄露。更糟糕的是，如果用户在多个网站上使用相同的密码，攻击者也可以入侵用户的账户！</p>
+<p>散列可以通过存储用户密码的哈希值而不是密码本身来防止这种攻击。散列的一个缺点是，攻击者可以建立一个彩虹表，其中包含所有可能的密码的散列值。然后，如果攻击者获得了某个人的哈希密码，攻击者只需在其巨大的哈希表中查找，就可以获得原始密码。</p>
+<p>为了克服彩虹表攻击，大多数系统使用盐化。使用 salt 时，服务器存储的不是密码的哈希值，而是密码的哈希值和一个随机生成的字符串 salt。为了检查密码是否正确，服务器将用户提供的密码和 salt 连接起来，并检查结果是否与存储的散列值匹配。</p>
+<p>实验要求在认证服务中实现密码哈希和加盐，具体有三个步骤:</p>
+<ol>
+<li>扩展 Cred 表，增加一个 salt 列</li>
+<li>修改注册代码，选择一个随机盐值，并存储密码的哈希值和盐值，而不是密码本身</li>
+<li>修改登录代码，将提供的密码与存储的盐值一起哈希，并与存储的哈希值进行比较</li>
+</ol>
+<p>修改 Cred 表:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Cred</span>(<span class="title class_ inherited__">CredBase</span>):</span><br><span class="line">    __tablename__ = <span class="string">&quot;cred&quot;</span></span><br><span class="line">    username = Column(String(<span class="number">128</span>), primary_key=<span class="literal">True</span>)</span><br><span class="line">    password = Column(String(<span class="number">128</span>))</span><br><span class="line">    token = Column(String(<span class="number">128</span>))</span><br><span class="line">    salt = Column(String(<span class="number">128</span>))</span><br></pre></td></tr></table></figure>
+
+<p>修改注册代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">register</span>(<span class="params">username, password</span>):</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 随机选择 salt 并计算哈希</span></span><br><span class="line">    salt = os.urandom(<span class="number">16</span>)</span><br><span class="line">    hashed_password = hashlib.pbkdf2_hmac(</span><br><span class="line">        <span class="string">&quot;sha256&quot;</span>, password.encode(<span class="string">&quot;utf-8&quot;</span>), salt, <span class="number">100000</span></span><br><span class="line">    ).<span class="built_in">hex</span>()</span><br><span class="line">    password = hashed_password</span><br><span class="line"></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<p>修改登录代码:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">login</span>(<span class="params">username, password</span>):</span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 计算哈希</span></span><br><span class="line">    hash_password = hashlib.pbkdf2_hmac(</span><br><span class="line">        <span class="string">&quot;sha256&quot;</span>, password.encode(<span class="string">&quot;utf-8&quot;</span>), cred.salt, <span class="number">100000</span></span><br><span class="line">    ).<span class="built_in">hex</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> cred.password == hash_password:</span><br><span class="line">        <span class="keyword">return</span> newtoken(db, cred)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Part-3-Privilege-separating-the-bank-in-Zoobar"><a href="#Part-3-Privilege-separating-the-bank-in-Zoobar" class="headerlink" title="Part 3: Privilege-separating the bank in Zoobar"></a>Part 3: Privilege-separating the bank in Zoobar</h2><p>最后，我们想要保护每个用户的 zoobar 余额，防止可能利用 Zoobar 应用中某些漏洞的攻击者。目前，如果攻击者利用主 Zoobar 应用中的漏洞，他们可以窃取任何人的 zoobars，而且如果我们想要稍后审计，这甚至不会出现在 Transfer 数据库中。</p>
+<h3 id="First-Separate-the-transfer-code"><a href="#First-Separate-the-transfer-code" class="headerlink" title="First. Separate the transfer code"></a>First. Separate the transfer code</h3><p>为了提高 zoobar 余额的安全性，实验的要求类似于上面的认证服务中所做的：将 zoobar 余额信息拆分到一个单独的 Bank 数据库中，并建立一个 bank 服务，其工作是对新的 Bank 数据库和现有的 Transfer 数据库执行操作。只要只有 bank 服务可以修改 Bank 和 Transfer 数据库，Zoobar 应用其余部分的漏洞就不应该给攻击者修改 zoobar 余额的能力，并将确保所有转账都被正确记录以供未来审计。</p>
+<p><strong>第一步：分析现有代码</strong></p>
+<p>我们需要创建一个 Bank 数据库，存放用户名和对应的 zoobar 数。创建 bank_client.py，替代 bank.py 作为转账服务的接口，bank_client.py 会调用 RPC 向转账服务发起请求。</p>
+<p><strong>第二步：创建 Bank 数据库</strong></p>
+<ol>
+<li>创建新的 <code>Bank</code> 表，存储用户钱币信息</li>
+<li>修改 zoodb.py，添加 <code>Bank</code> 模型和相应的 setup 函数</li>
+<li>修改 bank.py 中的 balance 函数，当用户名不在 <code>Bank</code> 数据库时，需要插入新条目</li>
+<li>修改其他相关部分</li>
+</ol>
+<p><strong>第三步：创建函数调用抽象层，修改客户端调用</strong></p>
+<p>首先实现 bank-server.py:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">BankServer</span>(rpcsrv.RpcServer):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_transfer</span>(<span class="params">self, sender, recipient, zoobars, token</span>):</span><br><span class="line">        bank.transfer(sender, recipient, zoobars, token)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_balance</span>(<span class="params">self, username</span>):</span><br><span class="line">        <span class="keyword">return</span> bank.balance(username)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">rpc_get_log</span>(<span class="params">self, username</span>):</span><br><span class="line">        <span class="keyword">return</span> bank.get_log(username)</span><br><span class="line"></span><br><span class="line">login.py/transfer.py 原本调用 bank.py 的功能，此处更换为借助 bank_client.py 向转账服务发起 RPC 通信，进而调用其内部 bank-server.py 的函数进行处理。</span><br></pre></td></tr></table></figure>
+
+<p><strong>第四步：配置容器和网络</strong></p>
+<p>将转账服务置于 bank 容器中，并配置网络访问权限：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[bank]</span><br><span class="line">    cmd = zoobar/bank-server.py</span><br><span class="line">    dir = /app</span><br><span class="line">    lxcbr = 4</span><br><span class="line">    port = 8084</span><br><span class="line"></span><br><span class="line">    # main √ dynamic √ echo x </span><br><span class="line">    fwrule = -s dynamic -j ACCEPT</span><br><span class="line">    fwrule = -s auth -j ACCEPT</span><br><span class="line">    fwrule = -j REJECT</span><br></pre></td></tr></table></figure>
+
+<h3 id="Add-transfer-authentication"><a href="#Add-transfer-authentication" class="headerlink" title="Add transfer authentication"></a>Add transfer authentication</h3><p>我们需要修复 bank 服务的一个问题。特别是，可以访问 bank 服务（即可以向其发送 RPC 请求）的攻击者可以从任何人的账户向自己的账户执行转账。例如，它可以通过发出 transfer(victim, adversary, 1) RPC 请求从任何受害者那里窃取 1 个 zoobar。问题是 bank 服务不知道是谁在调用 transfer 操作。</p>
+<p>为了验证 transfer 操作的调用者，我们将要求调用者提供一个额外的 token 参数，该参数应该是发送者的有效 token。如果 token 无效，bank 服务应该拒绝转账。</p>
+<p>修改 bank.py 中的 transfer 函数，调用 auth 服务来进行 token 认证:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">transfer</span>(<span class="params">sender, recipient, zoobars, token</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> auth_client.check_token(sender, token):</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Invalid token&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> zoobars &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Transfer amount must be positive&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> sender == recipient:</span><br><span class="line">        <span class="keyword">raise</span> ValueError(<span class="string">&quot;Cannot transfer zoobars to yourself&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+</div>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+    <a href="/2025/08/20/MIT-Lab1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          MIT 6.858 Computer Systems Security - Lab 1
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/08/06/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F-%E7%AC%AC10%E8%AE%B2-%E5%8F%AF%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">操作系统-第十讲-可执行文件</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2025 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>
