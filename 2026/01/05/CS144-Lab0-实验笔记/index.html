@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="Lab 0">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <title>CS144-Lab0-实验笔记 |  Hexo</title>
+  
+    <link rel="apple-touch-icon" sizes="57x57" href="/images/DMX_cat.jpg/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/images/DMX_cat.jpg/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/images/DMX_cat.jpg/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/images/DMX_cat.jpg/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/images/DMX_cat.jpg/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/images/DMX_cat.jpg/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/images/DMX_cat.jpg/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/DMX_cat.jpg/apple-touch-icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="/images/DMX_cat.jpg/apple-touch-icon-167x167.png">
+  
+  
+    <link rel="shortcut icon" href="/images/DMX_cat.jpg">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <main class="main">
+    
+	<header id="header" class="header">
+
+	<div class="container">
+		<nav class="navbar d-flex align-items-center">
+			<a class="brand" href="/">
+				<img class="logo lazyload" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+			</a>
+			<ul class="main-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		</nav>
+		<a id="mobile-nav-toggle">
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+			<span class="mobile-nav-toggle-bar"></span>
+		</a>
+	</div>
+</header>
+
+    <section>
+      <div class="container">
+  <article id="post-CS144-Lab0-实验笔记" class="article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+  
+  <div class="article-cover mb-5">
+    
+  </div>
+  
+  <div class="article-inner">
+    
+    <header class="article-header">
+      
+      
+  
+    <h1 class="article-title" itemprop="name">
+      CS144-Lab0-实验笔记
+    </h1>
+  
+
+      <div class="article-meta">
+        <time class="text-gray" datetime="2026-01-04T16:00:00.000Z" itemprop="datePublished">
+  2026-01-05
+</time>
+        
+      </div>
+      
+    </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      <p>Lab 0</p>
+<span id="more"></span>
+
+<hr>
+<link rel="stylesheet" href="/css/CS144.css">
+
+<div class="all">
+
+<h2 id="0x00-Networking-by-hand"><a href="#0x00-Networking-by-hand" class="headerlink" title="0x00 Networking by hand"></a>0x00 Networking by hand</h2><h3 id="Fetch-a-Web-page"><a href="#Fetch-a-Web-page" class="headerlink" title="Fetch a Web page"></a>Fetch a Web page</h3><p>telnet 被定义为一个客户端程序，用于在你的计算机与另一台计算机运行的程序之间建立一个可靠的双向字节流 (Reliable bidirectional byte stream)，输入命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet cs144.keithw.org http</span><br></pre></td></tr></table></figure>
+
+<p>该命令会连接名为 cs144.keithw.org 的计算机上运行的 http 服务，接下来手动构建一个 HTTP 请求：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 想通过 HTTP 1.1 版本获取 (GET) 路径为 /hello 的资源</span><br><span class="line">GET /hello HTTP/1.1</span><br><span class="line"></span><br><span class="line"># 请求的具体域名</span><br><span class="line">Host: cs144.keithw.org</span><br><span class="line"></span><br><span class="line"># 发完这次回复后就立即关闭连接，不要等待后续请求</span><br><span class="line">Connection: close</span><br></pre></td></tr></table></figure>
+
+<h3 id="Send-yourself-an-email"><a href="#Send-yourself-an-email" class="headerlink" title="Send yourself an email"></a>Send yourself an email</h3><p>首先通过 ssh 登录到 <a href="mailto:&#115;&#x75;&#x6e;&#101;&#116;&#105;&#x64;&#64;&#x63;&#x61;&#x72;&#100;&#x69;&#110;&#97;&#x6c;&#x2e;&#x73;&#116;&#x61;&#x6e;&#102;&#111;&#x72;&#x64;&#46;&#x65;&#x64;&#117;">&#115;&#x75;&#x6e;&#101;&#116;&#105;&#x64;&#64;&#x63;&#x61;&#x72;&#100;&#x69;&#110;&#97;&#x6c;&#x2e;&#x73;&#116;&#x61;&#x6e;&#102;&#111;&#x72;&#x64;&#46;&#x65;&#x64;&#117;</a>，然后运行命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 67.231.149.169 smtp</span><br></pre></td></tr></table></figure>
+
+<p>该命令会连接名为 cs144.keithw.org 的计算机上运行的 smtp 服务，接下来手动构建一个 SMTP 请求：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"># 向邮件服务器标识你所在的计算机</span><br><span class="line">HELO mycomputer.stanford.edu</span><br><span class="line"></span><br><span class="line"># 指定发件人</span><br><span class="line">MAIL FROM: sunetid@stanford.edu</span><br><span class="line"></span><br><span class="line"># 指定收件人</span><br><span class="line">RCPT TO: sunetid@stanford.edu</span><br><span class="line"></span><br><span class="line"># 告知服务器你已准备好上传邮件的实际内容</span><br><span class="line">DATA</span><br><span class="line"></span><br><span class="line"># 邮件头，输入完头部之后留一个空行</span><br><span class="line">From: sunetid@stanford.edu</span><br><span class="line">To: sunetid@stanford.edu</span><br><span class="line">Subject: Hello from CS144 Lab 0!</span><br><span class="line"></span><br><span class="line"># 输入正文，用单独一行的 . 结束</span><br><span class="line">xxx</span><br><span class="line">.</span><br><span class="line"></span><br><span class="line"># 退出</span><br><span class="line">QUIT</span><br></pre></td></tr></table></figure>
+
+<h3 id="Listening-and-connecting"><a href="#Listening-and-connecting" class="headerlink" title="Listening and connecting"></a>Listening and connecting</h3><p>在终端窗口运行如下命令，启动监听程序 (服务器端)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入监听模式 (l)，显示详细输出 (v)，指定在 9090 端口开启服务 (-p 9090)</span></span><br><span class="line">netcat -v -l -p 9090</span><br></pre></td></tr></table></figure>
+
+<p>新开一个终端，输入命令，localhost 是回环地址，代表自己的计算机 。用 telnet 作为客户端去连接刚才启动的服务器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet localhost 9090</span><br></pre></td></tr></table></figure>
+
+<p>在任意一个窗口中输入文字并按回车，在 netcat (服务器) 输入的字符会出现在 telnet (客户端) 窗口，反之亦然。这证明了流式套接字 (Stream Socket) 是双向的 (Bidirectional)。你必须按下 Enter 键，缓冲区中的字节才会被发送出去。</p>
+<h2 id="0x01-Writing-a-network-program-using-an-OS-stream-socket"><a href="#0x01-Writing-a-network-program-using-an-OS-stream-socket" class="headerlink" title="0x01 Writing a network program using an OS stream socket"></a>0x01 Writing a network program using an OS stream socket</h2><p>操作系统提供了一种称为 “流式套接字” (Stream Socket) 的功能。它在两个程序 (你的程序和远程服务器) 之间建立了一条可靠的双向字节流。对程序而言，它就像一个普通的文件描述符 (File Descriptor)，类似于读写硬盘上的文件。从一端写入的字节，最终会以完全相同的顺序从另一端出来。</p>
+<p>然而，互联网只提供尽力而为 (Best-effort) 的服务，传输的是一个个短小的数据报 (Datagrams)。每个数据报包含元数据 (源地址、目的地址) 和载荷数据 (最多约 1500 字节)，数据报在传输过程中可能会发生：丢失 (Lost)、乱序到达 (Delivered out of order)、内容被篡改 (Contents altered)、重复 (Duplicated) 等异常情况。</p>
+<p>为了让应用程序能用上可靠的字节流，OS 在两端必须进行复杂的协作，将不可靠的“数据报”转化为可靠的“字节流”。通过 TCP (Transmission Control Protocol) 协议，两台计算机相互配合。可以确保每个字节最终都能按顺序到达；并且告诉对方自己能接收多少数据，防止被大量数据淹没。</p>
+<p>本小节需要编写一个名为 webget 的程序。在这个阶段，只需要使用操作系统现成的 TCP 支持来创建一个流式套接字并获取网页 (就像之前手动做的那样)。</p>
+<h3 id="Reading-the-Minnow-support-code"><a href="#Reading-the-Minnow-support-code" class="headerlink" title="Reading the Minnow support code"></a>Reading the Minnow support code</h3><p>阅读文件 <code>util/address.hh</code>，里面定义了 Address 类，里面封装了 ipv4 地址和 dns 服务。可以通过 hostname 和 service 来初始化一个 Address 对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Address</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="comment">// (Constructer) Construct by resolving a hostname and servicename.</span></span><br><span class="line">    <span class="built_in">Address</span>(<span class="type">const</span> std::string &amp;hostname, <span class="type">const</span> std::string &amp;service);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>阅读文件 <code>util/socket.hh</code>，里面定义了 Socket 基类和 TCPSocket 类，提供套接字的服务。Socket 类本身继承于 FileDescriptor 类，可以和文件描述符一样来操作 Socket 对象。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Socket</span> : <span class="keyword">public</span> FileDescriptor</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="comment">// Bind a socket to a specified address with [bind(2)](\ref man2::bind), usually for listen/accept</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">bind</span><span class="params">(<span class="type">const</span> Address &amp;address)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Connect a socket to a specified peer address with [connect(2)](\ref man2::connect)</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">connect</span><span class="params">(<span class="type">const</span> Address &amp;address)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>bind</code> 函数主要用于绑定本机上的一个特定的地址，用于监听客户端请求或者接受客户端请求建立一个新的套接字。connect 函数主要用于连接特定地址的目标套接字，一般用于客户端访问服务端监听地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bind() → listen() → accept() → 通信</span><br><span class="line">(绑定)    (监听)     (接受)     (读写)</span><br><span class="line"></span><br><span class="line">connect() → 通信 → shutdown()</span><br><span class="line">(连接)      (读写)  (关闭)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Writing-webget"><a href="#Writing-webget" class="headerlink" title="Writing webget"></a>Writing webget</h3><p>在 apps&#x2F;webget.cc 文件中有一个 get_URL 函数，我们需要完善该函数实现用 HTTP 格式向 Web 发送一个请求，并持续输出服务端返回的内容。实现如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">get_URL</span><span class="params">(<span class="type">const</span> string &amp;host, <span class="type">const</span> string &amp;path)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Function called: get_URL( \&quot;&#123;&#125;\&quot;, \&quot;&#123;&#125;\&quot; )&quot;</span>, host, path);</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;get_URL() function not yet implemented&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function">Address <span class="title">add</span><span class="params">(host, <span class="string">&quot;http&quot;</span>)</span></span>;</span><br><span class="line">    TCPSocket sock;</span><br><span class="line"></span><br><span class="line">    sock.<span class="built_in">connect</span>(add);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;GET &quot;</span> + path + <span class="string">&quot; HTTP/1.1\r\n&quot;</span>);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;Host: &quot;</span> + host + <span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;Connection: close\r\n&quot;</span>);</span><br><span class="line">    sock.<span class="built_in">write</span>(<span class="string">&quot;\r\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (!sock.<span class="built_in">eof</span>())</span><br><span class="line">    &#123;</span><br><span class="line">      string str;</span><br><span class="line">      sock.<span class="built_in">read</span>(str);</span><br><span class="line">      cout &lt;&lt; str;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="An-in-memory-reliable-byte-stream"><a href="#An-in-memory-reliable-byte-stream" class="headerlink" title="An in-memory reliable byte stream"></a>An in-memory reliable byte stream</h2><p>本节需要实现一个对象，充当数据传输的管道。字节从“输入”端写入，并以完全相同的顺序从“输出”端被读取。这个流不是无限的。写入者可以发出信号表示“输入结束”。当读取者读完所有剩余字节后，会达到 EOF (End of File)，之后无法再读取数据。</p>
+<p>为了防止内存耗尽，字节流必须进行流量控制。如果缓冲区已满 (达到容量)，写入者将被暂时阻止写入更多数据，直到有空间腾出；随着读取者从流中“排空”（读取）字节，缓冲区会腾出空间，此时允许写入者继续写入。</p>
+<p>实验只需要实现 Writer 和 Reader 类的函数，具体如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Push data to stream, but only as much as available capacity allows.</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Writer::push</span><span class="params">(string data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// If stream is closed, set error</span></span><br><span class="line">    <span class="keyword">if</span> (is_closed_ &amp;&amp; !data.<span class="built_in">empty</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">set_error</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Trim data to available capacity</span></span><br><span class="line">    <span class="type">uint64_t</span> cur_capacity = <span class="built_in">available_capacity</span>();</span><br><span class="line">    <span class="keyword">if</span> (data.<span class="built_in">size</span>() &gt; cur_capacity)</span><br><span class="line">        data = data.<span class="built_in">substr</span>(<span class="number">0</span>, cur_capacity);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Append data to buffer</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">char</span> c : data)</span><br><span class="line">        buffer_.<span class="built_in">push_back</span>(c);</span><br><span class="line">    bytes_pushed_ += data.<span class="built_in">size</span>();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Writer::push(&#123;&#125;)&quot;</span>, data);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Signal that the stream has reached its ending. Nothing more will be written.</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Writer::close</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    is_closed_ = <span class="literal">true</span>;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Writer::close()&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Has the stream been closed?</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Writer::is_closed</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Writer::is_closed() -&gt; &#123;&#125;&quot;</span>, is_closed_);</span><br><span class="line">    <span class="keyword">return</span> is_closed_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// How many bytes can be pushed to the stream right now?</span></span><br><span class="line"><span class="function"><span class="type">uint64_t</span> <span class="title">Writer::available_capacity</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">uint64_t</span> available_capacity = capacity_ - (bytes_pushed_ - bytes_popped_);</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Writer::available_capacity() -&gt; &#123;&#125;&quot;</span>, available_capacity);</span><br><span class="line">    <span class="keyword">return</span> available_capacity;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Total number of bytes cumulatively pushed to the stream</span></span><br><span class="line"><span class="function"><span class="type">uint64_t</span> <span class="title">Writer::bytes_pushed</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Writer::bytes_pushed() -&gt; &#123;&#125;&quot;</span>, bytes_pushed_);</span><br><span class="line">    <span class="keyword">return</span> bytes_pushed_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Peek at the next bytes in the buffer -- ideally as many as possible.</span></span><br><span class="line"><span class="comment">// It&#x27;s not required to return a string_view of the *whole* buffer, but</span></span><br><span class="line"><span class="comment">// if the peeked string_view is only one byte at a time, it will probably force</span></span><br><span class="line"><span class="comment">// the caller to do a lot of extra work.</span></span><br><span class="line"><span class="function">string_view <span class="title">Reader::peek</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Reader::peek() called&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (buffer_.<span class="built_in">empty</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> &#123;&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">string_view</span>(buffer_.<span class="built_in">data</span>(), buffer_.<span class="built_in">size</span>());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Remove `len` bytes from the buffer.</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">Reader::pop</span><span class="params">(<span class="type">uint64_t</span> len)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">is_finished</span>() || len &gt; <span class="built_in">bytes_buffered</span>())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">set_error</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    bytes_popped_ += len;</span><br><span class="line">    buffer_.<span class="built_in">erase</span>(buffer_.<span class="built_in">begin</span>(), buffer_.<span class="built_in">begin</span>() + len);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Reader::pop(&#123;&#125;)&quot;</span>, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is the stream finished (closed and fully popped)?</span></span><br><span class="line"><span class="function"><span class="type">bool</span> <span class="title">Reader::is_finished</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">bool</span> is_empty = <span class="built_in">bytes_buffered</span>() == <span class="number">0</span>;</span><br><span class="line">    <span class="type">bool</span> is_finished = is_closed_;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Reader::is_finished() -&gt; &#123;&#125;&quot;</span>, is_empty &amp;&amp; is_finished);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> is_empty &amp;&amp; is_finished;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Number of bytes currently buffered (pushed and not popped)</span></span><br><span class="line"><span class="function"><span class="type">uint64_t</span> <span class="title">Reader::bytes_buffered</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Reader::bytes_buffered() -&gt; &#123;&#125;&quot;</span>, bytes_pushed_ - bytes_popped_);</span><br><span class="line">    <span class="keyword">return</span> bytes_pushed_ - bytes_popped_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Total number of bytes cumulatively popped from stream</span></span><br><span class="line"><span class="function"><span class="type">uint64_t</span> <span class="title">Reader::bytes_popped</span><span class="params">()</span> <span class="type">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">debug</span>(<span class="string">&quot;Reader::bytes_popped() -&gt; &#123;&#125;&quot;</span>, bytes_popped_);</span><br><span class="line">    <span class="keyword">return</span> bytes_popped_;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</div>
+    </div>
+    <footer class="article-footer">
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0/" rel="tag">学习</a></li></ul>
+
+    </footer>
+  </div>
+  
+  
+    
+<nav class="article-nav pt-4 mt-3" id="article-nav">
+  
+  
+    <a href="/2025/08/20/MIT-Lab1-%E5%AE%9E%E9%AA%8C%E7%AC%94%E8%AE%B0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MIT 6.858 Computer Systems Security - Lab 1</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
+</div>
+    </section>
+    <footer class="footer pt-5 mt-5">
+  <div class="container">
+    <div class="py-3">
+      <div class="row justify-content-between">
+        <div class="col-6">
+          <img class="filter-gray mb-3 lazyload" height="40" data-src="/images/DMX_cat.jpg" alt="Hexo" role="img">
+          <p class="mb-4"></p>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a target="_blank" rel="noopener" href="https://zhwangart.com">
+                  <img 0="微博" src="/images/icons/contact_weibo.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="javascript:;">
+                  <img 0="微信" src="/images/icons/contact_wechat.svg">
+                </a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="mailto:a@abc.com">
+                  <img 0="邮箱" src="/images/icons/contact_email.svg">
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+        <div class="col-4">
+          <h5>友情链接</h5>
+          <ul class="list-inline">
+            
+              <li class="list-inline-item">
+                <a href="https://acorn.imaging.xin/" title="Acorn" target="_blank" rel="noopener">Acorn</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://hexo.io/" title="Hexo" target="_blank" rel="noopener">Hexo</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://github.com/" title="GitHub" target="_blank" rel="noopener">GitHub</a>
+              </li>
+            
+              <li class="list-inline-item">
+                <a href="https://duoyu.wang/" title="To Base64" target="_blank" rel="noopener">To Base64</a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr class="hr" style="opacity: .25;">
+    <div class="pt-3 pb-5">
+      <ul class="list-inline mb-0 text-center">
+        <li class="list-inline-item">&copy; 2026 Hexo</li>
+        
+        <li class="list-inline-item">Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+        <li class="list-inline-item">Designer <a href="https://acorn.imaging.xin/" target="_blank">DM-X~X~X</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+  </main>
+  <div id="mobile-nav-dimmer"></div>
+<div id="mobile-nav">
+	<div id="mobile-nav-inner">
+		<ul class="mobile-nav">
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/">首页</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/stories">故事</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/archives">博客</a>
+  </li>
+  
+    
+  <li class="nav-item ">
+    <a class="nav-item-link" href="/about">关于</a>
+  </li>
+  
+</ul>
+		
+	</div>
+</div>
+
+  <script src="/libs/feather/feather.min.js"></script>
+<script src="/libs/lazysizes/lazysizes.min.js"></script>
+
+	<script src="/libs/tocbot/tocbot.min.js"></script>
+	<script>
+    tocbot.init({
+      // Where to render the table of contents.
+      tocSelector: '.js-toc',
+      // Where to grab the headings to build the table of contents.
+      contentSelector: '.js-toc-content',
+      // Which headings to grab inside of the contentSelector element.
+      headingSelector: 'h2, h3',
+      // For headings inside relative or absolute positioned containers within content.
+      hasInnerContainers: true,
+    });
+	</script>
+
+
+
+
+
+<script src="/js/mobile-nav.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+</body>
+</html>

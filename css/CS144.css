@@ -1,6 +1,329 @@
+/* ========================================
+   基础样式和全局设置
+   ======================================== */
+
 .all {
     font-size: 20px;
     color: #22334d;
     line-height: 1.8;
     font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: 'Comic Mono', '微软雅黑', Arial, sans-serif;
+    color: #1a2533;
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+}
+
+h1 {
+    font-size: 2.2em;
+    border-bottom: 2px solid #e9ecef;
+    padding-bottom: 0.2em;
+}
+
+h2 {
+    font-size: 1.9em;
+    border-left: 4px solid #b0bec5;
+    padding-left: 0.5em;
+}
+
+h3 {
+    font-size: 1.5em;
+    color: #fff;
+    -webkit-text-stroke: 1.8px #000;
+}
+
+h4 {
+    font-size: 1.1em;
+    color: #3e4c5c;
+}
+
+h5 {
+    font-size: 1em;
+    color: #495057;
+    font-weight: 600;
+}
+
+
+/* ========================================
+   Bug 记录卡片样式
+   ======================================== */
+
+.bug-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+    border-left: 3px solid #dc3545;
+    position: relative;
+}
+
+.bug-card .bug-title {
+    color: #495057;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    display: flex;
+    align-items: center;
+}
+
+.bug-card .bug-title::before {
+    content: '!';
+    margin-right: 8px;
+    font-size: 14px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.bug-card .bug-description {
+    color: #6c757d;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.bug-card .bug-solution {
+    background: #f1f3f4;
+    border-radius: 4px;
+    padding: 12px;
+    margin-top: 12px;
+    border-left: 2px solid #28a745;
+}
+
+.bug-card .bug-solution::before {
+    content: '解决方案';
+    color: #28a745;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.bug-card .bug-solution p {
+    color: #495057;
+    font-size: 13px;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* 不同严重级别的bug样式 */
+.bug-card.critical {
+    border-left-color: #721c24;
+    background: #f8d7da;
+}
+
+.bug-card.critical .bug-title::before {
+    background: #721c24;
+}
+
+.bug-card.warning {
+    border-left-color: #856404;
+    background: #fff3cd;
+}
+
+.bug-card.warning .bug-title::before {
+    background: #856404;
+}
+
+.bug-card.info {
+    border-left-color: #0c5460;
+    background: #d1ecf1;
+}
+
+.bug-card.info .bug-title::before {
+    background: #0c5460;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .bug-card {
+        margin: 12px 0;
+        padding: 14px;
+    }
+
+    .bug-card .bug-title {
+        font-size: 15px;
+    }
+
+    .bug-card .bug-description {
+        font-size: 13px;
+    }
+}
+
+/* ========================================
+   栈分布可视化样式
+   ======================================== */
+
+.stack-visualization {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+}
+
+.stack-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stack-column {
+    flex: 1;
+    min-width: 280px;
+    max-width: 400px;
+}
+
+.stack-title {
+    text-align: center;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.stack-frame {
+    border: 2px solid #6c757d;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.stack-cell {
+    padding: 8px 12px;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.stack-cell:last-child {
+    border-bottom: none;
+}
+
+.stack-cell .content {
+    flex: 1;
+    text-align: center;
+}
+
+.stack-cell .address {
+    font-size: 11px;
+    color: #6c757d;
+    min-width: 80px;
+}
+
+/* 不同类型的栈单元颜色 */
+.stack-cell.normal {
+    background: #e9ecef;
+}
+
+.stack-cell.buffer {
+    background: #d4edda;
+    border-left: 3px solid #28a745;
+}
+
+.stack-cell.saved-rbp {
+    background: #fff3cd;
+    border-left: 3px solid #ffc107;
+}
+
+.stack-cell.return-addr {
+    background: #f8d7da;
+    border-left: 3px solid #dc3545;
+}
+
+.stack-cell.shellcode {
+    background: #d1ecf1;
+    border-left: 3px solid #17a2b8;
+    font-weight: bold;
+}
+
+.stack-cell.overflow {
+    background: #f5c6cb;
+    border-left: 3px solid #721c24;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.stack-arrow {
+    text-align: center;
+    margin: 10px 0;
+    color: #dc3545;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.stack-explanation {
+    background: #e8f4fd;
+    border-left: 4px solid #17a2b8;
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+.stack-explanation h5 {
+    margin: 0 0 10px 0;
+    color: #495057;
+    font-size: 14px;
+}
+
+.stack-explanation ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.stack-explanation li {
+    margin-bottom: 5px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .stack-container {
+        flex-direction: column;
+    }
+
+    .stack-column {
+        min-width: 100%;
+    }
+}
+
+/* ========================================
+    Q & A
+   ======================================== */
+
+.qa-section {
+    border-left: 3px solid #00ff04;
+    padding-left: 0.5em;
 }
